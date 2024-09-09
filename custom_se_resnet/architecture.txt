@@ -1,0 +1,50 @@
+====================================================================================================
+Layer (type:depth-idx)                             Output Shape              Param #
+====================================================================================================
+├─Sequential: 1-1                                  [1, 1]                    --
+│    └─Conv2d: 2-1                                 [1, 32, 128, 128]         2,432
+│    └─BatchNorm2d: 2-2                            [1, 32, 128, 128]         64
+│    └─Mish: 2-3                                   [1, 32, 128, 128]         --
+│    └─MaxPool2d: 2-4                              [1, 32, 64, 64]           --
+│    └─SEResidualBlock: 2-5                        --                        --
+│    │    └─ResidualBlock: 3-1                     --                        57,728
+│    │    └─SqueezeExcitation: 3-2                 --                        1,096
+│    └─SEResidualBlock: 2-6                        --                        --
+│    │    └─ResidualBlock: 3-3                     --                        73,984
+│    │    └─SqueezeExcitation: 3-4                 --                        1,096
+│    └─MaxPool2d: 2-7                              [1, 32, 32, 32]           --
+│    └─SEResidualBlock: 2-8                        --                        --
+│    │    └─ResidualBlock: 3-5                     --                        310,848
+│    │    └─SqueezeExcitation: 3-6                 --                        2,412
+│    └─SEResidualBlock: 2-9                        --                        --
+│    │    └─ResidualBlock: 3-7                     --                        461,184
+│    │    └─SqueezeExcitation: 3-8                 --                        2,412
+│    └─MaxPool2d: 2-10                             [1, 48, 16, 16]           --
+│    └─SEResidualBlock: 2-11                       --                        --
+│    │    └─ResidualBlock: 3-9                     --                        209,664
+│    │    └─SqueezeExcitation: 3-10                --                        4,240
+│    └─SEResidualBlock: 2-12                       --                        --
+│    │    └─ResidualBlock: 3-11                    --                        295,424
+│    │    └─SqueezeExcitation: 3-12                --                        4,240
+│    └─MaxPool2d: 2-13                             [1, 32, 8, 8]             --
+│    └─Flatten: 2-14                               [1, 2048]                 --
+│    └─Linear: 2-15                                [1, 256]                  524,288
+│    └─BatchNorm1d: 2-16                           [1, 256]                  512
+│    └─Mish: 2-17                                  [1, 256]                  --
+│    └─Dropout1d: 2-18                             [1, 256]                  --
+│    └─Linear: 2-19                                [1, 256]                  65,536
+│    └─BatchNorm1d: 2-20                           [1, 256]                  512
+│    └─Mish: 2-21                                  [1, 256]                  --
+│    └─Dropout1d: 2-22                             [1, 256]                  --
+│    └─Linear: 2-23                                [1, 1]                    257
+====================================================================================================
+Total params: 2,017,929
+Trainable params: 2,017,929
+Non-trainable params: 0
+Total mult-adds (Units.GIGABYTES): 1.50
+====================================================================================================
+Input size (MB): 0.79
+Forward/backward pass size (MB): 39.86
+Params size (MB): 8.07
+Estimated Total Size (MB): 48.72
+====================================================================================================
