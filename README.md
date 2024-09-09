@@ -1,2 +1,3 @@
-# computer-vision-nets
+# **Computer Vision Nets**
+
 Some neural network architectures implementation.
