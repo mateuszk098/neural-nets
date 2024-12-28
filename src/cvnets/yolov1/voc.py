@@ -1,8 +1,11 @@
+import os
 from collections import namedtuple
 from os import PathLike
 from pathlib import Path
 from typing import Literal, Self
 from xml.etree import ElementTree
+
+os.environ["NO_ALBUMENTATIONS_UPDATE"] = "1"
 
 import albumentations as A
 import cv2 as cv
@@ -22,7 +25,17 @@ def collate_fn(samples: list[YOLOSample]) -> tuple[Tensor, Tensor]:
 
 
 class VOC2012Dataset(Dataset):
-    def __init__(self, root: str | PathLike, /, *, imgsz: int, S: int, B: int, split: Literal["train", "val"]) -> None:
+    def __init__(
+        self,
+        root: str | PathLike,
+        /,
+        *,
+        imgsz: int,
+        S: int,
+        B: int,
+        split: Literal["train", "val"],
+        normalize: bool = True,
+    ) -> None:
         dataset, classes = self.load(root, split)
 
         self.dataset = dataset
@@ -33,6 +46,7 @@ class VOC2012Dataset(Dataset):
         self.S = int(S)
         self.B = int(B)
         self.C = len(self.class_to_idx)
+        self.normalize = bool(normalize)
 
         self._train_transform = A.Compose(
             [
@@ -43,7 +57,6 @@ class VOC2012Dataset(Dataset):
                 A.RandomFog(p=0.5, alpha_coef=0.15),
                 A.RandomRain(p=0.2, blur_value=3),
                 A.GaussNoise(p=0.2, std_range=(0.05, 0.15)),
-                A.Normalize(always_apply=True),
             ],
             bbox_params=A.BboxParams(format="pascal_voc", label_fields=["labels"]),
             seed=42,
@@ -52,11 +65,15 @@ class VOC2012Dataset(Dataset):
         self._eval_transform = A.Compose(
             [
                 A.Resize(self.imgsz, self.imgsz, always_apply=True),
-                A.Normalize(always_apply=True),
             ],
             bbox_params=A.BboxParams(format="pascal_voc", label_fields=["labels"]),
             seed=42,
         )
+
+        if self.normalize:  # Useful when using non-normalized images for testing.
+            self._train_transform.transforms.append(A.Normalize())
+            self._eval_transform.transforms.append(A.Normalize())
+
         self.transform = self._eval_transform
 
     def __len__(self) -> int:

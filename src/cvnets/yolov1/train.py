@@ -17,10 +17,15 @@ from cvnets.yolov1.net import YOLOv1
 from cvnets.yolov1.utils import dfs_freeze, dfs_unfreeze, load_yaml
 from cvnets.yolov1.voc import VOC2012Dataset, collate_fn
 
+SEED = 42
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-FORMAT = "[%(asctime)s] [%(module)s] [%(levelname)s]: %(message)s"
+FORMAT = "[%(asctime)s - %(module)s - %(levelname)s]: %(message)s"
 DATE_FMT = "%Y-%m-%d %H:%M:%S"
+
+torch.backends.cudnn.benchmark = True
+torch.manual_seed(SEED)
+torch.cuda.manual_seed(SEED)
 
 logging.basicConfig(level=logging.INFO, format=FORMAT, datefmt=DATE_FMT)
 
@@ -66,13 +71,18 @@ def main(*, config_file: str | PathLike) -> None:
     logging.info(f"Loading configuration from {config_file!s}...")
     config = SimpleNamespace(**load_yaml(config_file))
 
-    train_dataset = VOC2012Dataset(config.DATASET, imgsz=config.IMGSZ, S=config.S, B=config.B, split="train")
-    valid_dataset = VOC2012Dataset(config.DATASET, imgsz=config.IMGSZ, S=config.S, B=config.B, split="val")
+    train_dataset = VOC2012Dataset(
+        config.DATASET, imgsz=config.IMGSZ, S=config.S, B=config.B, split="train", normalize=True
+    )
+    valid_dataset = VOC2012Dataset(
+        config.DATASET, imgsz=config.IMGSZ, S=config.S, B=config.B, split="val", normalize=True
+    )
 
     train_loader = DataLoader(
         dataset=train_dataset,
         batch_size=config.BATCH_SIZE,
         shuffle=True,
+        generator=torch.manual_seed(SEED),
         num_workers=config.NUM_WORKERS,
         collate_fn=collate_fn,
         persistent_workers=config.PERSISTENT_WORKERS,
@@ -88,8 +98,9 @@ def main(*, config_file: str | PathLike) -> None:
         pin_memory=config.PIN_MEMORY,
     )
 
-    model = YOLOv1(imgsz=config.IMGSZ, S=config.S, B=config.B, C=config.C).to(DEVICE)
-    dfs_freeze(model.backbone)
+    model = YOLOv1(imgsz=config.IMGSZ, S=config.S, B=config.B, C=config.C, use_sigmoid=config.USE_SIGMOID)
+    model = model.to(DEVICE)
+    dfs_freeze(model.backbone)  # Freeze the backbone to stabilize the head and neck first.
 
     optimizer = torch.optim.AdamW(
         params=filter(lambda p: p.requires_grad, model.parameters()),
@@ -123,14 +134,17 @@ def main(*, config_file: str | PathLike) -> None:
     for epoch in range(1, config.EPOCHS + 1):
         t0 = time.perf_counter()
         train_loss = train_step(model, train_loader, loss, optimizer, scheduler)
-        torch.save(model.state_dict(), f"yolov1-voc2012-epoch-{epoch:03d}.pt")
         t1 = time.perf_counter()
-        logging.info(f"Epoch: {epoch:3d} | Train Time: {(t1-t0):3.2f} s | Train Loss: {train_loss:6.4f}")
+        logging.info(
+            f"Epoch: {epoch:3d}/{config.EPOCHS} | Train Time: {(t1-t0):3.2f} s | Train Loss: {train_loss:6.4f}"
+        )
 
-        if epoch == 20:
+        torch.save(model.state_dict(), f"yolov1-voc2012-epoch-{epoch:03d}.pt")
+
+        if epoch == config.EPOCH_TO_UNFREEZE_BACKBONE:
             logging.info("Unfreezing the backbone...")
             dfs_unfreeze(model.backbone)
-            optimizer.add_param_group({"backbone_params": model.backbone.parameters()})
+            optimizer.add_param_group({"params": model.backbone.parameters()})
 
 
 if __name__ == "__main__":

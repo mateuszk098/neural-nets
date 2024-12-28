@@ -20,6 +20,18 @@ def iou(bboxes1: Tensor, bboxes2: Tensor) -> Tensor:
     return intersection / (area1 + area2 - intersection + 1e-6)
 
 
+def nms(detections: Tensor, iou_threshold: float = 0.3) -> Tensor:
+    sorted_dets = sorted(detections, key=lambda x: x[-1])  # type: ignore
+    keep = list()
+
+    while sorted_dets:
+        current_det = sorted_dets.pop()
+        sorted_dets = list(det for det in sorted_dets if iou(current_det, det[:-1]) < iou_threshold)
+        keep.append(current_det)
+
+    return torch.stack(keep, dim=0)
+
+
 # Also remember to set optimizer to only update parameters that require grad. E.g.:
 # torch.optim.Adam(filter(lambda p: p.requires_grad, model.parameters()))
 def dfs_freeze(model: nn.Module) -> None:
