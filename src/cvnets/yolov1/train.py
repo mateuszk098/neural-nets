@@ -12,7 +12,7 @@ from torch.optim import Optimizer
 from torch.optim.lr_scheduler import LRScheduler
 from torch.utils.data import DataLoader
 
-from cvnets.yolov1.loss import YOLOv1Loss
+from cvnets.yolov1.loss import NamedLoss, YOLOv1Loss
 from cvnets.yolov1.net import YOLOv1
 from cvnets.yolov1.utils import dfs_freeze, dfs_unfreeze, load_yaml
 from cvnets.yolov1.voc import VOC2012Dataset, collate_fn
@@ -32,39 +32,54 @@ logging.basicConfig(level=logging.INFO, format=FORMAT, datefmt=DATE_FMT)
 
 def train_step(
     model: nn.Module, loader: DataLoader, loss: nn.Module, optimizer: Optimizer, scheduler: LRScheduler
-) -> float:
+) -> NamedLoss:
     model.train()
     loader.dataset.train()  # type: ignore
-    total_loss = torch.tensor(0.0)
+    partial_loss = torch.zeros(5)
 
     for x, y in loader:
         x, y = x.to(DEVICE), y.to(DEVICE)
 
         model_loss = loss(model(x), y)
         optimizer.zero_grad()
-        model_loss.backward()
+        model_loss.total.backward()
 
         optimizer.step()
         scheduler.step()
 
-        total_loss += model_loss.cpu().detach()
+        partial_loss += torch.as_tensor(
+            (
+                model_loss.total,
+                model_loss.localization,
+                model_loss.objectness,
+                model_loss.no_objectness,
+                model_loss.classification,
+            )
+        )
 
-    return total_loss.item() / len(loader)
+    return NamedLoss(*partial_loss.cpu().detach().div(len(loader)).tolist())
 
 
-def valid_step(model: nn.Module, loader: DataLoader, loss: nn.Module) -> float:
+def valid_step(model: nn.Module, loader: DataLoader, loss: nn.Module) -> NamedLoss:
     model.eval()
     loader.dataset.eval()  # type: ignore
-    total_loss = torch.tensor(0.0)
+    partial_loss = torch.zeros(5)
 
     with torch.inference_mode():
         for x, y in loader:
             x, y = x.to(DEVICE), y.to(DEVICE)
-
             model_loss = loss(model(x), y)
-            total_loss += model_loss.cpu().detach()
+            partial_loss += torch.as_tensor(
+                (
+                    model_loss.total,
+                    model_loss.localization,
+                    model_loss.objectness,
+                    model_loss.no_objectness,
+                    model_loss.classification,
+                )
+            )
 
-    return total_loss.item() / len(loader)
+    return NamedLoss(*partial_loss.cpu().detach().div(len(loader)).tolist())
 
 
 def main(*, config_file: str | PathLike) -> None:
@@ -98,7 +113,7 @@ def main(*, config_file: str | PathLike) -> None:
         pin_memory=config.PIN_MEMORY,
     )
 
-    model = YOLOv1(imgsz=config.IMGSZ, S=config.S, B=config.B, C=config.C, use_sigmoid=config.USE_SIGMOID)
+    model = YOLOv1(imgsz=config.IMGSZ, S=config.S, B=config.B, C=config.C)
     model = model.to(DEVICE)
     dfs_freeze(model.backbone)  # Freeze the backbone to stabilize the head and neck first.
 
@@ -131,20 +146,41 @@ def main(*, config_file: str | PathLike) -> None:
 
     logging.info(f"Start training on {torch.cuda.get_device_name(DEVICE)}...")
 
+    log = (
+        "Epoch: {:3d}/{} | Train Time: {:7.2f} s | Total Loss: {:7.4f} | "
+        "Localization Loss: {:7.4f} | Objectness Loss: {:7.4f} | Noobjectness Loss: {:7.4f} | "
+        "Classification Loss: {:7.4f}"
+    )
+
     for epoch in range(1, config.EPOCHS + 1):
         t0 = time.perf_counter()
         train_loss = train_step(model, train_loader, loss, optimizer, scheduler)
         t1 = time.perf_counter()
         logging.info(
-            f"Epoch: {epoch:3d}/{config.EPOCHS} | Train Time: {(t1-t0):3.2f} s | Train Loss: {train_loss:6.4f}"
+            log.format(
+                epoch,
+                config.EPOCHS,
+                t1 - t0,
+                train_loss.total,
+                train_loss.localization,
+                train_loss.objectness,
+                train_loss.no_objectness,
+                train_loss.classification,
+            )
         )
 
-        torch.save(model.state_dict(), f"yolov1-voc2012-epoch-{epoch:03d}.pt")
+        torch.save(model.state_dict(), "yolov1-voc2012.pt")
 
-        if epoch == config.EPOCH_TO_UNFREEZE_BACKBONE:
+        if config.UNFREEZE_BACKBONE and epoch == config.EPOCH_TO_UNFREEZE_BACKBONE:
             logging.info("Unfreezing the backbone...")
             dfs_unfreeze(model.backbone)
-            optimizer.add_param_group({"params": model.backbone.parameters()})
+            # Maybe two different optimizers and schedulers for the backbone and detector?
+            optimizer.add_param_group(
+                {
+                    "params": model.backbone.parameters(),
+                    **{key: value for key, value in optimizer.param_groups[0].items() if key != "params"},
+                }
+            )
 
 
 if __name__ == "__main__":

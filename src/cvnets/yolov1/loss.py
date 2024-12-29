@@ -1,8 +1,12 @@
+from collections import namedtuple
+
 import torch
 import torch.nn as nn
 from torch.types import Tensor
 
 from .utils import iou
+
+NamedLoss = namedtuple("NamedLoss", ["total", "localization", "objectness", "no_objectness", "classification"])
 
 
 class YOLOv1Loss(nn.Module):
@@ -14,9 +18,10 @@ class YOLOv1Loss(nn.Module):
         self.lambda_coord = float(lambda_coord)
         self.lambda_noobj = float(lambda_noobj)
 
-    def forward(self, y_pred: Tensor, y_true: Tensor) -> Tensor:
+    def forward(self, y_pred: Tensor, y_true: Tensor) -> NamedLoss:
         y_pred = y_pred.reshape(-1, self.S, self.S, 5 * self.B + self.C)
         y_true = y_true.reshape(-1, self.S, self.S, 5 * self.B + self.C)
+        device = y_pred.device
 
         # Extract the bounding boxes from the predictions and targets
         pred_bboxes = y_pred[..., : 5 * self.B].reshape(-1, self.S, self.S, self.B, 5)
@@ -26,11 +31,8 @@ class YOLOv1Loss(nn.Module):
         # From x_offset, y_offset, sqrt(w), sqrt(h) -> x1, y1, x2, y2 (normalized to 0 - 1).
         offset_y, offset_x = torch.meshgrid(torch.arange(self.S) / self.S, torch.arange(self.S) / self.S, indexing="ij")
         # (batch_size, S, S, B).
-        offset_y = offset_y.reshape(1, self.S, self.S, 1).repeat(1, 1, 1, self.B)
-        offset_x = offset_x.reshape(1, self.S, self.S, 1).repeat(1, 1, 1, self.B)
-
-        offset_y = offset_y.to(y_pred.device)
-        offset_x = offset_x.to(y_pred.device)
+        offset_y = offset_y.reshape(1, self.S, self.S, 1).repeat(1, 1, 1, self.B).to(device)
+        offset_x = offset_x.reshape(1, self.S, self.S, 1).repeat(1, 1, 1, self.B).to(device)
 
         # Extract the bounding box coordinates -> (batch_size, S, S, B, 4).
         pred_bboxes_xyxy = torch.stack(
@@ -57,13 +59,9 @@ class YOLOv1Loss(nn.Module):
 
         # Only the bounding boxes with the maximum IoU are responsible for the prediction.
         max_iou_values, max_iou_indices = bboxes_iou.max(dim=-1, keepdim=True)
-        max_iou_values = max_iou_values.repeat(1, 1, 1, self.B)
-        max_iou_indices = max_iou_indices.repeat(1, 1, 1, self.B)
-        bboxes_indices = torch.arange(self.B).reshape(1, 1, 1, self.B).expand_as(max_iou_indices)
-
-        max_iou_values = max_iou_values.to(y_pred.device)
-        max_iou_indices = max_iou_indices.to(y_pred.device)
-        bboxes_indices = bboxes_indices.to(y_pred.device)
+        max_iou_values = max_iou_values.repeat(1, 1, 1, self.B).to(device)
+        max_iou_indices = max_iou_indices.repeat(1, 1, 1, self.B).to(device)
+        bboxes_indices = torch.arange(self.B).reshape(1, 1, 1, self.B).expand_as(max_iou_indices).to(device)
 
         # Object appears in the cell?
         objectness_indicator = y_true[..., 4:5].bool()
@@ -90,11 +88,10 @@ class YOLOv1Loss(nn.Module):
             + classification_loss
         )
 
-        # print(
-        #     localization_loss.detach().cpu() * self.lambda_coord,
-        #     objectness_loss.detach().cpu(),
-        #     no_objectness_loss.detach().cpu() * self.lambda_noobj,
-        #     classification_loss.detach().cpu(),
-        # )
-
-        return total_loss / len(y_true)
+        return NamedLoss(
+            total_loss / len(y_true),
+            localization_loss * self.lambda_coord / len(y_true),
+            objectness_loss / len(y_true),
+            no_objectness_loss * self.lambda_noobj / len(y_true),
+            classification_loss / len(y_true),
+        )
