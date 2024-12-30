@@ -50,13 +50,21 @@ class VOC2012Dataset(Dataset):
 
         self._train_transform = A.Compose(
             [
-                A.Resize(self.imgsz, self.imgsz, always_apply=True),
                 A.HorizontalFlip(p=0.5),
-                A.Rotate(limit=10, p=0.5, rotate_method="ellipse", border_mode=cv.BORDER_REPLICATE),
-                A.RandomBrightnessContrast(p=0.5),
-                A.RandomFog(p=0.5, alpha_coef=0.15),
-                A.RandomRain(p=0.2, blur_value=3),
-                A.GaussNoise(p=0.2, std_range=(0.05, 0.15)),
+                A.Affine(
+                    scale=(0.8, 1.2),
+                    translate_percent=(-0.2, 0.2),
+                    border_mode=cv.BORDER_REPLICATE,
+                    always_apply=True,
+                ),
+                A.ColorJitter(
+                    brightness=(0.8, 1.2),
+                    contrast=(0.8, 1.2),
+                    saturation=(0.8, 1.2),
+                    hue=(-0.2, 0.2),
+                    always_apply=True,
+                ),
+                A.Resize(self.imgsz, self.imgsz, always_apply=True),
             ],
             bbox_params=A.BboxParams(format="pascal_voc", label_fields=["labels"]),
             seed=42,
@@ -71,8 +79,8 @@ class VOC2012Dataset(Dataset):
         )
 
         if self.normalize:  # Useful when using non-normalized images for testing.
-            self._train_transform.transforms.append(A.Normalize())
-            self._eval_transform.transforms.append(A.Normalize())
+            self._train_transform.transforms.append(A.Normalize(always_apply=True))
+            self._eval_transform.transforms.append(A.Normalize(always_apply=True))
 
         self.transform = self._eval_transform
 
@@ -93,7 +101,11 @@ class VOC2012Dataset(Dataset):
         image = torch.from_numpy(transformed["image"]).permute(2, 0, 1).float()  # C, H, W
         bboxes = torch.as_tensor(transformed["bboxes"]).float()
         labels = torch.as_tensor(transformed["labels"]).int()
-        target = self._create_yolo_target(bboxes, labels)
+
+        if bboxes.any():
+            target = self._create_yolo_target(bboxes, labels)
+        else:
+            target = torch.zeros((self.S, self.S, self.B * 5 + self.C))
 
         return YOLOSample(image, bboxes, labels, target)
 
