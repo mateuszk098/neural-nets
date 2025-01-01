@@ -163,8 +163,8 @@ def main(*, config_file: str | PathLike) -> None:
         logging.info(
             log.format(
                 epoch,
-                "Train",
                 config.EPOCHS,
+                "Train",
                 t1 - t0,
                 train_loss.total,
                 train_loss.coord,
@@ -176,8 +176,8 @@ def main(*, config_file: str | PathLike) -> None:
         logging.info(
             log.format(
                 epoch,
-                "Valid",
                 config.EPOCHS,
+                "Valid",
                 t1 - t0,
                 valid_loss.total,
                 valid_loss.coord,
