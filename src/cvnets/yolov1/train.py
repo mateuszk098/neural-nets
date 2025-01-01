@@ -50,10 +50,10 @@ def train_step(
         partial_loss += torch.as_tensor(
             (
                 model_loss.total,
-                model_loss.localization,
-                model_loss.objectness,
-                model_loss.no_objectness,
-                model_loss.classification,
+                model_loss.coord,
+                model_loss.itobj,
+                model_loss.noobj,
+                model_loss.label,
             )
         )
 
@@ -72,10 +72,10 @@ def valid_step(model: nn.Module, loader: DataLoader, loss: nn.Module) -> NamedLo
             partial_loss += torch.as_tensor(
                 (
                     model_loss.total,
-                    model_loss.localization,
-                    model_loss.objectness,
-                    model_loss.no_objectness,
-                    model_loss.classification,
+                    model_loss.coord,
+                    model_loss.itobj,
+                    model_loss.noobj,
+                    model_loss.label,
                 )
             )
 
@@ -147,29 +147,47 @@ def main(*, config_file: str | PathLike) -> None:
     logging.info(f"Start training on {torch.cuda.get_device_name(DEVICE)}...")
 
     log = (
-        "Epoch: {:3d}/{} | Train Time: {:7.2f} s | Total Loss: {:7.4f} | "
+        "Epoch: {:3d}/{} | {} Time: {:7.2f} s | Total Loss: {:7.4f} | "
         "Localization Loss: {:7.4f} | Objectness Loss: {:7.4f} | Noobjectness Loss: {:7.4f} | "
         "Classification Loss: {:7.4f}"
     )
 
+    checkpoints = Path("./checkpoints/")
+    checkpoints.mkdir(exist_ok=True)
+
     for epoch in range(1, config.EPOCHS + 1):
         t0 = time.perf_counter()
         train_loss = train_step(model, train_loader, loss, optimizer, scheduler)
+        valid_loss = valid_step(model, valid_loader, loss)
         t1 = time.perf_counter()
         logging.info(
             log.format(
                 epoch,
+                "Train",
                 config.EPOCHS,
                 t1 - t0,
                 train_loss.total,
-                train_loss.localization,
-                train_loss.objectness,
-                train_loss.no_objectness,
-                train_loss.classification,
+                train_loss.coord,
+                train_loss.itobj,
+                train_loss.noobj,
+                train_loss.label,
+            )
+        )
+        logging.info(
+            log.format(
+                epoch,
+                "Valid",
+                config.EPOCHS,
+                t1 - t0,
+                valid_loss.total,
+                valid_loss.coord,
+                valid_loss.itobj,
+                valid_loss.noobj,
+                valid_loss.label,
             )
         )
 
-        torch.save(model.state_dict(), "yolov1-voc2012.pt")
+        torch.save(model.state_dict(), checkpoints.joinpath("yolov1-voc2012.pt"))
 
         if config.UNFREEZE_BACKBONE and epoch == config.EPOCH_TO_UNFREEZE_BACKBONE:
             logging.info("Unfreezing the backbone...")

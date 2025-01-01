@@ -6,7 +6,7 @@ from torch.types import Tensor
 
 from .utils import iou
 
-NamedLoss = namedtuple("NamedLoss", ["total", "localization", "objectness", "no_objectness", "classification"])
+NamedLoss = namedtuple("NamedLoss", ["total", "coord", "itobj", "noobj", "label"])
 
 
 class YOLOv1Loss(nn.Module):
@@ -58,40 +58,34 @@ class YOLOv1Loss(nn.Module):
         bboxes_iou = iou(pred_bboxes_xyxy, true_bboxes_xyxy)
 
         # Only the bounding boxes with the maximum IoU are responsible for the prediction.
-        max_iou_values, max_iou_indices = bboxes_iou.max(dim=-1, keepdim=True)
-        max_iou_values = max_iou_values.repeat(1, 1, 1, self.B).to(device)
-        max_iou_indices = max_iou_indices.repeat(1, 1, 1, self.B).to(device)
-        bboxes_indices = torch.arange(self.B).reshape(1, 1, 1, self.B).expand_as(max_iou_indices).to(device)
+        max_iou_vals, max_iou_ids = bboxes_iou.max(dim=-1, keepdim=True)
+        max_iou_vals = max_iou_vals.repeat(1, 1, 1, self.B).to(device)
+        max_iou_ids = max_iou_ids.repeat(1, 1, 1, self.B).to(device)
+        bboxes_ids = torch.arange(self.B).reshape(1, 1, 1, self.B).expand_as(max_iou_ids).to(device)
 
         # Object appears in the cell?
-        objectness_indicator = y_true[..., 4:5].bool()
+        objectness_mask = y_true[..., 4:5].bool()
         # The jth bounding box predictor in cell i is responsible for that prediction?
-        predictors_indicator = (max_iou_indices == bboxes_indices) & objectness_indicator
+        predictors_mask = (max_iou_ids == bboxes_ids) & objectness_mask
 
         pred_classes = y_pred[..., 5 * self.B :]
         true_classes = y_true[..., 5 * self.B :]
 
-        x_loss = ((pred_bboxes[..., 0] - true_bboxes[..., 0]).square()).mul(predictors_indicator).sum()
-        y_loss = ((pred_bboxes[..., 1] - true_bboxes[..., 1]).square()).mul(predictors_indicator).sum()
-        w_sqrt_loss = ((pred_bboxes[..., 2] - true_bboxes[..., 2]).square()).mul(predictors_indicator).sum()
-        h_sqrt_loss = ((pred_bboxes[..., 3] - true_bboxes[..., 3]).square()).mul(predictors_indicator).sum()
-
-        localization_loss = x_loss + y_loss + w_sqrt_loss + h_sqrt_loss
-        objectness_loss = (pred_bboxes[..., 4] - max_iou_values).square().mul(predictors_indicator).sum()
-        no_objectness_loss = pred_bboxes[..., 4].square().mul(predictors_indicator.bitwise_not()).sum()
-        classification_loss = (pred_classes - true_classes).square().mul(objectness_indicator).sum()
-
-        total_loss = (
-            localization_loss * self.lambda_coord
-            + objectness_loss
-            + no_objectness_loss * self.lambda_noobj
-            + classification_loss
+        coord_loss = (
+            (pred_bboxes[..., :4] - true_bboxes[..., :4])
+            .square()
+            .mul(predictors_mask.reshape(-1, self.S, self.S, self.B, 1))
+            .sum()
         )
+        itobj_loss = (pred_bboxes[..., 4] - max_iou_vals).square().mul(predictors_mask).sum()
+        noobj_loss = (pred_bboxes[..., 4]).square().mul(predictors_mask.bitwise_not()).sum()
+        label_loss = (pred_classes - true_classes).square().mul(objectness_mask).sum()
+        total_loss = coord_loss * self.lambda_coord + itobj_loss + noobj_loss * self.lambda_noobj + label_loss
 
         return NamedLoss(
             total_loss / len(y_true),
-            localization_loss * self.lambda_coord / len(y_true),
-            objectness_loss / len(y_true),
-            no_objectness_loss * self.lambda_noobj / len(y_true),
-            classification_loss / len(y_true),
+            coord_loss * self.lambda_coord / len(y_true),
+            itobj_loss / len(y_true),
+            noobj_loss * self.lambda_noobj / len(y_true),
+            label_loss / len(y_true),
         )
