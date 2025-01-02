@@ -80,7 +80,7 @@ class LazyBottleneck(nn.Module):
 
 
 class ResNet(nn.Module):
-    def __init__(self, architecture: Literal["basic", "bottleneck"], repeats: tuple[int, ...]) -> None:
+    def __init__(self, architecture: Literal["basic", "bottleneck"], repeats: tuple[int, ...], fc_units: int) -> None:
         super().__init__()
         self.conv1 = nn.LazyConv2d(64, kernel_size=7, stride=2, padding=3, bias=False)
         self.bn1 = nn.LazyBatchNorm2d()
@@ -88,7 +88,7 @@ class ResNet(nn.Module):
         self.maxpool = nn.MaxPool2d(kernel_size=3, stride=2, padding=1)
         self._build_layers(architecture, repeats)
         self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
-        self.fc = nn.LazyLinear(1000)
+        self.fc = nn.LazyLinear(fc_units)
 
     def forward(self, x: Tensor) -> Tensor:
         x = self.conv1(x)

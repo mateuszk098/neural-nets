@@ -1,16 +1,17 @@
 [project]
 name = "cvnets"
 version = "0.1.0"
-description = "Add your description here"
+description = "Some computer vision networks"
 readme = "README.md"
 authors = [{ name = "Mateusz Kowalczyk", email = "mkowalczyk013@gmail.com" }]
 requires-python = ">=3.12"
 dependencies = [
-    "albumentations>=1.4.23",
-    "ipykernel>=6.29.5",
-    "matplotlib>=3.10.0",
-    "opencv-python>=4.10.0.84",
-    "torchmetrics[detection]>=1.6.0",
+    "albumentations==1.4.23",
+    "ipykernel==6.29.5",
+    "matplotlib==3.10.0",
+    "opencv-python==4.10.0.84",
+    "torchinfo==1.8.0",
+    "torchmetrics[detection]==1.6.0",
 ]
 
 [build-system]

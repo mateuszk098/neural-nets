@@ -174,6 +174,7 @@ dependencies = [
     { name = "ipykernel" },
     { name = "matplotlib" },
     { name = "opencv-python" },
+    { name = "torchinfo" },
     { name = "torchmetrics", extra = ["detection"] },
 ]
 
@@ -191,14 +192,15 @@ cu124 = [
 
 [package.metadata]
 requires-dist = [
-    { name = "albumentations", specifier = ">=1.4.23" },
-    { name = "ipykernel", specifier = ">=6.29.5" },
-    { name = "matplotlib", specifier = ">=3.10.0" },
-    { name = "opencv-python", specifier = ">=4.10.0.84" },
+    { name = "albumentations", specifier = "==1.4.23" },
+    { name = "ipykernel", specifier = "==6.29.5" },
+    { name = "matplotlib", specifier = "==3.10.0" },
+    { name = "opencv-python", specifier = "==4.10.0.84" },
     { name = "torch", marker = "platform_system == 'Darwin' and extra == 'cpu'", specifier = "==2.5.1" },
     { name = "torch", marker = "platform_system != 'Darwin' and extra == 'cpu'", specifier = "==2.5.1", index = "https://download.pytorch.org/whl/cpu", conflict = { package = "cvnets", extra = "cpu" } },
     { name = "torch", marker = "extra == 'cu124'", specifier = "==2.5.1", index = "https://download.pytorch.org/whl/cu124", conflict = { package = "cvnets", extra = "cu124" } },
-    { name = "torchmetrics", extras = ["detection"], specifier = ">=1.6.0" },
+    { name = "torchinfo", specifier = "==1.8.0" },
+    { name = "torchmetrics", extras = ["detection"], specifier = "==1.6.0" },
     { name = "torchvision", marker = "platform_system == 'Darwin' and extra == 'cpu'", specifier = "==0.20.1" },
     { name = "torchvision", marker = "platform_system != 'Darwin' and extra == 'cpu'", specifier = "==0.20.1", index = "https://download.pytorch.org/whl/cpu", conflict = { package = "cvnets", extra = "cpu" } },
     { name = "torchvision", marker = "extra == 'cu124'", specifier = "==0.20.1", index = "https://download.pytorch.org/whl/cu124", conflict = { package = "cvnets", extra = "cu124" } },
@@ -1337,6 +1339,15 @@ wheels = [
     { url = "https://download.pytorch.org/whl/cu124/torch-2.5.1%2Bcu124-cp312-cp312-linux_x86_64.whl", hash = "sha256:bf6484bfe5bc4f92a4a1a1bf553041505e19a911f717065330eb061afe0e14d7" },
     { url = "https://download.pytorch.org/whl/cu124/torch-2.5.1%2Bcu124-cp312-cp312-win_amd64.whl", hash = "sha256:3c3f705fb125edbd77f9579fa11a138c56af8968a10fc95834cdd9fdf4f1f1a6" },
     { url = "https://download.pytorch.org/whl/cu124/torch-2.5.1%2Bcu124-cp313-cp313-linux_x86_64.whl", hash = "sha256:e9bebf91ede89267577911da4b0709ac6113a0cff6a1c2202c046b1ec2a51601" },
+]
+
+[[package]]
+name = "torchinfo"
+version = "1.8.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/53/d9/2b811d1c0812e9ef23e6cf2dbe022becbe6c5ab065e33fd80ee05c0cd996/torchinfo-1.8.0.tar.gz", hash = "sha256:72e94b0e9a3e64dc583a8e5b7940b8938a1ac0f033f795457f27e6f4e7afa2e9", size = 25880 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/72/25/973bd6128381951b23cdcd8a9870c6dcfc5606cb864df8eabd82e529f9c1/torchinfo-1.8.0-py3-none-any.whl", hash = "sha256:2e911c2918603f945c26ff21a3a838d12709223dc4ccf243407bce8b6e897b46", size = 23377 },
 ]
 
 [[package]]
