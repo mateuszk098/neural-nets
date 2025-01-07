@@ -117,15 +117,15 @@ def main(*, config_file: str | PathLike) -> None:
         lambda_noobj=config.LAMBDA_NOOBJ,
     )
 
-    head_optimizer = torch.optim.AdamW(
+    head_optimizer = torch.optim.RMSprop(
         params=(p for p in chain(model.neck.parameters(), model.head.parameters()) if p.requires_grad),
-        amsgrad=True,
-        fused=True,
         weight_decay=config.WEIGHT_DECAY,
     )
-    backbone_optimizer = torch.optim.RMSprop(
+    backbone_optimizer = torch.optim.AdamW(
         params=model.backbone.parameters(),
         weight_decay=config.WEIGHT_DECAY,
+        amsgrad=True,
+        fused=True,
     )
 
     scheduler_steps = config.EPOCHS * int(math.ceil(len(train_dataset) / config.BATCH_SIZE))
