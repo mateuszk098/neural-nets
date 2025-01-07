@@ -14,7 +14,7 @@ class YOLOv1(nn.Module):
         self.B = int(B)
         self.C = int(C)
 
-        self.backbone = models.resnet34(weights=models.ResNet34_Weights.DEFAULT)
+        self.backbone = models.resnet18(weights=models.ResNet18_Weights.DEFAULT)
         self.backbone = nn.Sequential(*list(self.backbone.children())[:-2])  # Without avgpool and fc.
 
         self.neck = nn.Sequential(
@@ -40,7 +40,7 @@ class YOLOv1(nn.Module):
             nn.Linear(4096, self.S * self.S * (self.B * 5 + self.C)),
         )
 
-        self.warmup()  # Required for LazyLinear and LazyConv2d to intialize dimensions.
+        self._warmup()  # Required for LazyLinear and LazyConv2d to intialize dimensions.
 
     def forward(self, x: Tensor) -> Tensor:
         x = self.backbone(x)
@@ -48,7 +48,10 @@ class YOLOv1(nn.Module):
         x = self.head(x)
         return x
 
-    def warmup(self) -> Self:
+    def is_backbone_trainable(self) -> bool:
+        return all(p.requires_grad for p in self.backbone.parameters())
+
+    def _warmup(self) -> Self:
         x = torch.randn(1, 3, self.imgsz, self.imgsz, generator=torch.manual_seed(42))
         self.forward(x)
         return self
