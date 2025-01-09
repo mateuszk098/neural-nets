@@ -45,7 +45,7 @@ def train_step(
     loader.dataset.train()  # type: ignore
     partial_loss = torch.zeros(5)
 
-    for x, y in loader:
+    for x, y, *_ in loader:
         x, y = x.to(DEVICE), y.to(DEVICE)
 
         loss = loss_fn(model(x), y)
@@ -71,7 +71,7 @@ def valid_step(*, model: nn.Module, loader: DataLoader, loss_fn: nn.Module) -> N
     partial_loss = torch.zeros(5)
 
     with torch.inference_mode():
-        for x, y in loader:
+        for x, y, *_ in loader:
             x, y = x.to(DEVICE), y.to(DEVICE)
             loss = loss_fn(model(x), y)
             partial_loss += torch.as_tensor((loss.total, loss.coord, loss.itobj, loss.noobj, loss.label))
@@ -171,6 +171,8 @@ def main(*, config_file: str | PathLike) -> None:
         logging.info("Training neck and head only...")
         dfs_freeze(model.backbone)
 
+    best_loss = float("inf")
+
     for epoch in range(1, config.EPOCHS + 1):
         t0 = time.perf_counter()
         train_loss = train_step(
@@ -182,13 +184,18 @@ def main(*, config_file: str | PathLike) -> None:
             backbone_optimizer=backbone_optimizer,
             backbone_scheduler=backbone_scheduler,
         )
-        # valid_loss = valid_step(model=model, loader=valid_loader, loss_fn=loss_fn)
         t1 = time.perf_counter()
-
         logging.info(log.format(epoch, config.EPOCHS, "Train", t1 - t0, *train_loss))
-        # logging.info(log.format(epoch, config.EPOCHS, "Valid", t1 - t0, *valid_loss))
 
-        torch.save(model.state_dict(), checkpoints.joinpath("yolov1-voc2012.pt"))
+        if config.VALID_STEP:
+            t0 = time.perf_counter()
+            valid_loss = valid_step(model=model, loader=valid_loader, loss_fn=loss_fn)
+            t1 = time.perf_counter()
+            logging.info(log.format(epoch, config.EPOCHS, "Valid", t1 - t0, *valid_loss))
+
+        if train_loss.total < best_loss:
+            best_loss = train_loss.total
+            torch.save(model.state_dict(), checkpoints.joinpath("yolov1-voc2012.pt"))
 
 
 if __name__ == "__main__":

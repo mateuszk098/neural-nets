@@ -18,10 +18,22 @@ ImageMeta = namedtuple("ImageMeta", ("path", "width", "height", "detections"))
 YOLOSample = namedtuple("YOLOSample", ("image", "bboxes", "labels", "target"))
 
 
-def collate_fn(samples: list[YOLOSample]) -> tuple[Tensor, Tensor]:
-    images = torch.stack([sample.image for sample in samples], dim=0)
-    targets = torch.stack([sample.target for sample in samples], dim=0)
-    return images, targets
+def collate_fn(samples: list[YOLOSample]) -> tuple[Tensor, Tensor, list[Tensor], list[Tensor]]:
+    batch_images = list()
+    batch_labels = list()
+    batch_bboxes = list()
+    batch_targets = list()
+
+    for image, bboxes, labels, target in samples:
+        batch_images.append(image)
+        batch_labels.append(labels)
+        batch_bboxes.append(bboxes)
+        batch_targets.append(target)
+
+    batch_images = torch.stack(batch_images, dim=0)
+    batch_targets = torch.stack(batch_targets, dim=0)
+
+    return batch_images, batch_targets, batch_bboxes, batch_labels
 
 
 class VOC2012Dataset(Dataset):

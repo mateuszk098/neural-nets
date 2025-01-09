@@ -1,0 +1,135 @@
+import logging
+from argparse import ArgumentParser
+from os import PathLike
+from pathlib import Path
+from types import SimpleNamespace
+from typing import Any
+
+import torch
+import torch.nn as nn
+from torch.utils.data import DataLoader
+from torchmetrics import Metric
+from torchmetrics.detection.mean_ap import MeanAveragePrecision
+
+from cvnets.yolov1.loss import NamedLoss, YOLOv1Loss
+from cvnets.yolov1.net import YOLOv1
+from cvnets.yolov1.utils import decode_yolo_output, filter_detections, load_yaml
+from cvnets.yolov1.voc import VOC2012Dataset, collate_fn
+
+SEED = 42
+DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+FORMAT = "[%(asctime)s - %(module)s/%(levelname)s]: %(message)s"
+DATE_FMT = "%Y-%m-%d %H:%M:%S"
+
+torch.backends.cudnn.benchmark = True
+torch.manual_seed(SEED)
+torch.cuda.manual_seed(SEED)
+
+logging.basicConfig(level=logging.INFO, format=FORMAT, datefmt=DATE_FMT)
+
+
+def evaluate(
+    *,
+    model: nn.Module,
+    loader: DataLoader,
+    loss_fn: nn.Module,
+    metric: Metric,
+    imgsz: int,
+    S: int,
+    B: int,
+    C: int,
+    conf_threshold: float,
+    nms_threshold: float,
+) -> tuple[NamedLoss, dict[str, Any]]:
+    model.eval()
+    loader.dataset.eval()  # type: ignore
+    metric.reset()
+    partial_loss = torch.zeros(5)
+
+    with torch.inference_mode():
+        for x, y, target_boxes, target_labels in loader:
+            x, y = x.to(DEVICE), y.to(DEVICE)
+            y_pred = model(x)  # (N, S * S * (5 * B + C))
+
+            loss = loss_fn(y_pred, y)
+            partial_loss += torch.as_tensor((loss.total, loss.coord, loss.itobj, loss.noobj, loss.label))
+
+            # (N, S * S * B, 4), (N, S * S * B), (N, S * S * B)
+            xyxys, confs, labels = decode_yolo_output(y_pred, imgsz, S, B, C)
+            xyxys, confs, labels = xyxys.cpu(), confs.cpu(), labels.cpu()
+            preds = list()
+            target = list()
+
+            # Iterate over the batch.
+            for boxes, scores, classes in zip(xyxys, confs, labels):
+                boxes, scores, classes = filter_detections(boxes, scores, classes, conf_threshold, nms_threshold)
+                preds.append({"boxes": boxes, "scores": scores, "labels": classes})
+
+            for boxes, classes in zip(target_boxes, target_labels):
+                target.append({"boxes": boxes, "labels": classes})
+
+            metric.update(preds, target)
+
+    partial_loss = NamedLoss(*partial_loss.cpu().detach().div(len(loader)).tolist())
+    mean_ap = metric.compute()
+
+    return partial_loss, mean_ap
+
+
+def main(*, config_file: str | PathLike) -> None:
+    logging.info(f"Loading configuration from {config_file!s}...")
+    config = SimpleNamespace(**load_yaml(config_file))
+
+    dataset = VOC2012Dataset(config.DATASET, imgsz=config.IMGSZ, S=config.S, B=config.B, split="val")
+    loader = DataLoader(
+        dataset=dataset,
+        batch_size=config.BATCH_SIZE,
+        shuffle=False,
+        num_workers=config.NUM_WORKERS,
+        collate_fn=collate_fn,
+        persistent_workers=config.PERSISTENT_WORKERS,
+        pin_memory=config.PIN_MEMORY,
+    )
+
+    logging.info("Loading model...")
+    model = YOLOv1(imgsz=config.IMGSZ, S=config.S, B=config.B, C=config.C)
+    model.load_state_dict(torch.load(config.EVAL_CHECKPOINT, map_location=DEVICE, weights_only=True))
+    model.to(DEVICE)
+
+    metric = MeanAveragePrecision(iou_thresholds=[0.5])
+    loss_fn = YOLOv1Loss(
+        S=config.S,
+        B=config.B,
+        C=config.C,
+        lambda_coord=config.LAMBDA_COORD,
+        lambda_noobj=config.LAMBDA_NOOBJ,
+    )
+
+    logging.info("Evaluating model...")
+    loss, mean_ap = evaluate(
+        model=model,
+        loader=loader,
+        loss_fn=loss_fn,
+        metric=metric,
+        imgsz=config.IMGSZ,
+        S=config.S,
+        B=config.B,
+        C=config.C,
+        conf_threshold=config.EVAL_CONF_THRESH,
+        nms_threshold=config.EVAL_NMS_THRESH,
+    )
+
+    logging.info(f"{'Total Loss:':<25} {loss.total:.4f}")
+    logging.info(f"{'Localization Loss:':<25} {loss.coord:.4f}")
+    logging.info(f"{'Objectness Loss:':<25} {loss.itobj:.4f}")
+    logging.info(f"{'Noobjectness Loss:':<25} {loss.noobj:.4f}")
+    logging.info(f"{'Classification Loss:':<25} {loss.label:.4f}")
+    logging.info(f"{'mAP@50:':<25} {mean_ap["map"]:.4f}")
+
+
+if __name__ == "__main__":
+    p = ArgumentParser()
+    p.add_argument("--config-file", type=Path, required=True)
+    kwargs = vars(p.parse_args())
+    main(**kwargs)
