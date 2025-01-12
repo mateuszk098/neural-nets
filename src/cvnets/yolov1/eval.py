@@ -97,7 +97,7 @@ def main(*, config_file: str | PathLike) -> None:
     model.load_state_dict(torch.load(config.EVAL_CHECKPOINT, map_location=DEVICE, weights_only=True))
     model.to(DEVICE)
 
-    metric = MeanAveragePrecision(iou_thresholds=[0.5])
+    metric = MeanAveragePrecision(iou_thresholds=[0.5], average="micro")
     loss_fn = YOLOv1Loss(
         S=config.S,
         B=config.B,
