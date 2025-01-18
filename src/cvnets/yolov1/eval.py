@@ -14,7 +14,7 @@ from torchmetrics.detection.mean_ap import MeanAveragePrecision
 from cvnets.yolov1.loss import NamedLoss, YOLOv1Loss
 from cvnets.yolov1.net import YOLOv1
 from cvnets.yolov1.utils import decode_yolo_output, filter_detections, load_yaml
-from cvnets.yolov1.voc import VOC2012Dataset, collate_fn
+from cvnets.yolov1.voc import VOCDataset, collate_fn
 
 SEED = 42
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -81,7 +81,7 @@ def main(*, config_file: str | PathLike) -> None:
     logging.info(f"Loading configuration from {config_file!s}...")
     config = SimpleNamespace(**load_yaml(config_file))
 
-    dataset = VOC2012Dataset(config.DATASET, imgsz=config.IMGSZ, S=config.S, B=config.B, split="val")
+    dataset = VOCDataset(config.DATASET, imgsz=config.IMGSZ, S=config.S, B=config.B, split="val")
     loader = DataLoader(
         dataset=dataset,
         batch_size=config.BATCH_SIZE,

@@ -1,6 +1,3 @@
-from typing import Self
-
-import torch
 import torch.nn as nn
 from torch.types import Tensor
 from torchvision import models
@@ -15,10 +12,10 @@ class YOLOv1(nn.Module):
         self.C = int(C)
 
         self.backbone = models.resnet18(weights=models.ResNet18_Weights.DEFAULT)
-        self.backbone = nn.Sequential(*list(self.backbone.children())[:-2])  # Without avgpool and fc.
+        self.backbone = nn.Sequential(*self.backbone.children())[:-2]  # Without avgpool and fc.
 
         self.neck = nn.Sequential(
-            nn.LazyConv2d(1024, kernel_size=3, stride=1, padding=1, bias=False),
+            nn.Conv2d(512, 1024, kernel_size=3, stride=1, padding=1, bias=False),
             nn.BatchNorm2d(1024),
             nn.LeakyReLU(0.1),
             nn.Conv2d(1024, 1024, kernel_size=3, stride=2, padding=1, bias=False),
@@ -29,18 +26,16 @@ class YOLOv1(nn.Module):
             nn.LeakyReLU(0.1),
             nn.Conv2d(1024, 1024, kernel_size=3, stride=1, padding=1, bias=False),
             nn.BatchNorm2d(1024),
-            nn.LeakyReLU(0.1),
+            nn.AdaptiveAvgPool2d((7, 7)),
         )
 
         self.head = nn.Sequential(
             nn.Flatten(),
-            nn.LazyLinear(4096),
+            nn.Linear(7 * 7 * 1024, 4096),
             nn.LeakyReLU(0.1),
             nn.Dropout(0.5),
-            nn.Linear(4096, self.S * self.S * (self.B * 5 + self.C)),
+            nn.Linear(4096, S * S * (B * 5 + C)),
         )
-
-        self._warmup()  # Required for LazyLinear and LazyConv2d to intialize dimensions.
 
     def forward(self, x: Tensor) -> Tensor:
         x = self.backbone(x)
@@ -50,8 +45,3 @@ class YOLOv1(nn.Module):
 
     def is_backbone_trainable(self) -> bool:
         return all(p.requires_grad for p in self.backbone.parameters())
-
-    def _warmup(self) -> Self:
-        x = torch.randn(1, 3, self.imgsz, self.imgsz, generator=torch.manual_seed(42))
-        self.forward(x)
-        return self

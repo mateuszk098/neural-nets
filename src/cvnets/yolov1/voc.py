@@ -36,7 +36,7 @@ def collate_fn(samples: list[YOLOSample]) -> tuple[Tensor, Tensor, list[Tensor],
     return batch_images, batch_targets, batch_bboxes, batch_labels
 
 
-class VOC2012Dataset(Dataset):
+class VOCDataset(Dataset):
     def __init__(
         self,
         root: str | PathLike,
@@ -161,39 +161,41 @@ class VOC2012Dataset(Dataset):
     @staticmethod
     def load(root: str | PathLike, split: Literal["train", "val"]) -> tuple[list[ImageMeta], set[str]]:
         data_root = Path(root).expanduser()
-        image_set = data_root.joinpath("ImageSets", "Main", f"{split}.txt")
 
         dataset = list()
         classes = set()
 
-        with open(image_set) as f:
-            for name in (name.strip() for name in f):
-                image_path = data_root.joinpath("JPEGImages", f"{name}.jpg")
-                annot_path = data_root.joinpath("Annotations", f"{name}.xml")
+        for voc in ("VOC2007", "VOC2012"):
+            image_set = data_root.joinpath(voc, "ImageSets", "Main", f"{split}.txt")
 
-                annot_tree = ElementTree.parse(annot_path)
-                annot_root = annot_tree.getroot()
+            with open(image_set) as f:
+                for name in (name.strip() for name in f):
+                    image_path = data_root.joinpath(voc, "JPEGImages", f"{name}.jpg")
+                    annot_path = data_root.joinpath(voc, "Annotations", f"{name}.xml")
 
-                detections = list()
-                # Following elements are always present, so don't mind about the type ignore.
-                for obj in annot_root.findall("object"):
-                    if obj.find("difficult").text == "1":  # type: ignore
-                        continue
+                    annot_tree = ElementTree.parse(annot_path)
+                    annot_root = annot_tree.getroot()
 
-                    label = obj.find("name").text  # type: ignore
-                    bndbox = obj.find("bndbox")  # type: ignore
-                    bbox = (
-                        int(bndbox.find("xmin").text),  # type: ignore
-                        int(bndbox.find("ymin").text),  # type: ignore
-                        int(bndbox.find("xmax").text),  # type: ignore
-                        int(bndbox.find("ymax").text),  # type: ignore
-                    )
-                    detections.append(Detection(label, bbox))
-                    classes.add(label)
+                    detections = list()
+                    # Following elements are always present, so don't mind about the type ignore.
+                    for obj in annot_root.findall("object"):
+                        if obj.find("difficult").text == "1":  # type: ignore
+                            continue
 
-                if detections:
-                    width = int(annot_root.find("size").find("width").text)  # type: ignore
-                    height = int(annot_root.find("size").find("height").text)  # type: ignore
-                    dataset.append(ImageMeta(image_path, width, height, detections))
+                        label = obj.find("name").text  # type: ignore
+                        bndbox = obj.find("bndbox")  # type: ignore
+                        bbox = (
+                            int(bndbox.find("xmin").text),  # type: ignore
+                            int(bndbox.find("ymin").text),  # type: ignore
+                            int(bndbox.find("xmax").text),  # type: ignore
+                            int(bndbox.find("ymax").text),  # type: ignore
+                        )
+                        detections.append(Detection(label, bbox))
+                        classes.add(label)
+
+                    if detections:
+                        width = int(annot_root.find("size").find("width").text)  # type: ignore
+                        height = int(annot_root.find("size").find("height").text)  # type: ignore
+                        dataset.append(ImageMeta(image_path, width, height, detections))
 
         return dataset, classes
