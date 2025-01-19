@@ -67,16 +67,17 @@ class VOCDataset(Dataset):
                     scale=(0.8, 1.2),
                     translate_percent=(-0.2, 0.2),
                     border_mode=cv.BORDER_REPLICATE,
-                    always_apply=True,
+                    keep_ratio=True,
+                    p=1,
                 ),
                 A.ColorJitter(
                     brightness=(0.8, 1.2),
                     contrast=(0.8, 1.2),
                     saturation=(0.8, 1.2),
                     hue=(-0.2, 0.2),
-                    always_apply=True,
+                    p=1,
                 ),
-                A.Resize(self.imgsz, self.imgsz, always_apply=True),
+                A.Resize(self.imgsz, self.imgsz),
             ],
             bbox_params=A.BboxParams(format="pascal_voc", label_fields=["labels"]),
             seed=42,
@@ -84,15 +85,15 @@ class VOCDataset(Dataset):
 
         self._eval_transform = A.Compose(
             [
-                A.Resize(self.imgsz, self.imgsz, always_apply=True),
+                A.Resize(self.imgsz, self.imgsz),
             ],
             bbox_params=A.BboxParams(format="pascal_voc", label_fields=["labels"]),
             seed=42,
         )
 
         if self.normalize:  # Useful when using non-normalized images for testing.
-            self._train_transform.transforms.append(A.Normalize(always_apply=True))
-            self._eval_transform.transforms.append(A.Normalize(always_apply=True))
+            self._train_transform.transforms.append(A.Normalize())
+            self._eval_transform.transforms.append(A.Normalize())
 
         self.transform = self._eval_transform
 
