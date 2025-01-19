@@ -165,13 +165,13 @@ class VOCDataset(Dataset):
         dataset = list()
         classes = set()
 
-        for voc in ("VOC2007", "VOC2012"):
-            image_set = data_root.joinpath(voc, "ImageSets", "Main", f"{split}.txt")
+        for voc in data_root.iterdir():
+            image_set = voc.joinpath("ImageSets", "Main", f"{split}.txt")
 
             with open(image_set) as f:
                 for name in (name.strip() for name in f):
-                    image_path = data_root.joinpath(voc, "JPEGImages", f"{name}.jpg")
-                    annot_path = data_root.joinpath(voc, "Annotations", f"{name}.xml")
+                    image_path = voc.joinpath("JPEGImages", f"{name}.jpg")
+                    annot_path = voc.joinpath("Annotations", f"{name}.xml")
 
                     annot_tree = ElementTree.parse(annot_path)
                     annot_root = annot_tree.getroot()

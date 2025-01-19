@@ -195,7 +195,7 @@ def main(*, config_file: str | PathLike) -> None:
 
         if train_loss.total < best_loss:
             best_loss = train_loss.total
-            torch.save(model.state_dict(), checkpoints.joinpath("yolov1-voc2012.pt"))
+            torch.save(model.state_dict(), checkpoints.joinpath("yolov1-voc.pt"))
 
 
 if __name__ == "__main__":
