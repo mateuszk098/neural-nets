@@ -54,7 +54,7 @@ class VOCDataset(Dataset):
         self.class_to_idx = {cls: idx for idx, cls in enumerate(sorted(classes))}
         self.idx_to_class = {idx: cls for cls, idx in self.class_to_idx.items()}
 
-        self.imgsz = int(imgsz)
+        self._imgsz = int(imgsz)
         self.S = int(S)
         self.B = int(B)
         self.C = len(self.class_to_idx)
@@ -63,23 +63,25 @@ class VOCDataset(Dataset):
         self._train_transform = A.Compose(
             [
                 A.HorizontalFlip(p=0.5),
+                A.CropAndPad(percent=[-0.25, 0.25], p=1),
                 A.Affine(
-                    scale=(0.8, 1.2),
-                    translate_percent=(-0.2, 0.2),
+                    scale=(0.75, 1.25),
                     border_mode=cv.BORDER_REPLICATE,
+                    fit_output=True,
                     keep_ratio=True,
                     p=1,
                 ),
                 A.ColorJitter(
-                    brightness=(0.8, 1.2),
-                    contrast=(0.8, 1.2),
-                    saturation=(0.8, 1.2),
-                    hue=(-0.2, 0.2),
+                    brightness=(0.75, 1.25),
+                    contrast=(0.75, 1.25),
+                    saturation=(0.75, 1.25),
+                    hue=(-0.25, 0.25),
                     p=1,
                 ),
+                A.ToGray(num_output_channels=3, p=0.1),
                 A.Resize(self.imgsz, self.imgsz),
             ],
-            bbox_params=A.BboxParams(format="pascal_voc", label_fields=["labels"]),
+            bbox_params=A.BboxParams(format="pascal_voc", label_fields=["labels"], min_visibility=0.25),
             seed=42,
         )
 
@@ -96,6 +98,18 @@ class VOCDataset(Dataset):
             self._eval_transform.transforms.append(A.Normalize())
 
         self.transform = self._eval_transform
+
+    @property
+    def imgsz(self) -> int:
+        return self._imgsz
+
+    @imgsz.setter
+    def imgsz(self, value: int) -> None:
+        for transform in (self._train_transform, self._eval_transform):
+            for idx, t in enumerate(transform.transforms):
+                if isinstance(t, A.Resize):
+                    transform.transforms[idx] = A.Resize(value, value)
+                    break
 
     def __len__(self) -> int:
         return len(self.dataset)
@@ -115,10 +129,10 @@ class VOCDataset(Dataset):
         bboxes = torch.as_tensor(transformed["bboxes"]).float()
         labels = torch.as_tensor(transformed["labels"]).int()
 
-        if bboxes.any():
-            target = self._create_yolo_target(bboxes, labels)
-        else:
-            target = torch.zeros((self.S, self.S, self.B * 5 + self.C))
+        if not bboxes.any():  # If all bboxes are removed by augmentations, try again.
+            return self.__getitem__(index)
+
+        target = self._create_yolo_target(bboxes, labels)
 
         return YOLOSample(image, bboxes, labels, target)
 

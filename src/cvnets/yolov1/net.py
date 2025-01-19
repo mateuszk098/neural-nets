@@ -11,7 +11,7 @@ class YOLOv1(nn.Module):
         self.B = int(B)
         self.C = int(C)
 
-        self.backbone = models.resnet18(weights=models.ResNet18_Weights.DEFAULT)
+        self.backbone = models.resnet18(weights=models.ResNet18_Weights.IMAGENET1K_V1)
         self.backbone = nn.Sequential(*self.backbone.children())[:-2]  # Without avgpool and fc.
 
         self.neck = nn.Sequential(
