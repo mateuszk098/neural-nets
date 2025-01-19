@@ -16,7 +16,7 @@ class YOLOv2(nn.Module):
         self.neck = nn.ModuleDict(
             {
                 "layer1": nn.Sequential(
-                    nn.Conv2d(512, 1024, kernel_size=3, padding=1, bias=False),
+                    nn.LazyConv2d(1024, kernel_size=3, padding=1, bias=False),
                     nn.BatchNorm2d(1024),
                     nn.LeakyReLU(0.1),
                 ),
@@ -26,13 +26,14 @@ class YOLOv2(nn.Module):
                     nn.LeakyReLU(0.1),
                 ),
                 "layer3": nn.Sequential(
-                    nn.Conv2d(2048, 1024, kernel_size=3, padding=1, bias=False),
+                    nn.LazyConv2d(1024, kernel_size=3, padding=1, bias=False),
                     nn.BatchNorm2d(1024),
                     nn.LeakyReLU(0.1),
                 ),
-                "layer4": nn.Conv2d(1024, B * (5 + C), kernel_size=1),
             }
         )
+
+        self.head = nn.Conv2d(1024, B * (5 + C), kernel_size=1)
 
     def forward(self, x: Tensor) -> Tensor:
         x = self.backbone.conv1(x)
@@ -55,6 +56,6 @@ class YOLOv2(nn.Module):
         x_cat = torch.cat((x_fine_grained, x_full), dim=1)
 
         x_cat = self.neck.layer3(x_cat)
-        x_cat = self.neck.layer4(x_cat)
+        x_cat = self.head(x_cat)
 
         return x_cat
