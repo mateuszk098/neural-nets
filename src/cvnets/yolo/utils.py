@@ -1,4 +1,9 @@
+from os import PathLike
+from typing import Any
+
 import torch
+import torch.nn as nn
+import yaml
 from torch.types import Tensor
 
 
@@ -34,3 +39,18 @@ def create_offsets(S: int) -> tuple[Tensor, Tensor]:
     cys = cys.reshape(1, S, S, 1).repeat(1, 1, 1, 5)
     cxs = cxs.reshape(1, S, S, 1).repeat(1, 1, 1, 5)
     return cys, cxs
+
+
+def dfs_freeze(module: nn.Module) -> None:
+    for param in module.parameters():
+        param.requires_grad_(False)
+
+
+def dfs_unfreeze(module: nn.Module) -> None:
+    for param in module.parameters():
+        param.requires_grad_(True)
+
+
+def load_yaml(file: str | PathLike) -> dict[str, Any]:
+    with open(file, "r", encoding="utf-8") as f:
+        return yaml.safe_load(f)

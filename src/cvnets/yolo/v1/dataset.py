@@ -1,9 +1,7 @@
 import os
 from collections import namedtuple
 from os import PathLike
-from pathlib import Path
 from typing import Literal, Self
-from xml.etree import ElementTree
 
 os.environ["NO_ALBUMENTATIONS_UPDATE"] = "1"
 
@@ -13,27 +11,9 @@ import torch
 from torch.types import Tensor
 from torch.utils.data import Dataset
 
-Detection = namedtuple("Detection", ("label", "bbox"))
-ImageMeta = namedtuple("ImageMeta", ("path", "width", "height", "detections"))
+from cvnets.yolo.voc import load_voc_dataset
+
 YOLOSample = namedtuple("YOLOSample", ("image", "bboxes", "labels", "target"))
-
-
-def collate_fn(samples: list[YOLOSample]) -> tuple[Tensor, Tensor, list[Tensor], list[Tensor]]:
-    batch_images = list()
-    batch_labels = list()
-    batch_bboxes = list()
-    batch_targets = list()
-
-    for image, bboxes, labels, target in samples:
-        batch_images.append(image)
-        batch_labels.append(labels)
-        batch_bboxes.append(bboxes)
-        batch_targets.append(target)
-
-    batch_images = torch.stack(batch_images, dim=0)
-    batch_targets = torch.stack(batch_targets, dim=0)
-
-    return batch_images, batch_targets, batch_bboxes, batch_labels
 
 
 class VOCDataset(Dataset):
@@ -48,13 +28,13 @@ class VOCDataset(Dataset):
         split: Literal["train", "val"],
         normalize: bool = True,
     ) -> None:
-        dataset, classes = self.load(root, split)
+        dataset, classes = load_voc_dataset(root, split)
 
         self.dataset = dataset
         self.class_to_idx = {cls: idx for idx, cls in enumerate(sorted(classes))}
         self.idx_to_class = {idx: cls for cls, idx in self.class_to_idx.items()}
 
-        self._imgsz = int(imgsz)
+        self.imgsz = int(imgsz)
         self.S = int(S)
         self.B = int(B)
         self.C = len(self.class_to_idx)
@@ -98,18 +78,6 @@ class VOCDataset(Dataset):
             self._eval_transform.transforms.append(A.Normalize())
 
         self.transform = self._eval_transform
-
-    @property
-    def imgsz(self) -> int:
-        return self._imgsz
-
-    @imgsz.setter
-    def imgsz(self, value: int) -> None:
-        for transform in (self._train_transform, self._eval_transform):
-            for idx, t in enumerate(transform.transforms):
-                if isinstance(t, A.Resize):
-                    transform.transforms[idx] = A.Resize(value, value)
-                    break
 
     def __len__(self) -> int:
         return len(self.dataset)
@@ -173,44 +141,20 @@ class VOCDataset(Dataset):
         self.transform = self._eval_transform
         return self
 
-    @staticmethod
-    def load(root: str | PathLike, split: Literal["train", "val"]) -> tuple[list[ImageMeta], set[str]]:
-        data_root = Path(root).expanduser()
 
-        dataset = list()
-        classes = set()
+def collate_fn(samples: list[YOLOSample]) -> tuple[Tensor, Tensor, list[Tensor], list[Tensor]]:
+    batch_images = list()
+    batch_labels = list()
+    batch_bboxes = list()
+    batch_targets = list()
 
-        for voc in data_root.iterdir():
-            image_set = voc.joinpath("ImageSets", "Main", f"{split}.txt")
+    for image, bboxes, labels, target in samples:
+        batch_images.append(image)
+        batch_labels.append(labels)
+        batch_bboxes.append(bboxes)
+        batch_targets.append(target)
 
-            with open(image_set) as f:
-                for name in (name.strip() for name in f):
-                    image_path = voc.joinpath("JPEGImages", f"{name}.jpg")
-                    annot_path = voc.joinpath("Annotations", f"{name}.xml")
+    batch_images = torch.stack(batch_images, dim=0)
+    batch_targets = torch.stack(batch_targets, dim=0)
 
-                    annot_tree = ElementTree.parse(annot_path)
-                    annot_root = annot_tree.getroot()
-
-                    detections = list()
-                    # Following elements are always present, so don't mind about the type ignore.
-                    for obj in annot_root.findall("object"):
-                        if obj.find("difficult").text == "1":  # type: ignore
-                            continue
-
-                        label = obj.find("name").text  # type: ignore
-                        bndbox = obj.find("bndbox")  # type: ignore
-                        bbox = (
-                            int(bndbox.find("xmin").text),  # type: ignore
-                            int(bndbox.find("ymin").text),  # type: ignore
-                            int(bndbox.find("xmax").text),  # type: ignore
-                            int(bndbox.find("ymax").text),  # type: ignore
-                        )
-                        detections.append(Detection(label, bbox))
-                        classes.add(label)
-
-                    if detections:
-                        width = int(annot_root.find("size").find("width").text)  # type: ignore
-                        height = int(annot_root.find("size").find("height").text)  # type: ignore
-                        dataset.append(ImageMeta(image_path, width, height, detections))
-
-        return dataset, classes
+    return batch_images, batch_targets, batch_bboxes, batch_labels
