@@ -18,7 +18,8 @@ def load_anchor_bboxes(path: str | PathLike) -> Tensor:
     return torch.from_numpy(np.load(path)).float()
 
 
-def decode_preds(preds: Tensor, anchor_bboxes: Tensor, S: int, imgsz: int) -> Tensor:
+def decode_preds(preds: Tensor, anchor_bboxes: Tensor, downsample: int, imgsz: int) -> Tensor:
+    S = int(imgsz) // int(downsample)
     cys, cxs = create_offsets(S)
     anchors = anchor_bboxes.reshape(1, 1, 1, 5, 2).repeat(1, S, S, 1, 1)
     decoded = torch.zeros_like(preds)
@@ -34,7 +35,8 @@ def decode_preds(preds: Tensor, anchor_bboxes: Tensor, S: int, imgsz: int) -> Te
     return decoded
 
 
-def decode_target(target: Tensor, anchor_bboxes: Tensor, S: int, imgsz: int) -> Tensor:
+def decode_target(target: Tensor, anchor_bboxes: Tensor, downsample: int, imgsz: int) -> Tensor:
+    S = int(imgsz) // int(downsample)
     decoded = decode_preds(target, anchor_bboxes, S, imgsz)
     decoded[..., :4] = torch.masked_fill(decoded[..., :4], target[..., :4] == 0, 0)
     return decoded
