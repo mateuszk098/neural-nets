@@ -4,7 +4,7 @@ import torch
 import torch.nn as nn
 from torch.types import Tensor
 
-from .utils import iou
+from cvnets.yolo.v1.utils import iou
 
 NamedLoss = namedtuple("NamedLoss", ["total", "coord", "itobj", "noobj", "label"])
 
@@ -37,6 +37,8 @@ class YOLOv1Loss(nn.Module):
         # Extract the bounding box coordinates -> (batch_size, S, S, B, 4).
         pred_bboxes_xyxy = torch.stack(
             [
+                # Predefined offsets are in 0 - 1, so we must normalize predicted offset by S
+                # to be able to add it.
                 pred_bboxes[..., 0] / self.S + offset_x - 0.5 * pred_bboxes[..., 2].square(),
                 pred_bboxes[..., 1] / self.S + offset_y - 0.5 * pred_bboxes[..., 3].square(),
                 pred_bboxes[..., 0] / self.S + offset_x + 0.5 * pred_bboxes[..., 2].square(),

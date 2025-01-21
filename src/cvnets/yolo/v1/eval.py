@@ -11,10 +11,10 @@ from torch.utils.data import DataLoader
 from torchmetrics import Metric
 from torchmetrics.detection.mean_ap import MeanAveragePrecision
 
-from cvnets.yolov1.loss import NamedLoss, YOLOv1Loss
-from cvnets.yolov1.net import YOLOv1
-from cvnets.yolov1.utils import decode_yolo_output, filter_detections, load_yaml
-from cvnets.yolov1.voc import VOCDataset, collate_fn
+from cvnets.yolo.v1.loss import NamedLoss, YOLOv1Loss
+from cvnets.yolo.v1.net import YOLOv1
+from cvnets.yolo.v1.utils import decode_yolo_output, filter_detections, load_yaml
+from cvnets.yolo.v1.voc import VOCDataset, collate_fn
 
 SEED = 42
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
