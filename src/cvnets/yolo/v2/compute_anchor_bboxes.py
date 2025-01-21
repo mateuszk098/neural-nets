@@ -9,7 +9,7 @@ from numpy.typing import NDArray
 from pyclustering.cluster.kmeans import kmeans
 from pyclustering.utils.metric import distance_metric, type_metric
 
-from cvnets.yolov1.voc import VOCDataset
+from cvnets.yolo.voc import load_voc_dataset
 
 plt.rcParams["text.usetex"] = True
 plt.rcParams["axes.spines.right"] = False
@@ -87,7 +87,7 @@ def draw_whs_distribution(bboxes_wh_norm: NDArray, anchor_bboxes: NDArray) -> No
 
 
 def main(*, n_clusters: tuple[int, ...], dataset_path: Path) -> None:
-    dataset, classes = VOCDataset.load(dataset_path, split="train")
+    dataset, classes = load_voc_dataset(dataset_path, split="train")
 
     bboxes = list()
     imgwhs = list()
