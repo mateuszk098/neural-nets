@@ -19,3 +19,8 @@ BASE_MOMENTUM: 0.85
 MAX_MOMENTUM: 0.95
 WEIGHT_DECAY: 5.e-4
 VALID_STEP: False
+
+# For evaluation.
+EVAL_CHECKPOINT: "./checkpoints/yolov2-voc-epochs-135.pt"
+EVAL_CONF_THRESH: 0.2
+EVAL_NMS_THRESH: 0.4

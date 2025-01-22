@@ -1,4 +1,6 @@
+import time
 from os import PathLike
+from pathlib import Path
 from typing import Any
 
 import torch
@@ -54,3 +56,9 @@ def dfs_unfreeze(module: nn.Module) -> None:
 def load_yaml(file: str | PathLike) -> dict[str, Any]:
     with open(file, "r", encoding="utf-8") as f:
         return yaml.safe_load(f)
+
+
+def create_current_run_dir(root="./checkpoints/") -> Path:
+    current_run_dir = Path(root).joinpath(time.strftime("run-%Y-%m-%d-%H-%M-%S"))
+    current_run_dir.mkdir(parents=True, exist_ok=True)
+    return current_run_dir

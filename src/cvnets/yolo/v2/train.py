@@ -12,7 +12,7 @@ from torch.optim import Optimizer
 from torch.optim.lr_scheduler import LRScheduler
 from torch.utils.data import DataLoader
 
-from cvnets.yolo.utils import load_yaml
+from cvnets.yolo.utils import create_current_run_dir, load_yaml
 from cvnets.yolo.v2.dataset import VOCDataset, collate_fn
 from cvnets.yolo.v2.loss import NamedLoss, YOLOv2Loss
 from cvnets.yolo.v2.net import YOLOv2
@@ -140,12 +140,9 @@ def main(*, config_file: str | PathLike) -> None:
         "Classification Loss: {:7.4f}"
     )
 
-    checkpoints = Path("./checkpoints/")
-    checkpoints.mkdir(exist_ok=True)
-
-    logging.info("Training backbone, neck, and head...")
-
     best_loss = float("inf")
+    current_run_dir = create_current_run_dir()
+    logging.info("Training backbone, neck, and head...")
 
     for epoch in range(1, config.EPOCHS + 1):
         t0 = time.perf_counter()
@@ -167,7 +164,7 @@ def main(*, config_file: str | PathLike) -> None:
 
         if train_loss.total < best_loss:
             best_loss = train_loss.total
-            torch.save(model.state_dict(), checkpoints.joinpath("yolov2-voc.pt"))
+            torch.save(model.state_dict(), current_run_dir.joinpath("yolov2-voc.pt"))
 
 
 if __name__ == "__main__":

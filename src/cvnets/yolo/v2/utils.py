@@ -23,6 +23,8 @@ def load_anchor_bboxes(path: str | PathLike) -> Tensor:
 
 
 def decode_predictions(predictions: Tensor, anchors: Tensor, downsample: int, imgsz: int) -> Tensor:
+    predictions = predictions.cpu()
+
     S = int(imgsz) // int(downsample)
     cys, cxs = create_offsets(S)
     anchors = anchors.reshape(1, 1, 1, 5, 2).repeat(1, S, S, 1, 1)
@@ -72,9 +74,9 @@ def postprocess_predictions(
 
         keep = nms(xyxys, confs, iou_threshold=nms_thresh)
 
-        labels = labels[keep].numpy()
-        confs = confs[keep].numpy()
-        xyxys = xyxys[keep].numpy()
+        labels = labels[keep]
+        confs = confs[keep]
+        xyxys = xyxys[keep]
 
         filtered.append(Prediction(xyxys, confs, labels))
 
