@@ -2,6 +2,7 @@ import logging
 import math
 import time
 from argparse import ArgumentParser
+from functools import partial
 from os import PathLike
 from pathlib import Path
 from types import SimpleNamespace
@@ -12,22 +13,18 @@ from torch.optim import Optimizer
 from torch.optim.lr_scheduler import LRScheduler
 from torch.utils.data import DataLoader
 
-from cvnets.yolo.utils import create_current_run_dir, load_yaml
-from cvnets.yolo.v2.dataset import VOCDataset, collate_fn
+from cvnets.yolo.utils import create_current_run_dir, initialize_seed, load_yaml, worker_init_fn
+from cvnets.yolo.v2.dataset import VOCDataset, collate_fn, sampled_collate_fn
 from cvnets.yolo.v2.loss import NamedLoss, YOLOv2Loss
 from cvnets.yolo.v2.net import YOLOv2
 from cvnets.yolo.v2.utils import load_anchor_bboxes
 
-SEED = 42
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
 FORMAT = "[%(asctime)s - %(module)s/%(levelname)s]: %(message)s"
 DATE_FMT = "%Y-%m-%d %H:%M:%S"
 
+initialize_seed()
 torch.backends.cudnn.benchmark = True
-torch.manual_seed(SEED)
-torch.cuda.manual_seed(SEED)
-
 logging.basicConfig(level=logging.INFO, format=FORMAT, datefmt=DATE_FMT)
 
 
@@ -35,7 +32,6 @@ def train_step(
     *, model: nn.Module, loader: DataLoader, loss_fn: nn.Module, optim: Optimizer, scheduler: LRScheduler
 ) -> NamedLoss:
     model.train()
-    loader.dataset.train()  # type: ignore
     partial_loss = torch.zeros(5)
 
     for batch in loader:
@@ -55,7 +51,6 @@ def train_step(
 
 def valid_step(*, model: nn.Module, loader: DataLoader, loss_fn: nn.Module) -> NamedLoss:
     model.eval()
-    loader.dataset.eval()  # type: ignore
     partial_loss = torch.zeros(5)
 
     with torch.inference_mode():
@@ -92,9 +87,9 @@ def main(*, config_file: str | PathLike) -> None:
         dataset=train_dataset,
         batch_size=config.BATCH_SIZE,
         shuffle=True,
-        generator=torch.manual_seed(SEED),
         num_workers=config.NUM_WORKERS,
-        collate_fn=collate_fn,
+        collate_fn=partial(sampled_collate_fn, img_sizes=config.IMG_SIZES) if config.SAMPLE_IMGSZ else collate_fn,
+        worker_init_fn=worker_init_fn,
         persistent_workers=config.PERSISTENT_WORKERS,
         pin_memory=config.PIN_MEMORY,
     )
@@ -104,9 +99,13 @@ def main(*, config_file: str | PathLike) -> None:
         shuffle=False,
         num_workers=config.NUM_WORKERS,
         collate_fn=collate_fn,
+        worker_init_fn=worker_init_fn,
         persistent_workers=config.PERSISTENT_WORKERS,
         pin_memory=config.PIN_MEMORY,
     )
+
+    train_loader.dataset.train()  # type: ignore
+    valid_loader.dataset.eval()  # type: ignore
 
     model = YOLOv2(num_anchors=train_dataset.num_anchors, num_classes=train_dataset.num_classes)
     model = model.to(DEVICE)

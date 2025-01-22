@@ -1,4 +1,5 @@
 import os
+import random
 from collections import namedtuple
 from os import PathLike
 from typing import Literal, Self
@@ -69,7 +70,6 @@ class VOCDataset(Dataset):
                 A.Resize(self.imgsz, self.imgsz),
             ],
             bbox_params=A.BboxParams(format="pascal_voc", label_fields=["labels"], min_visibility=0.25),
-            seed=42,
         )
 
         self._eval_transform = A.Compose(
@@ -77,7 +77,6 @@ class VOCDataset(Dataset):
                 A.Resize(self.imgsz, self.imgsz),
             ],
             bbox_params=A.BboxParams(format="pascal_voc", label_fields=["labels"]),
-            seed=42,
         )
 
         if self.normalize:  # Useful when using non-normalized images for testing.
@@ -171,3 +170,10 @@ def collate_fn(samples: list[YOLOSample]) -> YOLOSampleBatch:
     batch_targets = torch.stack(batch_targets, dim=0)
 
     return YOLOSampleBatch(batch_images, batch_bboxes, batch_labels, batch_targets)
+
+
+def sampled_collate_fn(samples: list[YOLOSample], img_sizes: list[int]) -> YOLOSampleBatch:
+    worker_info = torch.utils.data.get_worker_info()
+    if worker_info is not None:
+        worker_info.dataset.imgsz = random.choice(img_sizes)  # type: ignore
+    return collate_fn(samples)

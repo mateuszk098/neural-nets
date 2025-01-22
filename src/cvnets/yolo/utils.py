@@ -1,12 +1,29 @@
+import random
 import time
 from os import PathLike
 from pathlib import Path
 from typing import Any
 
+import numpy as np
 import torch
 import torch.nn as nn
 import yaml
 from torch.types import Tensor
+
+
+def initialize_seed(seed: int = 42) -> None:
+    torch.manual_seed(seed)
+    torch.cuda.manual_seed_all(seed)
+    torch.cuda.manual_seed(seed)
+    np.random.seed(seed)
+    random.seed(seed)
+
+
+def worker_init_fn(worker_id: int) -> None:
+    worker_seed = torch.initial_seed() % 2**32
+    worker_info = torch.utils.data.get_worker_info()
+    if worker_info is not None:
+        worker_info.dataset.transform.set_random_seed(worker_seed)  # type: ignore
 
 
 def xyxy2xywh(bboxes: Tensor) -> Tensor:

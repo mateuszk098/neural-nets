@@ -1,6 +1,8 @@
 DATASET: "~/Documents/Datasets/VOC/"
 ANCHOR_BBOXES: "./checkpoints/anchor_bboxes_k_5.npy"
 IMGSZ: 416
+IMG_SIZES: [320, 352, 384, 416, 448, 480, 512, 544, 576, 608]
+SAMPLE_IMGSZ: False
 DOWNSAMPLE: 32 # Convolutional layers downsample input image five times (so 2^5=32)
 LAMBDA_COORD: 5
 LAMBDA_NOOBJ: 0.5
