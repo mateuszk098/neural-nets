@@ -16,6 +16,7 @@ from cvnets.yolo.v2.utils import anchor_iou
 from cvnets.yolo.voc import load_voc_dataset
 
 YOLOSample = namedtuple("YOLOSample", ("image", "bboxes", "labels", "target"))
+YOLOSampleBatch = namedtuple("YOLOSampleBatch", ("images", "bboxes", "labels", "targets"))
 
 
 class VOCDataset(Dataset):
@@ -154,7 +155,7 @@ class VOCDataset(Dataset):
         return target
 
 
-def collate_fn(samples: list[YOLOSample]) -> tuple[Tensor, Tensor, list[Tensor], list[Tensor]]:
+def collate_fn(samples: list[YOLOSample]) -> YOLOSampleBatch:
     batch_images = list()
     batch_labels = list()
     batch_bboxes = list()
@@ -169,4 +170,4 @@ def collate_fn(samples: list[YOLOSample]) -> tuple[Tensor, Tensor, list[Tensor],
     batch_images = torch.stack(batch_images, dim=0)
     batch_targets = torch.stack(batch_targets, dim=0)
 
-    return batch_images, batch_targets, batch_bboxes, batch_labels
+    return YOLOSampleBatch(batch_images, batch_bboxes, batch_labels, batch_targets)

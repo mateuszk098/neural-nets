@@ -38,8 +38,8 @@ def train_step(
     loader.dataset.train()  # type: ignore
     partial_loss = torch.zeros(5)
 
-    for x, y, *_ in loader:
-        x, y = x.to(DEVICE), y.to(DEVICE)
+    for batch in loader:
+        x, y = batch.images.to(DEVICE), batch.targets.to(DEVICE)
 
         loss = loss_fn(model(x), y)
         loss.total.backward()
@@ -59,8 +59,8 @@ def valid_step(*, model: nn.Module, loader: DataLoader, loss_fn: nn.Module) -> N
     partial_loss = torch.zeros(5)
 
     with torch.inference_mode():
-        for x, y, *_ in loader:
-            x, y = x.to(DEVICE), y.to(DEVICE)
+        for batch in loader:
+            x, y = batch.images.to(DEVICE), batch.targets.to(DEVICE)
             loss = loss_fn(model(x), y)
             partial_loss += torch.as_tensor(loss)
 
@@ -72,8 +72,20 @@ def main(*, config_file: str | PathLike) -> None:
     config = SimpleNamespace(**load_yaml(config_file))
 
     anchor_bboxes = load_anchor_bboxes(config.ANCHOR_BBOXES)
-    train_dataset = VOCDataset(config.DATASET, anchor_bboxes=anchor_bboxes, imgsz=config.IMGSZ, split="train")
-    valid_dataset = VOCDataset(config.DATASET, anchor_bboxes=anchor_bboxes, imgsz=config.IMGSZ, split="val")
+    train_dataset = VOCDataset(
+        config.DATASET,
+        anchor_bboxes=anchor_bboxes,
+        downsample=config.DOWNSAMPLE,
+        imgsz=config.IMGSZ,
+        split="train",
+    )
+    valid_dataset = VOCDataset(
+        config.DATASET,
+        anchor_bboxes=anchor_bboxes,
+        downsample=config.DOWNSAMPLE,
+        imgsz=config.IMGSZ,
+        split="val",
+    )
 
     train_loader = DataLoader(
         dataset=train_dataset,
