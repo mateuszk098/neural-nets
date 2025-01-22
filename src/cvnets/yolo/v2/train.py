@@ -71,17 +71,18 @@ def main(*, config_file: str | PathLike) -> None:
     logging.info(f"Loading configuration from {config_file!s}...")
     config = SimpleNamespace(**load_yaml(config_file))
 
-    anchor_bboxes = load_anchor_bboxes(config.ANCHOR_BBOXES)
+    anchors = load_anchor_bboxes(config.ANCHOR_BBOXES)
+
     train_dataset = VOCDataset(
         config.DATASET,
-        anchor_bboxes=anchor_bboxes,
+        anchors=anchors,
         downsample=config.DOWNSAMPLE,
         imgsz=config.IMGSZ,
         split="train",
     )
     valid_dataset = VOCDataset(
         config.DATASET,
-        anchor_bboxes=anchor_bboxes,
+        anchors=anchors,
         downsample=config.DOWNSAMPLE,
         imgsz=config.IMGSZ,
         split="val",
@@ -107,7 +108,7 @@ def main(*, config_file: str | PathLike) -> None:
         pin_memory=config.PIN_MEMORY,
     )
 
-    model = YOLOv2(B=train_dataset.B, C=config.C)
+    model = YOLOv2(num_anchors=train_dataset.num_anchors, num_classes=train_dataset.num_classes)
     model = model.to(DEVICE)
 
     loss_fn = YOLOv2Loss(lambda_coord=config.LAMBDA_COORD, lambda_noobj=config.LAMBDA_NOOBJ)

@@ -5,10 +5,10 @@ from torchvision import models
 
 
 class YOLOv2(nn.Module):
-    def __init__(self, B: int, C: int) -> None:
+    def __init__(self, num_anchors: int, num_classes: int) -> None:
         super().__init__()
-        self.B = int(B)
-        self.C = int(C)
+        self.num_anchors = int(num_anchors)
+        self.num_classes = int(num_classes)
 
         self.backbone = models.resnet18(weights=models.ResNet18_Weights.DEFAULT)
         self.backbone = nn.ModuleDict(dict(self.backbone.named_children()))
@@ -36,7 +36,7 @@ class YOLOv2(nn.Module):
             }
         )
 
-        self.head = nn.Conv2d(1024, self.B * (5 + self.C), kernel_size=1)
+        self.head = nn.Conv2d(1024, self.num_anchors * (5 + self.num_classes), kernel_size=1)
 
     def forward(self, x: Tensor) -> Tensor:
         x = self.backbone.conv1(x)
@@ -60,9 +60,9 @@ class YOLOv2(nn.Module):
 
         # (N, B * (5 + C), S, S) -> (N, S, S, B, 5 + C)
         x_cat = x_cat.permute(0, 2, 3, 1)  # Channels last.
-        x_cat = x_cat.view(x_cat.size(0), x_cat.size(1), x_cat.size(2), self.B, 5 + self.C)
+        x_cat = x_cat.view(x_cat.size(0), x_cat.size(1), x_cat.size(2), self.num_anchors, 5 + self.num_classes)
 
-        # Sigmoid for x, y, w, h and Softmax for classes.
+        # Sigmoid for x, y, w, h, conf and Softmax for classes.
         x_scale = x_cat.clone()
         x_scale[..., :5] = torch.sigmoid(x_scale[..., :5])
         x_scale[..., 5:] = torch.softmax(x_scale[..., 5:], dim=-1)

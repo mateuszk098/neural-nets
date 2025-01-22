@@ -25,7 +25,7 @@ class VOCDataset(Dataset):
         root: str | PathLike,
         /,
         *,
-        anchor_bboxes: Tensor,
+        anchors: Tensor,
         downsample: int = 2**5,
         imgsz: int = 416,
         split: Literal["train", "val"],
@@ -37,11 +37,11 @@ class VOCDataset(Dataset):
         self.class_to_idx = {cls: idx for idx, cls in enumerate(sorted(classes))}
         self.idx_to_class = {idx: cls for cls, idx in self.class_to_idx.items()}
 
-        self.anchor_bboxes = anchor_bboxes.clone()
+        self.anchors = anchors.clone()
         self.downsample = int(downsample)
 
-        self.B = anchor_bboxes.size(0)
-        self.C = len(self.class_to_idx)
+        self.num_anchors = anchors.size(0)
+        self.num_classes = len(self.class_to_idx)
         self.normalize = bool(normalize)
 
         self._imgsz = int(imgsz)
@@ -135,7 +135,7 @@ class VOCDataset(Dataset):
                     break
 
     def _create_yolo_target(self, bboxes: Tensor, labels: Tensor) -> Tensor:
-        target = torch.zeros((self.S, self.S, self.B, 5 + self.C))
+        target = torch.zeros((self.S, self.S, self.num_anchors, 5 + self.num_classes))
         bboxes_xywh = xyxy2xywh(bboxes)
 
         cell_size = self.imgsz // self.S
@@ -144,8 +144,8 @@ class VOCDataset(Dataset):
         whs = bboxes_xywh[:, 2:] / self.imgsz
 
         for idx, (n, m, txy, wh) in enumerate(zip(ns, ms, txys, whs)):
-            k = torch.argmax(anchor_iou(wh, self.anchor_bboxes))
-            twh = torch.log(wh / self.anchor_bboxes[k])
+            k = torch.argmax(anchor_iou(wh, self.anchors))
+            twh = torch.log(wh / self.anchors[k])
 
             target[m, n, k, 0:2] = txy
             target[m, n, k, 2:4] = twh
