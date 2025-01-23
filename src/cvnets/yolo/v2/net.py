@@ -10,7 +10,7 @@ class YOLOv2(nn.Module):
         self.num_anchors = int(num_anchors)
         self.num_classes = int(num_classes)
 
-        self.backbone = models.resnet18(weights=models.ResNet18_Weights.DEFAULT)
+        self.backbone = models.resnet34(weights=models.ResNet34_Weights.DEFAULT)
         self.backbone = nn.ModuleDict(dict(self.backbone.named_children()))
 
         self.backbone.pop("avgpool")
@@ -21,17 +21,17 @@ class YOLOv2(nn.Module):
                 "layer1": nn.Sequential(
                     nn.LazyConv2d(1024, kernel_size=3, padding=1, bias=False),
                     nn.BatchNorm2d(1024),
-                    nn.LeakyReLU(0.1),
+                    nn.LeakyReLU(0.1, inplace=True),
                 ),
                 "layer2": nn.Sequential(
                     nn.Conv2d(1024, 1024, kernel_size=3, padding=1, bias=False),
                     nn.BatchNorm2d(1024),
-                    nn.LeakyReLU(0.1),
+                    nn.LeakyReLU(0.1, inplace=True),
                 ),
                 "layer3": nn.Sequential(
                     nn.LazyConv2d(1024, kernel_size=3, padding=1, bias=False),
                     nn.BatchNorm2d(1024),
-                    nn.LeakyReLU(0.1),
+                    nn.LeakyReLU(0.1, inplace=True),
                 ),
             }
         )

@@ -26,8 +26,8 @@ def decode_predictions(predictions: Tensor, anchors: Tensor, downsample: int, im
     predictions = predictions.cpu()
 
     S = int(imgsz) // int(downsample)
-    cys, cxs = create_offsets(S)
-    anchors = anchors.reshape(1, 1, 1, 5, 2).repeat(1, S, S, 1, 1)
+    cys, cxs = create_offsets(S, anchors.size(0))
+    anchors = anchors.reshape(1, 1, 1, anchors.size(0), 2).repeat(1, S, S, 1, 1)
     decoded = torch.zeros_like(predictions)
 
     decoded[..., 0] = cxs + predictions[..., 0] / S

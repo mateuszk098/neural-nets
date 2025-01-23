@@ -11,22 +11,18 @@ from torch.utils.data import DataLoader
 from torchmetrics import Metric
 from torchmetrics.detection.mean_ap import MeanAveragePrecision
 
-from cvnets.yolo.utils import load_yaml
+from cvnets.yolo.utils import initialize_seed, load_yaml
 from cvnets.yolo.v2.dataset import VOCDataset, collate_fn
 from cvnets.yolo.v2.loss import NamedLoss, YOLOv2Loss
 from cvnets.yolo.v2.net import YOLOv2
 from cvnets.yolo.v2.utils import load_anchor_bboxes, postprocess_predictions
 
-SEED = 42
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
 FORMAT = "[%(asctime)s - %(module)s/%(levelname)s]: %(message)s"
 DATE_FMT = "%Y-%m-%d %H:%M:%S"
 
+initialize_seed()
 torch.backends.cudnn.benchmark = True
-torch.manual_seed(SEED)
-torch.cuda.manual_seed(SEED)
-
 logging.basicConfig(level=logging.INFO, format=FORMAT, datefmt=DATE_FMT)
 
 
@@ -40,7 +36,6 @@ def evaluate(
     nms_thresh: float,
 ) -> tuple[NamedLoss, dict[str, Any]]:
     model.eval()
-    loader.dataset.eval()  # type: ignore
     metric.reset()
     partial_loss = torch.zeros(5)
 
@@ -90,7 +85,7 @@ def main(*, config_file: str | PathLike) -> None:
         anchors=anchors,
         downsample=config.DOWNSAMPLE,
         imgsz=config.IMGSZ,
-        split="val",
+        split=config.EVAL_SPLIT,
     )
     loader = DataLoader(
         dataset=dataset,
@@ -101,13 +96,14 @@ def main(*, config_file: str | PathLike) -> None:
         persistent_workers=config.PERSISTENT_WORKERS,
         pin_memory=config.PIN_MEMORY,
     )
+    loader.dataset.eval()  # type: ignore
 
     logging.info("Loading model...")
     model = YOLOv2(num_anchors=dataset.num_anchors, num_classes=dataset.num_classes)
     model.load_state_dict(torch.load(config.EVAL_CHECKPOINT, map_location=DEVICE, weights_only=True))
     model.to(DEVICE)
 
-    metric = MeanAveragePrecision(iou_thresholds=[0.5], average="macro")
+    metric = MeanAveragePrecision(box_format="xyxy", iou_thresholds=[0.5], average="macro")
     loss_fn = YOLOv2Loss(lambda_coord=config.LAMBDA_COORD, lambda_noobj=config.LAMBDA_NOOBJ)
 
     logging.info("Evaluating model...")

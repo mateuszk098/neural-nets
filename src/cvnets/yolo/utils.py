@@ -53,10 +53,10 @@ def iou(bboxes1: Tensor, bboxes2: Tensor) -> Tensor:
     return intersection / (area1 + area2 - intersection + 1e-6)
 
 
-def create_offsets(S: int) -> tuple[Tensor, Tensor]:
+def create_offsets(S: int, num_anchors: int) -> tuple[Tensor, Tensor]:
     cys, cxs = torch.meshgrid(torch.arange(S) / S, torch.arange(S) / S, indexing="ij")
-    cys = cys.reshape(1, S, S, 1).repeat(1, 1, 1, 5)
-    cxs = cxs.reshape(1, S, S, 1).repeat(1, 1, 1, 5)
+    cys = cys.reshape(1, S, S, 1).repeat(1, 1, 1, num_anchors)
+    cxs = cxs.reshape(1, S, S, 1).repeat(1, 1, 1, num_anchors)
     return cys, cxs
 
 
