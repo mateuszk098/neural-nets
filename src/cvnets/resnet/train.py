@@ -7,7 +7,7 @@ from torch.optim import Optimizer
 from torch.utils.data import DataLoader
 from torchmetrics import Metric
 
-from cvnets.resnet.net import ResNet
+from cvnets.resnet.net import ResNet, Structure
 from cvnets.resnet.utils import MyImageFolder
 
 SEED = 42
@@ -84,7 +84,7 @@ def main() -> None:
     )
 
     n_classes = len(train_dataset.classes)
-    model = ResNet(architecture="basic", repeats=(2, 2, 2, 2), fc_units=n_classes)
+    model = ResNet(Structure.BASIC, repeats=[2, 2, 2, 2], fc_units=n_classes)
     _ = model(torch.randn(1, 3, 224, 224))  # Forward pass to initialize lazy layers.
     model = model.to(DEVICE)
 

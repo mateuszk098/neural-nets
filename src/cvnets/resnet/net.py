@@ -1,5 +1,5 @@
+from enum import Enum
 from itertools import repeat
-from typing import Literal
 
 import torch
 import torch.nn as nn
@@ -79,14 +79,19 @@ class LazyBottleneck(nn.Module):
         return shortcut_connection
 
 
+class Structure(Enum):
+    BASIC = LazyBasicBlock
+    BOTTLENECK = LazyBottleneck
+
+
 class ResNet(nn.Module):
-    def __init__(self, architecture: Literal["basic", "bottleneck"], repeats: tuple[int, ...], fc_units: int) -> None:
+    def __init__(self, structure: Structure, repeats: list[int], fc_units: int) -> None:
         super().__init__()
         self.conv1 = nn.LazyConv2d(64, kernel_size=7, stride=2, padding=3, bias=False)
         self.bn1 = nn.LazyBatchNorm2d()
         self.relu = nn.ReLU(inplace=True)
         self.maxpool = nn.MaxPool2d(kernel_size=3, stride=2, padding=1)
-        self._build_layers(architecture, repeats)
+        self._build_layers(structure, repeats)
         self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
         self.fc = nn.LazyLinear(fc_units)
 
@@ -104,14 +109,7 @@ class ResNet(nn.Module):
         x = self.fc(x)
         return x
 
-    def _build_layers(self, architecture: Literal["basic", "bottleneck"], repeats: tuple[int, ...]) -> None:
-        if architecture == "basic":
-            block = LazyBasicBlock
-        elif architecture == "bottleneck":
-            block = LazyBottleneck
-        else:
-            raise ValueError("Architecture must be either 'basic' or 'bottleneck'")
-
+    def _build_layers(self, structure: Structure, repeats: list[int]) -> None:
         prev_filters = 64
         filters = (64, 128, 256, 512)
 
@@ -119,5 +117,5 @@ class ResNet(nn.Module):
             self.__setattr__(f"layer{i+1}", nn.Sequential())
             for n_filters in repeat(filters[i], k):
                 stride = 1 if n_filters == prev_filters else 2
-                self.__getattr__(f"layer{i+1}").append(block(n_filters, 3, stride))
+                self.__getattr__(f"layer{i+1}").append(structure.value(n_filters, 3, stride))
                 prev_filters = n_filters
