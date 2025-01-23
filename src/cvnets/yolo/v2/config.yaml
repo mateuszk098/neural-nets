@@ -1,5 +1,5 @@
 DATASET: "~/Documents/Datasets/VOC/"
-ANCHOR_BBOXES: "./checkpoints/anchor_bboxes_k_5.npy"
+ANCHOR_BBOXES: "./checkpoints/anchors/anchor_bboxes_k_5.npy"
 IMGSZ: 416
 IMG_SIZES: [320, 352, 384, 416, 448, 480, 512, 544, 576, 608]
 SAMPLE_IMGSZ: False
@@ -23,7 +23,7 @@ WEIGHT_DECAY: 1.e-3
 VALID_STEP: False
 
 # For evaluation.
-EVAL_CHECKPOINT: "./checkpoints/run-2025-01-23-10-01-04/yolov2-voc.pt"
+EVAL_CHECKPOINT: "./checkpoints/run-2025-01-22-16-03-23/yolov2-voc.pt"
 EVAL_CONF_THRESH: 0.2
 EVAL_NMS_THRESH: 0.4
 EVAL_SPLIT: "val"

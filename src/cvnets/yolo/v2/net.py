@@ -10,7 +10,7 @@ class YOLOv2(nn.Module):
         self.num_anchors = int(num_anchors)
         self.num_classes = int(num_classes)
 
-        self.backbone = models.resnet34(weights=models.ResNet34_Weights.DEFAULT)
+        self.backbone = models.resnet18(weights=models.ResNet18_Weights.DEFAULT)
         self.backbone = nn.ModuleDict(dict(self.backbone.named_children()))
 
         self.backbone.pop("avgpool")

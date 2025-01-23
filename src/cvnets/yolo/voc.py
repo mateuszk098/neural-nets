@@ -12,7 +12,7 @@ Detection = namedtuple("Detection", ("label", "bbox"))
 ImageMeta = namedtuple("ImageMeta", ("path", "width", "height", "detections"))
 
 
-def load_voc_dataset(root: str | PathLike, split: Literal["train", "val"]) -> tuple[list[ImageMeta], set[str]]:
+def load_voc_dataset(root: str | PathLike, split: Literal["train", "val"]) -> tuple[list[ImageMeta], list[str]]:
     data_root = Path(root).expanduser()
 
     dataset = list()
@@ -51,4 +51,4 @@ def load_voc_dataset(root: str | PathLike, split: Literal["train", "val"]) -> tu
                     height = int(annot_root.find("size").find("height").text)  # type: ignore
                     dataset.append(ImageMeta(image_path, width, height, detections))
 
-    return dataset, classes
+    return dataset, sorted(classes)

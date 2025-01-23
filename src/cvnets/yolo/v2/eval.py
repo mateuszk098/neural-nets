@@ -50,8 +50,8 @@ def evaluate(
             results = postprocess_predictions(
                 predictions=predictions,
                 anchors=loader.dataset.anchors,  # type: ignore
-                downsample=loader.dataset.downsample,  # type: ignore
-                imgsz=loader.dataset.imgsz,  # type: ignore
+                S=loader.dataset.S,  # type: ignore
+                imgsz=(loader.dataset.imgsz, loader.dataset.imgsz),  # type: ignore
                 conf_thresh=conf_thresh,
                 nms_thresh=nms_thresh,
             )
