@@ -13,6 +13,7 @@ class YOLOv2Loss(nn.Module):
         self.lambda_noobj = float(lambda_noobj)
 
     def forward(self, y_pred: Tensor, y_true: Tensor) -> NamedLoss:
+        batch_size = y_pred.size(0)
         itobj_mask = y_true[..., 4]
         noobj_mask = 1 - itobj_mask
 
@@ -21,13 +22,15 @@ class YOLOv2Loss(nn.Module):
         itobj_loss = (y_pred[..., 4] - y_true[..., 4]).mul(itobj_mask).square().sum()
         noobj_loss = (y_pred[..., 4] - y_true[..., 4]).mul(noobj_mask).square().sum()
 
-        total_loss = coord_loss * self.lambda_coord + itobj_loss + noobj_loss * self.lambda_noobj + label_loss
-        batch_size = y_true.size(0)
+        coord_loss = coord_loss * self.lambda_coord
+        noobj_loss = noobj_loss * self.lambda_noobj
+
+        total_loss = coord_loss + itobj_loss + noobj_loss + label_loss
 
         return NamedLoss(
             total_loss / batch_size,
-            coord_loss / batch_size * self.lambda_coord,
+            coord_loss / batch_size,
             itobj_loss / batch_size,
-            noobj_loss / batch_size * self.lambda_noobj,
+            noobj_loss / batch_size,
             label_loss / batch_size,
         )

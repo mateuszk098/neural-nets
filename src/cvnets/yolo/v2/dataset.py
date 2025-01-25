@@ -128,9 +128,9 @@ class VOCDataset(Dataset):
         self.S = self.imgsz // self.downsample
 
         for transform in (self._train_transform, self._eval_transform):
-            for idx, t in enumerate(transform.transforms):
+            for t in transform.transforms:
                 if isinstance(t, A.Resize):
-                    transform.transforms[idx] = A.Resize(value, value)
+                    t.width, t.height = self.imgsz, self.imgsz
                     break
 
     def _create_yolo_target(self, bboxes: Tensor, labels: Tensor) -> Tensor:

@@ -9,7 +9,7 @@ Some neural network architectures implementation:
 - YOLOv1 (You Only Look Once: Unified, Real-Time Object Detection) &#8594; <https://arxiv.org/pdf/1506.02640>
 - YOLOv2 (YOLO9000: Better, Faster, Stronger) &#8594; <https://arxiv.org/pdf/1612.08242>
 
-Build the project with uv (<https://github.com/astral-sh/uv>):
+Build the project with uv &#8594; <https://github.com/astral-sh/uv>:
 
 ```bash
 # If cuda is available.

@@ -1,5 +1,5 @@
 DATASET: "~/Documents/Datasets/VOC/"
-ANCHOR_BBOXES: "./checkpoints/anchors/anchor_bboxes_k_5.npy"
+ANCHOR_BBOXES: "./checkpoints/anchors/anchors_k5.npy"
 IMGSZ: 416
 IMG_SIZES: [320, 352, 384, 416, 448, 480, 512, 544, 576, 608]
 SAMPLE_IMGSZ: False
