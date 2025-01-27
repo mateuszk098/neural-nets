@@ -65,6 +65,8 @@ def valid_step(*, model: nn.Module, loader: DataLoader, loss_fn: nn.Module) -> N
 def main(*, config_file: str | PathLike) -> None:
     logging.info(f"Loading configuration from {config_file!s}...")
     config = SimpleNamespace(**load_yaml(config_file))
+    for k, v in config.__dict__.items():
+        logging.info(f"{k + ':':<20} {v}")
 
     anchors = load_anchor_bboxes(config.ANCHOR_BBOXES)
 

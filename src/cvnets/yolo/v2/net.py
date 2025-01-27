@@ -63,8 +63,7 @@ class YOLOv2(nn.Module):
         x_cat = x_cat.view(x_cat.size(0), x_cat.size(1), x_cat.size(2), self.num_anchors, 5 + self.num_classes)
 
         # Sigmoid for x, y, w, h, conf and Softmax for classes.
-        x_scale = x_cat.clone()
-        x_scale[..., :5] = torch.sigmoid(x_scale[..., :5])
-        x_scale[..., 5:] = torch.softmax(x_scale[..., 5:], dim=-1)
+        x_cat[..., :5] = torch.sigmoid(x_cat[..., :5])
+        x_cat[..., 5:] = torch.softmax(x_cat[..., 5:], dim=-1)
 
-        return x_scale
+        return x_cat
