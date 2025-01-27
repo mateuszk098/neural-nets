@@ -39,7 +39,6 @@ def evaluate(
     imgsz: int,
     S: int,
     B: int,
-    C: int,
     conf_threshold: float,
     nms_threshold: float,
 ) -> tuple[NamedLoss, dict[str, Any]]:
@@ -51,14 +50,13 @@ def evaluate(
     with torch.inference_mode():
         for x, y, target_boxes, target_labels in loader:
             x, y = x.to(DEVICE), y.to(DEVICE)
-            y_pred = model(x)  # (N, S * S * (5 * B + C))
+            y_pred = model(x)  # (N, S, S, (5 * B + C))
 
             loss = loss_fn(y_pred, y)
             partial_loss += torch.as_tensor((loss.total, loss.coord, loss.itobj, loss.noobj, loss.label))
 
-            # (N, S * S * B, 4), (N, S * S * B), (N, S * S * B)
-            xyxys, confs, labels = decode_yolo_output(y_pred, imgsz, S, B, C)
-            xyxys, confs, labels = xyxys.cpu(), confs.cpu(), labels.cpu()
+            output = decode_yolo_output(y_pred, imgsz, S, B).cpu()
+            xyxys, confs, labels = output[..., :4], output[..., 4], output[..., 5].int()
             preds = list()
             target = list()
 
@@ -116,7 +114,6 @@ def main(*, config_file: str | PathLike) -> None:
         imgsz=config.IMGSZ,
         S=config.S,
         B=config.B,
-        C=config.C,
         conf_threshold=config.EVAL_CONF_THRESH,
         nms_threshold=config.EVAL_NMS_THRESH,
     )

@@ -14,35 +14,38 @@ from torchvision.ops import nms
 #     return torch.stack(keep, dim=0)
 
 
-def decode_yolo_output(prediction: Tensor, imgsz: int, S: int, B: int, C: int) -> tuple[Tensor, Tensor, Tensor]:
-    prediction = prediction.reshape(-1, S, S, 5 * B + C).clamp(0, 1)
+def decode_yolo_output(prediction: Tensor, imgsz: int, S: int, B: int) -> Tensor:
     device = prediction.device
 
-    class_scores, class_ids = prediction[..., 5 * B :].max(dim=-1, keepdim=True)
+    steps = torch.arange(S) / S
+    offset_y, offset_x = torch.meshgrid(steps, steps, indexing="ij")
+    offset_y = offset_y.reshape(-1, S, S, 1).repeat(1, 1, 1, B).to(device)
+    offset_x = offset_x.reshape(-1, S, S, 1).repeat(1, 1, 1, B).to(device)
 
-    offset_y, offset_x = torch.meshgrid(torch.arange(S) / S, torch.arange(S) / S, indexing="ij")
-    offset_y = offset_y.reshape(1, S, S, 1).repeat(1, 1, 1, B).to(device)
-    offset_x = offset_x.reshape(1, S, S, 1).repeat(1, 1, 1, B).to(device)
-
-    pred_bboxes = prediction[..., : 5 * B].reshape(-1, S, S, B, 5)
-
+    pred_bboxes = prediction[..., : B * 5].reshape(-1, S, S, B, 5)
+    # Extract the bounding box coordinates -> (batch_size, S, S, B, 4).
     xyxys = torch.stack(
         [
+            # Predefined offsets are in 0 - 1, so we must normalize predicted offset by S
+            # to be able to add it.
             pred_bboxes[..., 0] / S + offset_x - 0.5 * pred_bboxes[..., 2].square(),
             pred_bboxes[..., 1] / S + offset_y - 0.5 * pred_bboxes[..., 3].square(),
             pred_bboxes[..., 0] / S + offset_x + 0.5 * pred_bboxes[..., 2].square(),
             pred_bboxes[..., 1] / S + offset_y + 0.5 * pred_bboxes[..., 3].square(),
         ],
         dim=-1,
-    ).mul(imgsz)
-    confs = pred_bboxes[..., 4] * class_scores
-    class_ids = class_ids.repeat(1, 1, 1, B)
+    )
+    xyxys = xyxys.mul(imgsz)
 
-    xyxys = xyxys.reshape(-1, S * S * B, 4)
-    confs = confs.reshape(-1, S * S * B)
-    class_ids = class_ids.reshape(-1, S * S * B)
+    class_scores, class_ids = prediction[..., 5 * B :].max(dim=-1, keepdim=True)
+    class_scores = class_scores.reshape(-1, S, S, 1, 1).repeat(1, 1, 1, B, 1)
+    class_ids = class_ids.reshape(-1, S, S, 1, 1).repeat(1, 1, 1, B, 1)
 
-    return xyxys, confs, class_ids
+    confs = pred_bboxes[..., 4].reshape(-1, S, S, B, 1)
+    confs = confs * class_scores
+
+    result = torch.cat((xyxys, confs, class_ids), dim=-1)
+    return result.reshape(-1, S * S * B, 6)
 
 
 def filter_detections(

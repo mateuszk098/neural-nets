@@ -13,7 +13,7 @@ from torch.optim import Optimizer
 from torch.optim.lr_scheduler import LRScheduler
 from torch.utils.data import DataLoader
 
-from cvnets.yolo.utils import dfs_freeze, load_yaml
+from cvnets.yolo.utils import dfs_freeze, initialize_seed, load_yaml, worker_init_fn
 from cvnets.yolo.v1.dataset import VOCDataset, collate_fn
 from cvnets.yolo.v1.loss import NamedLoss, YOLOv1Loss
 from cvnets.yolo.v1.net import YOLOv1
@@ -24,10 +24,8 @@ DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 FORMAT = "[%(asctime)s - %(module)s/%(levelname)s]: %(message)s"
 DATE_FMT = "%Y-%m-%d %H:%M:%S"
 
+initialize_seed(SEED)
 torch.backends.cudnn.benchmark = True
-torch.manual_seed(SEED)
-torch.cuda.manual_seed(SEED)
-
 logging.basicConfig(level=logging.INFO, format=FORMAT, datefmt=DATE_FMT)
 
 
@@ -42,7 +40,6 @@ def train_step(
     backbone_scheduler: LRScheduler,
 ) -> NamedLoss:
     model.train()
-    loader.dataset.train()  # type: ignore
     partial_loss = torch.zeros(5)
 
     for x, y, *_ in loader:
@@ -67,7 +64,6 @@ def train_step(
 
 def valid_step(*, model: nn.Module, loader: DataLoader, loss_fn: nn.Module) -> NamedLoss:
     model.eval()
-    loader.dataset.eval()  # type: ignore
     partial_loss = torch.zeros(5)
 
     with torch.inference_mode():
@@ -93,6 +89,7 @@ def main(*, config_file: str | PathLike) -> None:
         generator=torch.manual_seed(SEED),
         num_workers=config.NUM_WORKERS,
         collate_fn=collate_fn,
+        worker_init_fn=worker_init_fn,
         persistent_workers=config.PERSISTENT_WORKERS,
         pin_memory=config.PIN_MEMORY,
     )
@@ -102,9 +99,13 @@ def main(*, config_file: str | PathLike) -> None:
         shuffle=False,
         num_workers=config.NUM_WORKERS,
         collate_fn=collate_fn,
+        worker_init_fn=worker_init_fn,
         persistent_workers=config.PERSISTENT_WORKERS,
         pin_memory=config.PIN_MEMORY,
     )
+
+    train_loader.dataset.train()  # type: ignore
+    valid_loader.dataset.eval()  # type: ignore
 
     model = YOLOv1(imgsz=config.IMGSZ, S=config.S, B=config.B, C=config.C)
     model = model.to(DEVICE)
@@ -124,8 +125,6 @@ def main(*, config_file: str | PathLike) -> None:
     backbone_optimizer = torch.optim.AdamW(
         params=model.backbone.parameters(),
         weight_decay=config.WEIGHT_DECAY,
-        amsgrad=True,
-        fused=True,
     )
 
     scheduler_steps = config.EPOCHS * int(math.ceil(len(train_dataset) / config.BATCH_SIZE))

@@ -105,7 +105,7 @@ class VOCDataset(Dataset):
         return YOLOSample(image, bboxes, labels, target)
 
     def _create_yolo_target(self, bboxes: Tensor, labels: Tensor) -> Tensor:
-        target = torch.zeros((self.S, self.S, self.B * 5 + self.C))
+        target = torch.zeros((self.S, self.S, 5 + self.C))
         cell_size = self.imgsz // self.S
 
         bboxes_xywh = torch.zeros_like(bboxes)
@@ -124,12 +124,10 @@ class VOCDataset(Dataset):
 
         # Target on the grid cell is [[offset_x, offset_y, sqrt(w), sqrt(h), confidence] * B, class_1, class_2, ...]
         for idx, (n, m, offset, wh) in enumerate(zip(ns, ms, offsets, whs)):
-            for k in range(self.B):
-                target[m, n, k * 5 : k * 5 + 2] = offset
-                target[m, n, k * 5 + 2 : k * 5 + 4] = wh.sqrt()
-                target[m, n, k * 5 + 4] = 1.0
-            # One-hot encode the class label.
-            target[m, n, self.B * 5 + labels[idx]] = 1.0
+            target[m, n, 0:2] = offset
+            target[m, n, 2:4] = wh.sqrt()
+            target[m, n, 4] = 1.0  # Confidence score.
+            target[m, n, 5 + labels[idx]] = 1.0  # One-hot encode the class label.
 
         return target
 

@@ -1,3 +1,4 @@
+import torch
 import torch.nn as nn
 from torch.types import Tensor
 from torchvision import models
@@ -26,21 +27,23 @@ class YOLOv1(nn.Module):
             nn.LeakyReLU(0.1),
             nn.Conv2d(1024, 1024, kernel_size=3, stride=1, padding=1, bias=False),
             nn.BatchNorm2d(1024),
-            nn.AdaptiveAvgPool2d((7, 7)),
+            nn.LeakyReLU(0.1),
         )
 
-        self.head = nn.Sequential(
-            nn.Flatten(),
-            nn.Linear(7 * 7 * 1024, 4096),
-            nn.LeakyReLU(0.1),
-            nn.Dropout(0.5),
-            nn.Linear(4096, S * S * (B * 5 + C)),
-        )
+        # Convolution as head since I don't have enough computional power
+        # to use fully connected layers as in the original paper.
+        self.head = nn.Conv2d(1024, self.B * 5 + self.C, kernel_size=1)
 
     def forward(self, x: Tensor) -> Tensor:
         x = self.backbone(x)
         x = self.neck(x)
         x = self.head(x)
+
+        x = x.permute(0, 2, 3, 1)
+        # Sigmoid for x, y, w, h, conf and Softmax for classes.
+        x[..., : self.B * 5] = torch.sigmoid(x[..., : self.B * 5])
+        x[..., self.B * 5 :] = torch.softmax(x[..., self.B * 5 :], dim=-1)
+
         return x
 
     def is_backbone_trainable(self) -> bool:

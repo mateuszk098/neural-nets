@@ -19,20 +19,19 @@ class YOLOv1Loss(nn.Module):
         self.lambda_noobj = float(lambda_noobj)
 
     def forward(self, y_pred: Tensor, y_true: Tensor) -> NamedLoss:
-        y_pred = y_pred.reshape(-1, self.S, self.S, 5 * self.B + self.C)
-        y_true = y_true.reshape(-1, self.S, self.S, 5 * self.B + self.C)
         device = y_pred.device
+        batch_size = y_pred.size(0)
 
-        # Extract the bounding boxes from the predictions and targets
-        pred_bboxes = y_pred[..., : 5 * self.B].reshape(-1, self.S, self.S, self.B, 5)
-        true_bboxes = y_true[..., : 5 * self.B].reshape(-1, self.S, self.S, self.B, 5)
+        pred_bboxes = y_pred[..., : self.B * 5].reshape(-1, self.S, self.S, self.B, 5)
+        true_bboxes = y_true[..., :5].repeat(1, 1, 1, self.B).reshape(-1, self.S, self.S, self.B, 5)
 
         # Create the offset grid to extract the bounding box coordinates.
         # From x_offset, y_offset, sqrt(w), sqrt(h) -> x1, y1, x2, y2 (normalized to 0 - 1).
-        offset_y, offset_x = torch.meshgrid(torch.arange(self.S) / self.S, torch.arange(self.S) / self.S, indexing="ij")
+        steps = torch.arange(self.S) / self.S
+        offset_y, offset_x = torch.meshgrid(steps, steps, indexing="ij")
         # (batch_size, S, S, B).
-        offset_y = offset_y.reshape(1, self.S, self.S, 1).repeat(1, 1, 1, self.B).to(device)
-        offset_x = offset_x.reshape(1, self.S, self.S, 1).repeat(1, 1, 1, self.B).to(device)
+        offset_y = offset_y.reshape(-1, self.S, self.S, 1).repeat(1, 1, 1, self.B).to(device)
+        offset_x = offset_x.reshape(-1, self.S, self.S, 1).repeat(1, 1, 1, self.B).to(device)
 
         # Extract the bounding box coordinates -> (batch_size, S, S, B, 4).
         pred_bboxes_xyxy = torch.stack(
@@ -56,38 +55,35 @@ class YOLOv1Loss(nn.Module):
             dim=-1,
         )
 
-        # Compute the Intersection over Union (IoU) between the predicted and true bounding boxes.
         bboxes_iou = iou(pred_bboxes_xyxy, true_bboxes_xyxy)
+        max_iou_vals, max_iou_ids = torch.max(bboxes_iou, dim=-1, keepdim=True)
+        max_iou_vals = max_iou_vals.expand(-1, -1, -1, self.B).to(device)
+        max_iou_ids = max_iou_ids.expand(-1, -1, -1, self.B).to(device)
 
-        # Only the bounding boxes with the maximum IoU are responsible for the prediction.
-        max_iou_vals, max_iou_ids = bboxes_iou.max(dim=-1, keepdim=True)
-        max_iou_vals = max_iou_vals.repeat(1, 1, 1, self.B).to(device)
-        max_iou_ids = max_iou_ids.repeat(1, 1, 1, self.B).to(device)
-        bboxes_ids = torch.arange(self.B).reshape(1, 1, 1, self.B).expand_as(max_iou_ids).to(device)
+        itobj_mask = y_true[..., 4].reshape(-1, self.S, self.S, 1)
+        predictors = torch.arange(self.B).reshape(1, 1, 1, self.B).expand(-1, self.S, self.S, -1).to(device)
+        liability_mask = (predictors == max_iou_ids).float() * itobj_mask.expand(-1, -1, -1, self.B)
 
-        # Object appears in the cell?
-        objectness_mask = y_true[..., 4:5].bool()
-        # The jth bounding box predictor in cell i is responsible for that prediction?
-        predictors_mask = (max_iou_ids == bboxes_ids) & objectness_mask
+        coord_loss = pred_bboxes[..., :4] - true_bboxes[..., :4]
+        coord_loss = coord_loss.mul(liability_mask.reshape(-1, self.S, self.S, self.B, 1)).square().sum()
+        coord_loss = coord_loss * self.lambda_coord
 
-        pred_classes = y_pred[..., 5 * self.B :]
-        true_classes = y_true[..., 5 * self.B :]
+        itobj_loss = max_iou_vals - true_bboxes[..., 4]
+        itobj_loss = itobj_loss.mul(liability_mask).square().sum()
 
-        coord_loss = (
-            (pred_bboxes[..., :4] - true_bboxes[..., :4])
-            .square()
-            .mul(predictors_mask.reshape(-1, self.S, self.S, self.B, 1))
-            .sum()
-        )
-        itobj_loss = (pred_bboxes[..., 4] - max_iou_vals).square().mul(predictors_mask).sum()
-        noobj_loss = (pred_bboxes[..., 4]).square().mul(predictors_mask.bitwise_not()).sum()
-        label_loss = (pred_classes - true_classes).square().mul(objectness_mask).sum()
-        total_loss = coord_loss * self.lambda_coord + itobj_loss + noobj_loss * self.lambda_noobj + label_loss
+        noobj_loss = pred_bboxes[..., 4] - true_bboxes[..., 4]
+        noobj_loss = noobj_loss.mul(1 - liability_mask).square().sum()
+        noobj_loss = noobj_loss * self.lambda_noobj
+
+        label_loss = y_pred[..., self.B * 5 :] - y_true[..., 5:]
+        label_loss = label_loss.mul(itobj_mask).square().sum()
+
+        total_loss = coord_loss + itobj_loss + noobj_loss + label_loss
 
         return NamedLoss(
-            total_loss / len(y_true),
-            coord_loss * self.lambda_coord / len(y_true),
-            itobj_loss / len(y_true),
-            noobj_loss * self.lambda_noobj / len(y_true),
-            label_loss / len(y_true),
+            total_loss / batch_size,
+            coord_loss / batch_size,
+            itobj_loss / batch_size,
+            noobj_loss / batch_size,
+            label_loss / batch_size,
         )
