@@ -80,7 +80,7 @@ def main(*, config_file: str | PathLike) -> None:
     logging.info(f"Loading configuration from {config_file!s}...")
     config = SimpleNamespace(**load_yaml(config_file))
 
-    dataset = VOCDataset(config.DATASET, imgsz=config.IMGSZ, S=config.S, B=config.B, split="val")
+    dataset = VOCDataset(config.DATASET, imgsz=config.IMGSZ, S=config.S, B=config.B, split=config.EVAL_SPLIT)
     loader = DataLoader(
         dataset=dataset,
         batch_size=config.BATCH_SIZE,
@@ -96,7 +96,7 @@ def main(*, config_file: str | PathLike) -> None:
     model.load_state_dict(torch.load(config.EVAL_CHECKPOINT, map_location=DEVICE, weights_only=True))
     model.to(DEVICE)
 
-    metric = MeanAveragePrecision(iou_thresholds=[0.5], average="micro")
+    metric = MeanAveragePrecision(box_format="xyxy", iou_thresholds=[0.5], average="macro")
     loss_fn = YOLOv1Loss(
         S=config.S,
         B=config.B,

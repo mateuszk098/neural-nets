@@ -1,4 +1,6 @@
 DATASET: "~/Documents/Datasets/VOC/"
+TRAIN_SPLIT: "trainval"
+VALID_SPLIT: "test"
 IMGSZ: 448
 S: 7
 B: 2
@@ -24,3 +26,4 @@ VALID_STEP: False
 EVAL_CHECKPOINT: "./checkpoints/yolov1-voc.pt"
 EVAL_CONF_THRESH: 0.1
 EVAL_NMS_THRESH: 0.3
+EVAL_SPLIT: "test"

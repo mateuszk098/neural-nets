@@ -1,4 +1,6 @@
 DATASET: "~/Documents/Datasets/VOC/"
+TRAIN_SPLIT: "trainval"
+VALID_SPLIT: "test"
 ANCHOR_BBOXES: "./checkpoints/anchors/anchors_k5.npy"
 IMGSZ: 416
 IMG_SIZES: [320, 352, 384, 416, 448, 480, 512, 544, 576, 608]
@@ -6,7 +8,7 @@ SAMPLE_IMGSZ: False
 DOWNSAMPLE: 32 # Convolutional layers downsample input image five times (so 2^5=32)
 LAMBDA_COORD: 5
 LAMBDA_NOOBJ: 0.5
-EPOCHS: 165
+EPOCHS: 135
 BATCH_SIZE: 32
 NUM_WORKERS: 4
 PERSISTENT_WORKERS: True
@@ -19,11 +21,12 @@ ANNEAL_STRATEGY: "cos"
 CYCLE_MOMENTUM: True
 BASE_MOMENTUM: 0.85
 MAX_MOMENTUM: 0.95
-WEIGHT_DECAY: 1.e-3
+WEIGHT_DECAY: 1.e-2
+DECOUPLED_WEIGHT_DECAY: True
 VALID_STEP: False
 
 # For evaluation.
 EVAL_CHECKPOINT: "./checkpoints/run-2025-01-22-16-03-23/yolov2-voc.pt"
 EVAL_CONF_THRESH: 0.2
-EVAL_NMS_THRESH: 0.4
-EVAL_SPLIT: "val"
+EVAL_NMS_THRESH: 0.5
+EVAL_SPLIT: "test"

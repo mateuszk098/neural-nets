@@ -66,7 +66,7 @@ def main(*, config_file: str | PathLike) -> None:
     logging.info(f"Loading configuration from {config_file!s}...")
     config = SimpleNamespace(**load_yaml(config_file))
     for k, v in config.__dict__.items():
-        logging.info(f"{k + ':':<20} {v}")
+        logging.info(f"{k + ':':<25} {v}")
 
     anchors = load_anchor_bboxes(config.ANCHOR_BBOXES)
 
@@ -75,14 +75,17 @@ def main(*, config_file: str | PathLike) -> None:
         anchors=anchors,
         downsample=config.DOWNSAMPLE,
         imgsz=config.IMGSZ,
-        split="train",
+        split=config.TRAIN_SPLIT,
     )
+
+    logging.info(f"{'TRAINING DATASET LENGTH:':<25} {len(train_dataset)}")
+
     valid_dataset = VOCDataset(
         config.DATASET,
         anchors=anchors,
         downsample=config.DOWNSAMPLE,
         imgsz=config.IMGSZ,
-        split="val",
+        split=config.VALID_SPLIT,
     )
 
     train_loader = DataLoader(
@@ -113,11 +116,10 @@ def main(*, config_file: str | PathLike) -> None:
     model = model.to(DEVICE)
 
     loss_fn = YOLOv2Loss(lambda_coord=config.LAMBDA_COORD, lambda_noobj=config.LAMBDA_NOOBJ)
-    optim = torch.optim.AdamW(
+    optim = torch.optim.NAdam(
         params=model.parameters(),
         weight_decay=config.WEIGHT_DECAY,
-        amsgrad=True,
-        fused=True,
+        decoupled_weight_decay=config.DECOUPLED_WEIGHT_DECAY,
     )
     scheduler_steps = config.EPOCHS * int(math.ceil(len(train_dataset) / config.BATCH_SIZE))
     scheduler = torch.optim.lr_scheduler.OneCycleLR(

@@ -79,8 +79,20 @@ def main(*, config_file: str | PathLike) -> None:
     logging.info(f"Loading configuration from {config_file!s}...")
     config = SimpleNamespace(**load_yaml(config_file))
 
-    train_dataset = VOCDataset(config.DATASET, imgsz=config.IMGSZ, S=config.S, B=config.B, split="train")
-    valid_dataset = VOCDataset(config.DATASET, imgsz=config.IMGSZ, S=config.S, B=config.B, split="val")
+    train_dataset = VOCDataset(
+        config.DATASET,
+        imgsz=config.IMGSZ,
+        S=config.S,
+        B=config.B,
+        split=config.TRAIN_SPLIT,
+    )
+    valid_dataset = VOCDataset(
+        config.DATASET,
+        imgsz=config.IMGSZ,
+        S=config.S,
+        B=config.B,
+        split=config.VALID_SPLIT,
+    )
 
     train_loader = DataLoader(
         dataset=train_dataset,

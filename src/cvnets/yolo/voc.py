@@ -1,8 +1,8 @@
 import os
 from collections import namedtuple
+from enum import StrEnum
 from os import PathLike
 from pathlib import Path
-from typing import Literal
 from xml.etree import ElementTree
 
 os.environ["NO_ALBUMENTATIONS_UPDATE"] = "1"
@@ -12,13 +12,24 @@ Detection = namedtuple("Detection", ("label", "bbox"))
 ImageMeta = namedtuple("ImageMeta", ("path", "width", "height", "detections"))
 
 
-def load_voc_dataset(root: str | PathLike, split: Literal["train", "val"]) -> tuple[list[ImageMeta], list[str]]:
+class VOCSplit(StrEnum):
+    TRAIN = "train"
+    VAL = "val"
+    TRAINVAL = "trainval"
+    TEST = "test"
+
+
+def load_voc_dataset(root: str | PathLike, split: VOCSplit) -> tuple[list[ImageMeta], list[str]]:
     data_root = Path(root).expanduser()
+    split = VOCSplit(split)
 
     dataset = list()
     classes = set()
 
     for voc in data_root.iterdir():
+        if split == VOCSplit.TEST and voc.name != "VOC2007":
+            continue
+
         image_set = voc.joinpath("ImageSets", "Main", f"{split}.txt")
 
         with open(image_set) as f:

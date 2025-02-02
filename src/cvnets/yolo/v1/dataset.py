@@ -1,7 +1,7 @@
 import os
 from collections import namedtuple
 from os import PathLike
-from typing import Literal, Self
+from typing import Self
 
 os.environ["NO_ALBUMENTATIONS_UPDATE"] = "1"
 
@@ -11,7 +11,7 @@ import torch
 from torch.types import Tensor
 from torch.utils.data import Dataset
 
-from cvnets.yolo.voc import load_voc_dataset
+from cvnets.yolo.voc import VOCSplit, load_voc_dataset
 
 YOLOSample = namedtuple("YOLOSample", ("image", "bboxes", "labels", "target"))
 
@@ -25,7 +25,7 @@ class VOCDataset(Dataset):
         imgsz: int,
         S: int,
         B: int,
-        split: Literal["train", "val"],
+        split: VOCSplit,
         normalize: bool = True,
     ) -> None:
         dataset, classes = load_voc_dataset(root, split)
