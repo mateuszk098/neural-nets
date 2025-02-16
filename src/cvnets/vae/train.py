@@ -152,7 +152,7 @@ def main(*, config_file: str | PathLike) -> None:
 
         if valid_loss < best_loss:
             best_loss = valid_loss
-            torch.save(model.state_dict(), "vae_fix_dataset.pt")
+            torch.save(model.state_dict(), "vae.pt")
 
 
 if __name__ == "__main__":

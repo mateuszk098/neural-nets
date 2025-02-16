@@ -219,13 +219,18 @@ class COCOKeypointsDataset(Dataset):
 
         num_kpts_to_mask = self.gen.integers(1, self.max_kpts_to_mask, endpoint=True)
         kpts_to_mask_out = self.gen.choice(range(len(origin_kpts)), num_kpts_to_mask, replace=False)
+
         masked_kpts = origin_kpts.copy()
         masked_kpts[kpts_to_mask_out] = 0
 
+        masked_visb = origin_visb.copy()
+        masked_visb[kpts_to_mask_out] = 0
+
         return {
             "origin_kpts": origin_kpts,
-            "masked_kpts": masked_kpts,
             "origin_visb": origin_visb,
+            "masked_kpts": masked_kpts,
+            "masked_visb": masked_visb,
             "bbox_xywh": bbox_xywh,
             "image_file": image_file,
         }

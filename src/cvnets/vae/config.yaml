@@ -1,10 +1,10 @@
 TRAIN_DATASET: "~/Documents/Datasets/COCO/annotations_trainval2017/annotations/person_keypoints_train2017.json"
 VALID_DATASET: "~/Documents/Datasets/COCO/annotations_trainval2017/annotations/person_keypoints_val2017.json"
-MIN_KEYPOINTS: 12
-MAX_KPTS_TO_MASK: 4
-RECONST_ALPHA: 0.6
-KL_ALPHA: 0.002
-KL_ALPHA_MULTIPLIER: 1.005
+MIN_KEYPOINTS: 10 # Minimum number of keypoints in original COCO format.
+MAX_KPTS_TO_MASK: 5
+RECONST_ALPHA: 0.6 # Give more importance to the masked keypoints.
+KL_ALPHA: 0.002 # Watch out to not overpower the reconstruction loss.
+KL_ALPHA_MULTIPLIER: 1.005 # Increase the KL divergence weight every epoch.
 LATENT_ALPHA: 0.1
 LATENT_ALPHA_MULTIPLIER: 1.01
 EPOCHS: 100
