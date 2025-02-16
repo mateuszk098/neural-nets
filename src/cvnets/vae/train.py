@@ -110,7 +110,7 @@ def main(*, config_file: str | PathLike) -> None:
         pin_memory=config.PIN_MEMORY,
     )
 
-    model = VAENet(input_shape=(14, 2), latent_features=18, hidden_units=[32, 48, 72])
+    model = VAENet(input_shape=(14, 2), latent_features=18, hidden_units=[32, 64, 96])
     model = model.to(DEVICE)
 
     loss_fn = VAELoss(
