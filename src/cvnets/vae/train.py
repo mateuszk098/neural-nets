@@ -34,12 +34,12 @@ def train_step(
     partial_loss = torch.tensor(0.0)
 
     for batch in loader:
-        normal = batch["normal_keypoints"].to(DEVICE)
-        masked = batch["masked_keypoints"].to(DEVICE)
+        origin_kpts = batch["origin_kpts"].to(DEVICE)
+        masked_kpts = batch["masked_kpts"].to(DEVICE)
 
-        pred, mu, logvar = model(masked)
+        pred_kpts, mu, logvar = model(masked_kpts)
 
-        loss = loss_fn(pred, normal, masked, mu, logvar)
+        loss = loss_fn(pred_kpts, origin_kpts, masked_kpts, mu, logvar)
         loss.backward()
 
         optim.step()
@@ -60,11 +60,11 @@ def valid_step(*, model: nn.Module, loader: DataLoader, loss_fn: nn.Module) -> f
 
     with torch.inference_mode():
         for batch in loader:
-            normal = batch["normal_keypoints"].to(DEVICE)
-            masked = batch["masked_keypoints"].to(DEVICE)
+            origin_kpts = batch["origin_kpts"].to(DEVICE)
+            masked_kpts = batch["masked_kpts"].to(DEVICE)
 
-            pred = model(masked)
-            loss = loss_fn(pred, normal, masked)
+            pred_kpts = model(masked_kpts)
+            loss = loss_fn(pred_kpts, origin_kpts, masked_kpts)
 
             partial_loss += torch.as_tensor(loss).detach().cpu()
 
@@ -110,11 +110,11 @@ def main(*, config_file: str | PathLike) -> None:
         pin_memory=config.PIN_MEMORY,
     )
 
-    model = VAENet(input_shape=(14, 2), latent_features=18, hidden_units=[32, 64, 96])
+    model = VAENet(input_shape=(14, 2), latent_features=16, hidden_units=[32, 64, 96])
     model = model.to(DEVICE)
 
     loss_fn = VAELoss(
-        rt_alpha=config.RT_ALPHA,
+        reconst_alpha=config.RECONST_ALPHA,
         kl_alpha=config.KL_ALPHA,
         kl_alpha_multiplier=config.KL_ALPHA_MULTIPLIER,
         latent_alpha=config.LATENT_ALPHA,
@@ -152,7 +152,7 @@ def main(*, config_file: str | PathLike) -> None:
 
         if valid_loss < best_loss:
             best_loss = valid_loss
-            torch.save(model.state_dict(), "vae.pt")
+            torch.save(model.state_dict(), "vae_fix_dataset.pt")
 
 
 if __name__ == "__main__":
