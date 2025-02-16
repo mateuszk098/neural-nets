@@ -14,7 +14,7 @@ Build the project with uv &#8594; <https://github.com/astral-sh/uv>:
 
 ```bash
 # If cuda is available.
-uv sync --extra cu124
+uv sync --extra cu126
 ```
 
 ```bash
