@@ -4,11 +4,20 @@ from torch.types import Tensor
 
 
 class VAELoss(nn.Module):
-    def __init__(self, reconst_alpha=0.7, kl_alpha: float = 1.0, mu_alpha: float = 0.01) -> None:
+    def __init__(
+        self,
+        rt_alpha=0.6,
+        kl_alpha: float = 0.01,
+        kl_alpha_multiplier: float = 1.01,
+        latent_alpha: float = 0.1,
+        latent_alpha_multiplier: float = 1.01,
+    ) -> None:
         super().__init__()
-        self.rt_alpha = float(reconst_alpha)
+        self.rt_alpha = float(rt_alpha)
         self.kl_alpha = float(kl_alpha)
-        self.mu_alpha = float(mu_alpha)
+        self.kl_alpha_multiplier = float(kl_alpha_multiplier)
+        self.latent_alpha = float(latent_alpha)
+        self.latent_alpha_multiplier = float(latent_alpha_multiplier)
 
     def forward(
         self,
@@ -25,9 +34,17 @@ class VAELoss(nn.Module):
         assert mu is not None and logvar is not None
 
         latent_loss = self.latent_loss(mu, logvar)
-        mu_var_loss = self.mu_var_loss(mu)
+        latent_var_loss = self.latent_var_loss(mu, logvar)
 
-        return reconst_loss + latent_loss + mu_var_loss
+        print(
+            f"reconst_loss: {reconst_loss.item():.5f}, latent_loss: {latent_loss.item():.5f}, latent_var_loss: {latent_var_loss.item():.5f}"
+        )
+
+        return reconst_loss + latent_loss + latent_var_loss
+
+    def step(self) -> None:
+        self.kl_alpha = max(0.0, self.kl_alpha * self.kl_alpha_multiplier)
+        self.latent_alpha = max(0.0, self.latent_alpha * self.latent_alpha_multiplier)
 
     def reconst_loss(self, input: Tensor, target: Tensor, masked: Tensor) -> Tensor:
         no_kpts_mask = masked.eq(0).float()
@@ -45,5 +62,7 @@ class VAELoss(nn.Module):
         loss = -0.5 * torch.mean(1 + logvar - logvar.exp() - mu.square())
         return loss * self.kl_alpha
 
-    def mu_var_loss(self, mu: Tensor) -> Tensor:
-        return torch.mean(mu.var(dim=0) - 1).square() * self.mu_alpha
+    def latent_var_loss(self, mu: Tensor, logvar: Tensor) -> Tensor:
+        mu_var_loss = torch.mean(mu.var(dim=0) - 1).square()
+        logvar_var_loss = torch.mean(logvar.var(dim=0) - 1).square()
+        return self.latent_alpha * (mu_var_loss + logvar_var_loss)

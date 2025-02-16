@@ -27,7 +27,7 @@ logging.basicConfig(level=logging.INFO, format=FORMAT, datefmt=DATE_FMT)
 
 
 def train_step(
-    *, model: nn.Module, loader: DataLoader, loss_fn: nn.Module, optim: Optimizer, scheduler: LRScheduler
+    *, model: nn.Module, loader: DataLoader, loss_fn: VAELoss, optim: Optimizer, scheduler: LRScheduler
 ) -> float:
     model.train()
     loss_fn.train()
@@ -47,6 +47,8 @@ def train_step(
         optim.zero_grad()
 
         partial_loss += torch.as_tensor(loss).detach().cpu()
+
+    loss_fn.step()
 
     return partial_loss.div(len(loader)).item()
 
@@ -108,10 +110,16 @@ def main(*, config_file: str | PathLike) -> None:
         pin_memory=config.PIN_MEMORY,
     )
 
-    model = VAENet(input_shape=(14, 2), latent_features=20, hidden_units=[32, 32])
+    model = VAENet(input_shape=(14, 2), latent_features=18, hidden_units=[32, 48, 72])
     model = model.to(DEVICE)
 
-    loss_fn = VAELoss(kl_alpha=0.1)
+    loss_fn = VAELoss(
+        rt_alpha=config.RT_ALPHA,
+        kl_alpha=config.KL_ALPHA,
+        kl_alpha_multiplier=config.KL_ALPHA_MULTIPLIER,
+        latent_alpha=config.LATENT_ALPHA,
+        latent_alpha_multiplier=config.LATENT_ALPHA_MULTIPLIER,
+    )
     optim = torch.optim.NAdam(
         params=model.parameters(),
         weight_decay=config.WEIGHT_DECAY,

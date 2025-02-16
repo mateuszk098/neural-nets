@@ -2,8 +2,13 @@ TRAIN_DATASET: "~/Documents/Datasets/COCO/annotations_trainval2017/annotations/p
 VALID_DATASET: "~/Documents/Datasets/COCO/annotations_trainval2017/annotations/person_keypoints_val2017.json"
 MIN_KEYPOINTS: 12
 MAX_KPTS_TO_MASK: 4
+RT_ALPHA: 0.6
+KL_ALPHA: 0.01
+KL_ALPHA_MULTIPLIER: 1.01
+LATENT_ALPHA: 0.1
+LATENT_ALPHA_MULTIPLIER: 1.01
 EPOCHS: 100
-BATCH_SIZE: 256
+BATCH_SIZE: 1024
 NUM_WORKERS: 4
 PERSISTENT_WORKERS: True
 PIN_MEMORY: True

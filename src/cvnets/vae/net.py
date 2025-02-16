@@ -49,6 +49,7 @@ class VariationalDecoder(nn.Module):
             self.fc.append(nn.Linear(in_feats, out_feats))
             self.fc.append(nn.LeakyReLU(0.1, inplace=True))
 
+        # self.fc.append(nn.Dropout(0.2))
         self.fc.append(nn.Linear(hidden_features[-1], out_features))
         self.fc.append(nn.Sigmoid())
 
