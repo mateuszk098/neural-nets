@@ -26,10 +26,14 @@ class LatentSampler(nn.Module):
         super().__init__()
         self.mu = nn.Linear(in_features, latent_features)
         self.logvar = nn.Linear(in_features, latent_features)
+        self.mu_bn = nn.BatchNorm1d(latent_features)
+        self.logvar_bn = nn.BatchNorm1d(latent_features)
 
     def forward(self, x: Tensor) -> tuple[Tensor, Tensor, Tensor]:
         mu = self.mu(x)
+        mu = self.mu_bn(mu)
         logvar = self.logvar(x)
+        logvar = self.logvar_bn(logvar)
         z = torch.randn_like(mu) * torch.exp(0.5 * logvar) + mu
         return z, mu, logvar
 
@@ -46,6 +50,7 @@ class VariationalDecoder(nn.Module):
             self.fc.append(nn.LeakyReLU(0.1, inplace=True))
 
         self.fc.append(nn.Linear(hidden_features[-1], out_features))
+        self.fc.append(nn.Sigmoid())
 
     def forward(self, x: Tensor) -> Tensor:
         z = self.fc(x)
