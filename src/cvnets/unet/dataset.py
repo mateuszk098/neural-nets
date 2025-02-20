@@ -43,7 +43,7 @@ class ISICDataset(Dataset):
                 A.VerticalFlip(p=0.5),
                 A.ElasticTransform(alpha=100, sigma=100, p=0.5),
                 A.Affine(
-                    scale=(0.8, 1.2),
+                    scale=(0.9, 1.1),
                     translate_percent=(-0.1, 0.1),
                     rotate=(-10, 10),
                     border_mode=cv.BORDER_CONSTANT,
@@ -89,12 +89,18 @@ class ISICDataset(Dataset):
         image = cv.imread(str(image_fle), cv.IMREAD_COLOR)
         mask = cv.imread(str(mask_file), cv.IMREAD_GRAYSCALE)
 
-        image = cv.cvtColor(image, cv.COLOR_BGR2RGB).astype(np.float32)
-        mask = np.divide(np.expand_dims(mask, axis=-1), mask.max()).astype(np.float32)
+        image = cv.cvtColor(image, cv.COLOR_BGR2RGB)
+        mask = np.expand_dims(mask, axis=-1)
 
         augmented = self.transform(image=image, mask=mask)
+        image = augmented["image"]
+        mask = augmented["mask"]
 
-        return augmented["image"], augmented["mask"]
+        if self.as_tensor:
+            image = image.float()
+            mask = mask.div(mask.max()).float()
+
+        return image, mask
 
     def _load_isic_data(self, root: str | PathLike) -> list[dict[str, Path]]:
         root = Path(root).expanduser()

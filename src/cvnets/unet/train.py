@@ -115,7 +115,7 @@ def main(*, config_file: str | PathLike) -> None:
     eval_loader = DataLoader(
         dataset=eval_dataset,
         batch_size=config.BATCH_SIZE,
-        shuffle=False,
+        shuffle=True,  # Shuffle for visualization purposes.
         num_workers=config.NUM_WORKERS,
         pin_memory=config.PIN_MEMORY,
         worker_init_fn=worker_init_fn,
@@ -132,7 +132,12 @@ def main(*, config_file: str | PathLike) -> None:
         patience=config.EARLY_STOPPING_PATIENCE,
         min_delta=config.EARLY_STOPPING_DELTA,
     )
-    optimizer = torch.optim.Rprop(model.parameters(), lr=config.LR)
+    optimizer = torch.optim.NAdam(
+        model.parameters(),
+        lr=config.LR,
+        weight_decay=config.WEIGHT_DECAY,
+        decoupled_weight_decay=config.DECOUPLED_WEIGHT_DECAY,
+    )
     scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
         optimizer=optimizer,
         factor=config.LR_FACTOR,
@@ -162,6 +167,9 @@ def main(*, config_file: str | PathLike) -> None:
         if config.VISUALIZE:
             writer.add_scalars("Train Loss", train_loss._asdict(), epoch)
             writer.add_scalars("Eval Loss", eval_loss._asdict(), epoch)
+            writer.add_images("Train Images", train_images.images, epoch)
+            writer.add_images("Train True Masks", train_images.true_masks, epoch)
+            writer.add_images("Train Pred Masks", train_images.pred_masks, epoch)
             writer.add_images("Eval Images", eval_images.images, epoch)
             writer.add_images("Eval True Masks", eval_images.true_masks, epoch)
             writer.add_images("Eval Pred Masks", eval_images.pred_masks, epoch)
