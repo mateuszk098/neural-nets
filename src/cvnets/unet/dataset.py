@@ -1,3 +1,7 @@
+import os
+
+os.environ["NO_ALBUMENTATIONS_UPDATE"] = "1"
+
 from os import PathLike
 from pathlib import Path
 
@@ -19,6 +23,8 @@ class ISICDataset(Dataset):
         seed: int = 42,
     ) -> None:
         self.data = self._load_isic_data(root)
+        self.normalize = bool(normalize)
+        self.as_tensor = bool(as_tensor)
 
         self._train_transform = A.Compose(
             transforms=[
@@ -54,11 +60,11 @@ class ISICDataset(Dataset):
             seed=seed,
         )
 
-        if bool(normalize):
+        if self.normalize:
             self._train_transform.transforms.append(A.Normalize())
             self._valid_transform.transforms.append(A.Normalize())
 
-        if bool(as_tensor):
+        if self.as_tensor:
             self._train_transform.transforms.append(AP.ToTensorV2(transpose_mask=True))
             self._valid_transform.transforms.append(AP.ToTensorV2(transpose_mask=True))
 
@@ -83,8 +89,8 @@ class ISICDataset(Dataset):
         image = cv.imread(str(image_fle), cv.IMREAD_COLOR)
         mask = cv.imread(str(mask_file), cv.IMREAD_GRAYSCALE)
 
-        image = cv.cvtColor(image, cv.COLOR_BGR2RGB)
-        mask = np.expand_dims(mask, axis=-1)
+        image = cv.cvtColor(image, cv.COLOR_BGR2RGB).astype(np.float32)
+        mask = np.divide(np.expand_dims(mask, axis=-1), mask.max()).astype(np.float32)
 
         augmented = self.transform(image=image, mask=mask)
 

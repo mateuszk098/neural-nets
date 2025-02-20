@@ -4,10 +4,10 @@ from torch.types import Tensor
 
 
 class UNet(nn.Module):
-    def __init__(self, base: int = 64) -> None:
+    def __init__(self, in_channels: int, out_channels: int, base: int = 64) -> None:
         super().__init__()
-        self.encoder = Encoder(base)
-        self.decoder = Decoder(base)
+        self.encoder = Encoder(in_channels, base)
+        self.decoder = Decoder(out_channels, base)
 
     def forward(self, x: Tensor) -> Tensor:
         eb1, eb2, eb3, eb4, eb5 = self.encoder(x)
@@ -15,9 +15,9 @@ class UNet(nn.Module):
 
 
 class Encoder(nn.Module):
-    def __init__(self, base: int) -> None:
+    def __init__(self, in_channels: int, base: int) -> None:
         super().__init__()
-        self.eb1 = EncodingBlock(3, base)
+        self.eb1 = EncodingBlock(in_channels, base)
         self.mp1 = nn.MaxPool2d(2, 2)
 
         self.eb2 = EncodingBlock(base, base * 2)
@@ -50,7 +50,7 @@ class Encoder(nn.Module):
 
 
 class Decoder(nn.Module):
-    def __init__(self, base: int) -> None:
+    def __init__(self, out_channels: int, base: int) -> None:
         super().__init__()
         self.up1 = UpsamplingBlock(base * 16, base * 8)
         self.db1 = DecodingBlock(base * 16, base * 8)
@@ -64,7 +64,7 @@ class Decoder(nn.Module):
         self.up4 = UpsamplingBlock(base * 2, base)
         self.db4 = DecodingBlock(base * 2, base)
 
-        self.out = nn.Conv2d(base, 3, kernel_size=3, padding=1)
+        self.out = nn.Conv2d(base, out_channels, kernel_size=3, padding=1)
 
     def forward(self, eb1: Tensor, eb2: Tensor, eb3: Tensor, eb4: Tensor, eb5: Tensor) -> Tensor:
         up1 = self.up1(eb5)  # 1024x1024 -> 512x512 (supposing base=64)

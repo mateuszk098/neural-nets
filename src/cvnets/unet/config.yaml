@@ -1,0 +1,30 @@
+# Dataset
+TRAIN_DIR: "~/Documents/Datasets/ISBI2016_ISIC/train/"
+EVAL_DIR: "~/Documents/Datasets/ISBI2016_ISIC/val/"
+IMGSZ: 256
+
+# Data Loader
+BATCH_SIZE: 8
+NUM_WORKERS: 2
+PIN_MEMORY: True
+PERSISTENT_WORKERS: True
+
+# Loss
+FOCAL_ALPHA: 0.7
+FOCAL_GAMMA: 2.0
+LOSS_BETA: 0.5 # LOSS_BETA for Focal Loss, (1 - LOSS_BETA) for Dice Loss
+
+# Early Stopping
+EARLY_STOPPING_PATIENCE: 10
+EARLY_STOPPING_DELTA: 1.e-4
+
+# Epochs and LR Scheduler
+EPOCHS: 100
+LR: 1.e-3
+LR_FACTOR: 0.1
+LR_PATIENCE: 5
+LR_THRESHOLD: 1.e-4 # Roughly speaking, the same as EARLY_STOPPING_DELTA
+
+# Miscellaneous
+NET_BASE: 32
+VISUALIZE: true
