@@ -1,6 +1,6 @@
 # **Computer Vision Nets**
 
-![Static Badge](https://img.shields.io/badge/python-3.13-blue?style=for-the-badge&logo=python&logoColor=white&color=%234584b6)
+![Static Badge](https://img.shields.io/badge/python-3.12-blue?style=for-the-badge&logo=python&logoColor=white&color=%234584b6)
 ![GitHub last commit](https://img.shields.io/github/last-commit/mateuszk098/computer-vision-nets?style=for-the-badge&color=%23fa9537)
 
 Some neural network architectures implementation:
@@ -15,7 +15,7 @@ Build the project with uv &#8594; <https://github.com/astral-sh/uv>:
 
 ```bash
 # If cuda is available.
-uv sync --extra cu126
+uv sync --extra cu124
 ```
 
 ```bash

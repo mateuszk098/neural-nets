@@ -1,14 +1,17 @@
 version = 1
 revision = 1
-requires-python = ">=3.13"
+requires-python = ">=3.12"
 resolution-markers = [
-    "sys_platform == 'darwin'",
-    "(platform_machine != 'aarch64' and sys_platform == 'linux') or (sys_platform != 'darwin' and sys_platform != 'linux')",
-    "platform_machine == 'aarch64' and sys_platform == 'linux'",
+    "python_full_version >= '3.13' and sys_platform == 'darwin'",
+    "python_full_version < '3.13' and sys_platform == 'darwin'",
+    "(python_full_version >= '3.13' and platform_machine != 'aarch64' and sys_platform == 'linux') or (python_full_version >= '3.13' and sys_platform != 'darwin' and sys_platform != 'linux')",
+    "(python_full_version < '3.13' and platform_machine != 'aarch64' and sys_platform == 'linux') or (python_full_version < '3.13' and sys_platform != 'darwin' and sys_platform != 'linux')",
+    "python_full_version >= '3.13' and platform_machine == 'aarch64' and sys_platform == 'linux'",
+    "python_full_version < '3.13' and platform_machine == 'aarch64' and sys_platform == 'linux'",
 ]
 conflicts = [[
     { package = "cvnets", extra = "cpu" },
-    { package = "cvnets", extra = "cu126" },
+    { package = "cvnets", extra = "cu124" },
 ]]
 
 [[package]]
@@ -80,6 +83,15 @@ wheels = [
 ]
 
 [[package]]
+name = "certifi"
+version = "2025.1.31"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/1c/ab/c9f1e32b7b1bf505bf26f0ef697775960db7932abeb7b516de930ba2705f/certifi-2025.1.31.tar.gz", hash = "sha256:3d5da6925056f6f18f119200434a4780a94263f10d1c21d032a6f6b2baa20651", size = 167577 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/38/fc/bce832fd4fd99766c04d1ee0eead6b0ec6486fb100ae5e74c1d91292b982/certifi-2025.1.31-py3-none-any.whl", hash = "sha256:ca78db4565a652026a4db2bcdf68f2fb589ea80d0be70e03929ed730746b84fe", size = 166393 },
+]
+
+[[package]]
 name = "cffi"
 version = "1.17.1"
 source = { registry = "https://pypi.org/simple" }
@@ -88,6 +100,17 @@ dependencies = [
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/fc/97/c783634659c2920c3fc70419e3af40972dbaf758daa229a7d6ea6135c90d/cffi-1.17.1.tar.gz", hash = "sha256:1c39c6016c32bc48dd54561950ebd6836e1670f2ae46128f67cf49e789c52824", size = 516621 }
 wheels = [
+    { url = "https://files.pythonhosted.org/packages/5a/84/e94227139ee5fb4d600a7a4927f322e1d4aea6fdc50bd3fca8493caba23f/cffi-1.17.1-cp312-cp312-macosx_10_9_x86_64.whl", hash = "sha256:805b4371bf7197c329fcb3ead37e710d1bca9da5d583f5073b799d5c5bd1eee4", size = 183178 },
+    { url = "https://files.pythonhosted.org/packages/da/ee/fb72c2b48656111c4ef27f0f91da355e130a923473bf5ee75c5643d00cca/cffi-1.17.1-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:733e99bc2df47476e3848417c5a4540522f234dfd4ef3ab7fafdf555b082ec0c", size = 178840 },
+    { url = "https://files.pythonhosted.org/packages/cc/b6/db007700f67d151abadf508cbfd6a1884f57eab90b1bb985c4c8c02b0f28/cffi-1.17.1-cp312-cp312-manylinux_2_12_i686.manylinux2010_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:1257bdabf294dceb59f5e70c64a3e2f462c30c7ad68092d01bbbfb1c16b1ba36", size = 454803 },
+    { url = "https://files.pythonhosted.org/packages/1a/df/f8d151540d8c200eb1c6fba8cd0dfd40904f1b0682ea705c36e6c2e97ab3/cffi-1.17.1-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:da95af8214998d77a98cc14e3a3bd00aa191526343078b530ceb0bd710fb48a5", size = 478850 },
+    { url = "https://files.pythonhosted.org/packages/28/c0/b31116332a547fd2677ae5b78a2ef662dfc8023d67f41b2a83f7c2aa78b1/cffi-1.17.1-cp312-cp312-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl", hash = "sha256:d63afe322132c194cf832bfec0dc69a99fb9bb6bbd550f161a49e9e855cc78ff", size = 485729 },
+    { url = "https://files.pythonhosted.org/packages/91/2b/9a1ddfa5c7f13cab007a2c9cc295b70fbbda7cb10a286aa6810338e60ea1/cffi-1.17.1-cp312-cp312-manylinux_2_17_s390x.manylinux2014_s390x.whl", hash = "sha256:f79fc4fc25f1c8698ff97788206bb3c2598949bfe0fef03d299eb1b5356ada99", size = 471256 },
+    { url = "https://files.pythonhosted.org/packages/b2/d5/da47df7004cb17e4955df6a43d14b3b4ae77737dff8bf7f8f333196717bf/cffi-1.17.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:b62ce867176a75d03a665bad002af8e6d54644fad99a3c70905c543130e39d93", size = 479424 },
+    { url = "https://files.pythonhosted.org/packages/0b/ac/2a28bcf513e93a219c8a4e8e125534f4f6db03e3179ba1c45e949b76212c/cffi-1.17.1-cp312-cp312-musllinux_1_1_aarch64.whl", hash = "sha256:386c8bf53c502fff58903061338ce4f4950cbdcb23e2902d86c0f722b786bbe3", size = 484568 },
+    { url = "https://files.pythonhosted.org/packages/d4/38/ca8a4f639065f14ae0f1d9751e70447a261f1a30fa7547a828ae08142465/cffi-1.17.1-cp312-cp312-musllinux_1_1_x86_64.whl", hash = "sha256:4ceb10419a9adf4460ea14cfd6bc43d08701f0835e979bf821052f1805850fe8", size = 488736 },
+    { url = "https://files.pythonhosted.org/packages/86/c5/28b2d6f799ec0bdecf44dced2ec5ed43e0eb63097b0f58c293583b406582/cffi-1.17.1-cp312-cp312-win32.whl", hash = "sha256:a08d7e755f8ed21095a310a693525137cfe756ce62d066e53f502a83dc550f65", size = 172448 },
+    { url = "https://files.pythonhosted.org/packages/50/b9/db34c4755a7bd1cb2d1603ac3863f22bcecbd1ba29e5ee841a4bc510b294/cffi-1.17.1-cp312-cp312-win_amd64.whl", hash = "sha256:51392eae71afec0d0c8fb1a53b204dbb3bcabcb3c9b807eedf3e1e6ccf2de903", size = 181976 },
     { url = "https://files.pythonhosted.org/packages/8d/f8/dd6c246b148639254dad4d6803eb6a54e8c85c6e11ec9df2cffa87571dbe/cffi-1.17.1-cp313-cp313-macosx_10_13_x86_64.whl", hash = "sha256:f3a2b4222ce6b60e2e8b337bb9596923045681d71e5a082783484d845390938e", size = 182989 },
     { url = "https://files.pythonhosted.org/packages/8b/f1/672d303ddf17c24fc83afd712316fda78dc6fce1cd53011b839483e1ecc8/cffi-1.17.1-cp313-cp313-macosx_11_0_arm64.whl", hash = "sha256:0984a4925a435b1da406122d4d7968dd861c1385afe3b45ba82b750f229811e2", size = 178802 },
     { url = "https://files.pythonhosted.org/packages/0e/2d/eab2e858a91fdff70533cab61dcff4a1f55ec60425832ddfdc9cd36bc8af/cffi-1.17.1-cp313-cp313-manylinux_2_12_i686.manylinux2010_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:d01b12eeeb4427d3110de311e1774046ad344f5b1a7403101878976ecd7a10f3", size = 454792 },
@@ -99,6 +122,41 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/f1/47/d7145bf2dc04684935d57d67dff9d6d795b2ba2796806bb109864be3a151/cffi-1.17.1-cp313-cp313-musllinux_1_1_x86_64.whl", hash = "sha256:72e72408cad3d5419375fc87d289076ee319835bdfa2caad331e377589aebba9", size = 488469 },
     { url = "https://files.pythonhosted.org/packages/bf/ee/f94057fa6426481d663b88637a9a10e859e492c73d0384514a17d78ee205/cffi-1.17.1-cp313-cp313-win32.whl", hash = "sha256:e03eab0a8677fa80d646b5ddece1cbeaf556c313dcfac435ba11f107ba117b5d", size = 172475 },
     { url = "https://files.pythonhosted.org/packages/7c/fc/6a8cb64e5f0324877d503c854da15d76c1e50eb722e320b15345c4d0c6de/cffi-1.17.1-cp313-cp313-win_amd64.whl", hash = "sha256:f6a16c31041f09ead72d69f583767292f750d24913dadacf5756b966aacb3f1a", size = 182009 },
+]
+
+[[package]]
+name = "charset-normalizer"
+version = "3.4.1"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/16/b0/572805e227f01586461c80e0fd25d65a2115599cc9dad142fee4b747c357/charset_normalizer-3.4.1.tar.gz", hash = "sha256:44251f18cd68a75b56585dd00dae26183e102cd5e0f9f1466e6df5da2ed64ea3", size = 123188 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/0a/9a/dd1e1cdceb841925b7798369a09279bd1cf183cef0f9ddf15a3a6502ee45/charset_normalizer-3.4.1-cp312-cp312-macosx_10_13_universal2.whl", hash = "sha256:73d94b58ec7fecbc7366247d3b0b10a21681004153238750bb67bd9012414545", size = 196105 },
+    { url = "https://files.pythonhosted.org/packages/d3/8c/90bfabf8c4809ecb648f39794cf2a84ff2e7d2a6cf159fe68d9a26160467/charset_normalizer-3.4.1-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:dad3e487649f498dd991eeb901125411559b22e8d7ab25d3aeb1af367df5efd7", size = 140404 },
+    { url = "https://files.pythonhosted.org/packages/ad/8f/e410d57c721945ea3b4f1a04b74f70ce8fa800d393d72899f0a40526401f/charset_normalizer-3.4.1-cp312-cp312-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl", hash = "sha256:c30197aa96e8eed02200a83fba2657b4c3acd0f0aa4bdc9f6c1af8e8962e0757", size = 150423 },
+    { url = "https://files.pythonhosted.org/packages/f0/b8/e6825e25deb691ff98cf5c9072ee0605dc2acfca98af70c2d1b1bc75190d/charset_normalizer-3.4.1-cp312-cp312-manylinux_2_17_s390x.manylinux2014_s390x.whl", hash = "sha256:2369eea1ee4a7610a860d88f268eb39b95cb588acd7235e02fd5a5601773d4fa", size = 143184 },
+    { url = "https://files.pythonhosted.org/packages/3e/a2/513f6cbe752421f16d969e32f3583762bfd583848b763913ddab8d9bfd4f/charset_normalizer-3.4.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:bc2722592d8998c870fa4e290c2eec2c1569b87fe58618e67d38b4665dfa680d", size = 145268 },
+    { url = "https://files.pythonhosted.org/packages/74/94/8a5277664f27c3c438546f3eb53b33f5b19568eb7424736bdc440a88a31f/charset_normalizer-3.4.1-cp312-cp312-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:ffc9202a29ab3920fa812879e95a9e78b2465fd10be7fcbd042899695d75e616", size = 147601 },
+    { url = "https://files.pythonhosted.org/packages/7c/5f/6d352c51ee763623a98e31194823518e09bfa48be2a7e8383cf691bbb3d0/charset_normalizer-3.4.1-cp312-cp312-musllinux_1_2_aarch64.whl", hash = "sha256:804a4d582ba6e5b747c625bf1255e6b1507465494a40a2130978bda7b932c90b", size = 141098 },
+    { url = "https://files.pythonhosted.org/packages/78/d4/f5704cb629ba5ab16d1d3d741396aec6dc3ca2b67757c45b0599bb010478/charset_normalizer-3.4.1-cp312-cp312-musllinux_1_2_i686.whl", hash = "sha256:0f55e69f030f7163dffe9fd0752b32f070566451afe180f99dbeeb81f511ad8d", size = 149520 },
+    { url = "https://files.pythonhosted.org/packages/c5/96/64120b1d02b81785f222b976c0fb79a35875457fa9bb40827678e54d1bc8/charset_normalizer-3.4.1-cp312-cp312-musllinux_1_2_ppc64le.whl", hash = "sha256:c4c3e6da02df6fa1410a7680bd3f63d4f710232d3139089536310d027950696a", size = 152852 },
+    { url = "https://files.pythonhosted.org/packages/84/c9/98e3732278a99f47d487fd3468bc60b882920cef29d1fa6ca460a1fdf4e6/charset_normalizer-3.4.1-cp312-cp312-musllinux_1_2_s390x.whl", hash = "sha256:5df196eb874dae23dcfb968c83d4f8fdccb333330fe1fc278ac5ceeb101003a9", size = 150488 },
+    { url = "https://files.pythonhosted.org/packages/13/0e/9c8d4cb99c98c1007cc11eda969ebfe837bbbd0acdb4736d228ccaabcd22/charset_normalizer-3.4.1-cp312-cp312-musllinux_1_2_x86_64.whl", hash = "sha256:e358e64305fe12299a08e08978f51fc21fac060dcfcddd95453eabe5b93ed0e1", size = 146192 },
+    { url = "https://files.pythonhosted.org/packages/b2/21/2b6b5b860781a0b49427309cb8670785aa543fb2178de875b87b9cc97746/charset_normalizer-3.4.1-cp312-cp312-win32.whl", hash = "sha256:9b23ca7ef998bc739bf6ffc077c2116917eabcc901f88da1b9856b210ef63f35", size = 95550 },
+    { url = "https://files.pythonhosted.org/packages/21/5b/1b390b03b1d16c7e382b561c5329f83cc06623916aab983e8ab9239c7d5c/charset_normalizer-3.4.1-cp312-cp312-win_amd64.whl", hash = "sha256:6ff8a4a60c227ad87030d76e99cd1698345d4491638dfa6673027c48b3cd395f", size = 102785 },
+    { url = "https://files.pythonhosted.org/packages/38/94/ce8e6f63d18049672c76d07d119304e1e2d7c6098f0841b51c666e9f44a0/charset_normalizer-3.4.1-cp313-cp313-macosx_10_13_universal2.whl", hash = "sha256:aabfa34badd18f1da5ec1bc2715cadc8dca465868a4e73a0173466b688f29dda", size = 195698 },
+    { url = "https://files.pythonhosted.org/packages/24/2e/dfdd9770664aae179a96561cc6952ff08f9a8cd09a908f259a9dfa063568/charset_normalizer-3.4.1-cp313-cp313-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:22e14b5d70560b8dd51ec22863f370d1e595ac3d024cb8ad7d308b4cd95f8313", size = 140162 },
+    { url = "https://files.pythonhosted.org/packages/24/4e/f646b9093cff8fc86f2d60af2de4dc17c759de9d554f130b140ea4738ca6/charset_normalizer-3.4.1-cp313-cp313-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl", hash = "sha256:8436c508b408b82d87dc5f62496973a1805cd46727c34440b0d29d8a2f50a6c9", size = 150263 },
+    { url = "https://files.pythonhosted.org/packages/5e/67/2937f8d548c3ef6e2f9aab0f6e21001056f692d43282b165e7c56023e6dd/charset_normalizer-3.4.1-cp313-cp313-manylinux_2_17_s390x.manylinux2014_s390x.whl", hash = "sha256:2d074908e1aecee37a7635990b2c6d504cd4766c7bc9fc86d63f9c09af3fa11b", size = 142966 },
+    { url = "https://files.pythonhosted.org/packages/52/ed/b7f4f07de100bdb95c1756d3a4d17b90c1a3c53715c1a476f8738058e0fa/charset_normalizer-3.4.1-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:955f8851919303c92343d2f66165294848d57e9bba6cf6e3625485a70a038d11", size = 144992 },
+    { url = "https://files.pythonhosted.org/packages/96/2c/d49710a6dbcd3776265f4c923bb73ebe83933dfbaa841c5da850fe0fd20b/charset_normalizer-3.4.1-cp313-cp313-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:44ecbf16649486d4aebafeaa7ec4c9fed8b88101f4dd612dcaf65d5e815f837f", size = 147162 },
+    { url = "https://files.pythonhosted.org/packages/b4/41/35ff1f9a6bd380303dea55e44c4933b4cc3c4850988927d4082ada230273/charset_normalizer-3.4.1-cp313-cp313-musllinux_1_2_aarch64.whl", hash = "sha256:0924e81d3d5e70f8126529951dac65c1010cdf117bb75eb02dd12339b57749dd", size = 140972 },
+    { url = "https://files.pythonhosted.org/packages/fb/43/c6a0b685fe6910d08ba971f62cd9c3e862a85770395ba5d9cad4fede33ab/charset_normalizer-3.4.1-cp313-cp313-musllinux_1_2_i686.whl", hash = "sha256:2967f74ad52c3b98de4c3b32e1a44e32975e008a9cd2a8cc8966d6a5218c5cb2", size = 149095 },
+    { url = "https://files.pythonhosted.org/packages/4c/ff/a9a504662452e2d2878512115638966e75633519ec11f25fca3d2049a94a/charset_normalizer-3.4.1-cp313-cp313-musllinux_1_2_ppc64le.whl", hash = "sha256:c75cb2a3e389853835e84a2d8fb2b81a10645b503eca9bcb98df6b5a43eb8886", size = 152668 },
+    { url = "https://files.pythonhosted.org/packages/6c/71/189996b6d9a4b932564701628af5cee6716733e9165af1d5e1b285c530ed/charset_normalizer-3.4.1-cp313-cp313-musllinux_1_2_s390x.whl", hash = "sha256:09b26ae6b1abf0d27570633b2b078a2a20419c99d66fb2823173d73f188ce601", size = 150073 },
+    { url = "https://files.pythonhosted.org/packages/e4/93/946a86ce20790e11312c87c75ba68d5f6ad2208cfb52b2d6a2c32840d922/charset_normalizer-3.4.1-cp313-cp313-musllinux_1_2_x86_64.whl", hash = "sha256:fa88b843d6e211393a37219e6a1c1df99d35e8fd90446f1118f4216e307e48cd", size = 145732 },
+    { url = "https://files.pythonhosted.org/packages/cd/e5/131d2fb1b0dddafc37be4f3a2fa79aa4c037368be9423061dccadfd90091/charset_normalizer-3.4.1-cp313-cp313-win32.whl", hash = "sha256:eb8178fe3dba6450a3e024e95ac49ed3400e506fd4e9e5c32d30adda88cbd407", size = 95391 },
+    { url = "https://files.pythonhosted.org/packages/27/f2/4f9a69cc7712b9b5ad8fdb87039fd89abba997ad5cbe690d1835d40405b0/charset_normalizer-3.4.1-cp313-cp313-win_amd64.whl", hash = "sha256:b1ac5992a838106edb89654e0aebfc24f5848ae2547d22c2c3f66454daa11971", size = 102702 },
+    { url = "https://files.pythonhosted.org/packages/0e/f6/65ecc6878a89bb1c23a086ea335ad4bf21a588990c3f535a227b9eea9108/charset_normalizer-3.4.1-py3-none-any.whl", hash = "sha256:d98b1668f06378c6dbefec3b92299716b931cd4e6061f3c875a71ced1780ab85", size = 49767 },
 ]
 
 [[package]]
@@ -131,6 +189,16 @@ dependencies = [
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/25/c2/fc7193cc5383637ff390a712e88e4ded0452c9fbcf84abe3de5ea3df1866/contourpy-1.3.1.tar.gz", hash = "sha256:dfd97abd83335045a913e3bcc4a09c0ceadbe66580cf573fe961f4a825efa699", size = 13465753 }
 wheels = [
+    { url = "https://files.pythonhosted.org/packages/37/6b/175f60227d3e7f5f1549fcb374592be311293132207e451c3d7c654c25fb/contourpy-1.3.1-cp312-cp312-macosx_10_13_x86_64.whl", hash = "sha256:0ffa84be8e0bd33410b17189f7164c3589c229ce5db85798076a3fa136d0e509", size = 271494 },
+    { url = "https://files.pythonhosted.org/packages/6b/6a/7833cfae2c1e63d1d8875a50fd23371394f540ce809d7383550681a1fa64/contourpy-1.3.1-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:805617228ba7e2cbbfb6c503858e626ab528ac2a32a04a2fe88ffaf6b02c32bc", size = 255444 },
+    { url = "https://files.pythonhosted.org/packages/7f/b3/7859efce66eaca5c14ba7619791b084ed02d868d76b928ff56890d2d059d/contourpy-1.3.1-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:ade08d343436a94e633db932e7e8407fe7de8083967962b46bdfc1b0ced39454", size = 307628 },
+    { url = "https://files.pythonhosted.org/packages/48/b2/011415f5e3f0a50b1e285a0bf78eb5d92a4df000553570f0851b6e309076/contourpy-1.3.1-cp312-cp312-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl", hash = "sha256:47734d7073fb4590b4a40122b35917cd77be5722d80683b249dac1de266aac80", size = 347271 },
+    { url = "https://files.pythonhosted.org/packages/84/7d/ef19b1db0f45b151ac78c65127235239a8cf21a59d1ce8507ce03e89a30b/contourpy-1.3.1-cp312-cp312-manylinux_2_17_s390x.manylinux2014_s390x.whl", hash = "sha256:2ba94a401342fc0f8b948e57d977557fbf4d515f03c67682dd5c6191cb2d16ec", size = 318906 },
+    { url = "https://files.pythonhosted.org/packages/ba/99/6794142b90b853a9155316c8f470d2e4821fe6f086b03e372aca848227dd/contourpy-1.3.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:efa874e87e4a647fd2e4f514d5e91c7d493697127beb95e77d2f7561f6905bd9", size = 323622 },
+    { url = "https://files.pythonhosted.org/packages/3c/0f/37d2c84a900cd8eb54e105f4fa9aebd275e14e266736778bb5dccbf3bbbb/contourpy-1.3.1-cp312-cp312-musllinux_1_2_aarch64.whl", hash = "sha256:1bf98051f1045b15c87868dbaea84f92408337d4f81d0e449ee41920ea121d3b", size = 1266699 },
+    { url = "https://files.pythonhosted.org/packages/3a/8a/deb5e11dc7d9cc8f0f9c8b29d4f062203f3af230ba83c30a6b161a6effc9/contourpy-1.3.1-cp312-cp312-musllinux_1_2_x86_64.whl", hash = "sha256:61332c87493b00091423e747ea78200659dc09bdf7fd69edd5e98cef5d3e9a8d", size = 1326395 },
+    { url = "https://files.pythonhosted.org/packages/1a/35/7e267ae7c13aaf12322ccc493531f1e7f2eb8fba2927b9d7a05ff615df7a/contourpy-1.3.1-cp312-cp312-win32.whl", hash = "sha256:e914a8cb05ce5c809dd0fe350cfbb4e881bde5e2a38dc04e3afe1b3e58bd158e", size = 175354 },
+    { url = "https://files.pythonhosted.org/packages/a1/35/c2de8823211d07e8a79ab018ef03960716c5dff6f4d5bff5af87fd682992/contourpy-1.3.1-cp312-cp312-win_amd64.whl", hash = "sha256:08d9d449a61cf53033612cb368f3a1b26cd7835d9b8cd326647efe43bca7568d", size = 220971 },
     { url = "https://files.pythonhosted.org/packages/9a/e7/de62050dce687c5e96f946a93546910bc67e483fe05324439e329ff36105/contourpy-1.3.1-cp313-cp313-macosx_10_13_x86_64.whl", hash = "sha256:a761d9ccfc5e2ecd1bf05534eda382aa14c3e4f9205ba5b1684ecfe400716ef2", size = 271548 },
     { url = "https://files.pythonhosted.org/packages/78/4d/c2a09ae014ae984c6bdd29c11e74d3121b25eaa117eca0bb76340efd7e1c/contourpy-1.3.1-cp313-cp313-macosx_11_0_arm64.whl", hash = "sha256:523a8ee12edfa36f6d2a49407f705a6ef4c5098de4f498619787e272de93f2d5", size = 255576 },
     { url = "https://files.pythonhosted.org/packages/ab/8a/915380ee96a5638bda80cd061ccb8e666bfdccea38d5741cb69e6dbd61fc/contourpy-1.3.1-cp313-cp313-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:ece6df05e2c41bd46776fbc712e0996f7c94e0d0543af1656956d150c4ca7c81", size = 306635 },
@@ -159,53 +227,61 @@ version = "0.1.0"
 source = { editable = "." }
 dependencies = [
     { name = "albumentations" },
-    { name = "graphviz" },
     { name = "ipykernel" },
     { name = "matplotlib" },
+    { name = "onnx" },
     { name = "opencv-python" },
     { name = "pyclustering" },
     { name = "pynvml" },
     { name = "python-dotenv" },
+    { name = "scikit-learn" },
+    { name = "supervision" },
     { name = "tensorboard" },
+    { name = "torch-tb-profiler" },
     { name = "torchinfo" },
     { name = "torchmetrics", extra = ["detection"] },
 ]
 
 [package.optional-dependencies]
 cpu = [
-    { name = "torch", version = "2.6.0", source = { registry = "https://pypi.org/simple" }, marker = "sys_platform == 'darwin'" },
-    { name = "torch", version = "2.6.0+cpu", source = { registry = "https://download.pytorch.org/whl/cpu" }, marker = "sys_platform != 'darwin'" },
-    { name = "torchvision", version = "0.21.0", source = { registry = "https://download.pytorch.org/whl/cpu" }, marker = "platform_machine == 'aarch64' and sys_platform == 'linux'" },
-    { name = "torchvision", version = "0.21.0", source = { registry = "https://pypi.org/simple" }, marker = "sys_platform == 'darwin'" },
-    { name = "torchvision", version = "0.21.0+cpu", source = { registry = "https://download.pytorch.org/whl/cpu" }, marker = "(platform_machine != 'aarch64' and sys_platform == 'linux') or (sys_platform != 'darwin' and sys_platform != 'linux')" },
+    { name = "torch", version = "2.5.1", source = { registry = "https://download.pytorch.org/whl/cpu" }, marker = "platform_machine == 'aarch64' and sys_platform == 'linux'" },
+    { name = "torch", version = "2.5.1", source = { registry = "https://pypi.org/simple" }, marker = "sys_platform == 'darwin'" },
+    { name = "torch", version = "2.5.1+cpu", source = { registry = "https://download.pytorch.org/whl/cpu" }, marker = "(platform_machine != 'aarch64' and sys_platform == 'linux') or (sys_platform != 'darwin' and sys_platform != 'linux')" },
+    { name = "torchvision", version = "0.20.1", source = { registry = "https://download.pytorch.org/whl/cpu" }, marker = "platform_machine == 'aarch64' and sys_platform == 'linux'" },
+    { name = "torchvision", version = "0.20.1", source = { registry = "https://pypi.org/simple" }, marker = "sys_platform == 'darwin'" },
+    { name = "torchvision", version = "0.20.1+cpu", source = { registry = "https://download.pytorch.org/whl/cpu" }, marker = "(platform_machine != 'aarch64' and sys_platform == 'linux') or (sys_platform != 'darwin' and sys_platform != 'linux')" },
 ]
-cu126 = [
-    { name = "torch", version = "2.6.0+cu126", source = { registry = "https://download.pytorch.org/whl/cu126" } },
-    { name = "torchvision", version = "0.21.0", source = { registry = "https://download.pytorch.org/whl/cu126" }, marker = "platform_machine == 'aarch64' and sys_platform == 'linux'" },
-    { name = "torchvision", version = "0.21.0+cu126", source = { registry = "https://download.pytorch.org/whl/cu126" }, marker = "platform_machine != 'aarch64' or sys_platform != 'linux'" },
+cu124 = [
+    { name = "torch", version = "2.5.1", source = { registry = "https://download.pytorch.org/whl/cu124" }, marker = "platform_machine == 'aarch64' and sys_platform == 'linux'" },
+    { name = "torch", version = "2.5.1+cu124", source = { registry = "https://download.pytorch.org/whl/cu124" }, marker = "platform_machine != 'aarch64' or sys_platform != 'linux'" },
+    { name = "torchvision", version = "0.20.1", source = { registry = "https://download.pytorch.org/whl/cu124" }, marker = "platform_machine == 'aarch64' and sys_platform == 'linux'" },
+    { name = "torchvision", version = "0.20.1+cu124", source = { registry = "https://download.pytorch.org/whl/cu124" }, marker = "platform_machine != 'aarch64' or sys_platform != 'linux'" },
 ]
 
 [package.metadata]
 requires-dist = [
     { name = "albumentations", specifier = ">=1.4.23" },
-    { name = "graphviz", specifier = ">=0.20.3" },
     { name = "ipykernel", specifier = ">=6.29.5" },
     { name = "matplotlib", specifier = ">=3.10.0" },
+    { name = "onnx", specifier = ">=1.17.0" },
     { name = "opencv-python", specifier = ">=4.10.0.84" },
     { name = "pyclustering", specifier = ">=0.10.1.2" },
     { name = "pynvml", specifier = ">=12.0.0" },
     { name = "python-dotenv", specifier = ">=1.0.1" },
+    { name = "scikit-learn", specifier = ">=1.6.1" },
+    { name = "supervision", specifier = ">=0.25.1" },
     { name = "tensorboard", specifier = ">=2.18.0" },
-    { name = "torch", marker = "sys_platform == 'darwin' and extra == 'cpu'", specifier = "==2.6.0" },
-    { name = "torch", marker = "sys_platform != 'darwin' and extra == 'cpu'", specifier = "==2.6.0", index = "https://download.pytorch.org/whl/cpu", conflict = { package = "cvnets", extra = "cpu" } },
-    { name = "torch", marker = "extra == 'cu126'", specifier = "==2.6.0", index = "https://download.pytorch.org/whl/cu126", conflict = { package = "cvnets", extra = "cu126" } },
+    { name = "torch", marker = "sys_platform == 'darwin' and extra == 'cpu'", specifier = "==2.5.1" },
+    { name = "torch", marker = "sys_platform != 'darwin' and extra == 'cpu'", specifier = "==2.5.1", index = "https://download.pytorch.org/whl/cpu", conflict = { package = "cvnets", extra = "cpu" } },
+    { name = "torch", marker = "extra == 'cu124'", specifier = "==2.5.1", index = "https://download.pytorch.org/whl/cu124", conflict = { package = "cvnets", extra = "cu124" } },
+    { name = "torch-tb-profiler", specifier = ">=0.4.3" },
     { name = "torchinfo", specifier = ">=1.8.0" },
     { name = "torchmetrics", extras = ["detection"], specifier = ">=1.6.0" },
-    { name = "torchvision", marker = "sys_platform == 'darwin' and extra == 'cpu'", specifier = "==0.21.0" },
-    { name = "torchvision", marker = "sys_platform != 'darwin' and extra == 'cpu'", specifier = "==0.21.0", index = "https://download.pytorch.org/whl/cpu", conflict = { package = "cvnets", extra = "cpu" } },
-    { name = "torchvision", marker = "extra == 'cu126'", specifier = "==0.21.0", index = "https://download.pytorch.org/whl/cu126", conflict = { package = "cvnets", extra = "cu126" } },
+    { name = "torchvision", marker = "sys_platform == 'darwin' and extra == 'cpu'", specifier = "==0.20.1" },
+    { name = "torchvision", marker = "sys_platform != 'darwin' and extra == 'cpu'", specifier = "==0.20.1", index = "https://download.pytorch.org/whl/cpu", conflict = { package = "cvnets", extra = "cpu" } },
+    { name = "torchvision", marker = "extra == 'cu124'", specifier = "==0.20.1", index = "https://download.pytorch.org/whl/cu124", conflict = { package = "cvnets", extra = "cu124" } },
 ]
-provides-extras = ["cpu", "cu126"]
+provides-extras = ["cpu", "cu124"]
 
 [[package]]
 name = "cycler"
@@ -222,6 +298,10 @@ version = "1.8.12"
 source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/68/25/c74e337134edf55c4dfc9af579eccb45af2393c40960e2795a94351e8140/debugpy-1.8.12.tar.gz", hash = "sha256:646530b04f45c830ceae8e491ca1c9320a2d2f0efea3141487c82130aba70dce", size = 1641122 }
 wheels = [
+    { url = "https://files.pythonhosted.org/packages/ba/e6/0f876ecfe5831ebe4762b19214364753c8bc2b357d28c5d739a1e88325c7/debugpy-1.8.12-cp312-cp312-macosx_14_0_universal2.whl", hash = "sha256:7e94b643b19e8feb5215fa508aee531387494bf668b2eca27fa769ea11d9f498", size = 2500846 },
+    { url = "https://files.pythonhosted.org/packages/19/64/33f41653a701f3cd2cbff8b41ebaad59885b3428b5afd0d93d16012ecf17/debugpy-1.8.12-cp312-cp312-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:086b32e233e89a2740c1615c2f775c34ae951508b28b308681dbbb87bba97d06", size = 4222181 },
+    { url = "https://files.pythonhosted.org/packages/32/a6/02646cfe50bfacc9b71321c47dc19a46e35f4e0aceea227b6d205e900e34/debugpy-1.8.12-cp312-cp312-win32.whl", hash = "sha256:2ae5df899732a6051b49ea2632a9ea67f929604fd2b036613a9f12bc3163b92d", size = 5227017 },
+    { url = "https://files.pythonhosted.org/packages/da/a6/10056431b5c47103474312cf4a2ec1001f73e0b63b1216706d5fef2531eb/debugpy-1.8.12-cp312-cp312-win_amd64.whl", hash = "sha256:39dfbb6fa09f12fae32639e3286112fc35ae976114f1f3d37375f3130a820969", size = 5267555 },
     { url = "https://files.pythonhosted.org/packages/cf/4d/7c3896619a8791effd5d8c31f0834471fc8f8fb3047ec4f5fc69dd1393dd/debugpy-1.8.12-cp313-cp313-macosx_14_0_universal2.whl", hash = "sha256:696d8ae4dff4cbd06bf6b10d671e088b66669f110c7c4e18a44c43cf75ce966f", size = 2485246 },
     { url = "https://files.pythonhosted.org/packages/99/46/bc6dcfd7eb8cc969a5716d858e32485eb40c72c6a8dc88d1e3a4d5e95813/debugpy-1.8.12-cp313-cp313-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:898fba72b81a654e74412a67c7e0a81e89723cfe2a3ea6fcd3feaa3395138ca9", size = 4218616 },
     { url = "https://files.pythonhosted.org/packages/03/dd/d7fcdf0381a9b8094da1f6a1c9f19fed493a4f8576a2682349b3a8b20ec7/debugpy-1.8.12-cp313-cp313-win32.whl", hash = "sha256:22a11c493c70413a01ed03f01c3c3a2fc4478fc6ee186e340487b2edcd6f4180", size = 5226540 },
@@ -236,6 +316,15 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/66/0c/8d907af351aa16b42caae42f9d6aa37b900c67308052d10fdce809f8d952/decorator-5.1.1.tar.gz", hash = "sha256:637996211036b6385ef91435e4fae22989472f9d571faba8927ba8253acbc330", size = 35016 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/d5/50/83c593b07763e1161326b3b8c6686f0f4b0f24d5526546bee538c89837d6/decorator-5.1.1-py3-none-any.whl", hash = "sha256:b8c3f85900b9dc423225913c5aace94729fe1fa9763b38939a95226f02d37186", size = 9073 },
+]
+
+[[package]]
+name = "defusedxml"
+version = "0.7.1"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/0f/d5/c66da9b79e5bdb124974bfe172b4daf3c984ebd9c2a06e2b8a4dc7331c72/defusedxml-0.7.1.tar.gz", hash = "sha256:1bb3032db185915b62d7c6209c5a8792be6a32ab2fedacc84e01b52c51aa3e69", size = 75520 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/07/6c/aa3f2f849e01cb6a001cd8554a88d4c77c5c1a31c95bdf1cf9301e6d9ef4/defusedxml-0.7.1-py2.py3-none-any.whl", hash = "sha256:a352e7e428770286cc899e2542b6cdaedb2b4953ff269a210103ec58f6198a61", size = 25604 },
 ]
 
 [[package]]
@@ -262,6 +351,14 @@ version = "4.55.3"
 source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/76/61/a300d1574dc381393424047c0396a0e213db212e28361123af9830d71a8d/fonttools-4.55.3.tar.gz", hash = "sha256:3983313c2a04d6cc1fe9251f8fc647754cf49a61dac6cb1e7249ae67afaafc45", size = 3498155 }
 wheels = [
+    { url = "https://files.pythonhosted.org/packages/89/58/fbcf5dff7e3ea844bb00c4d806ca1e339e1f2dce5529633bf4842c0c9a1f/fonttools-4.55.3-cp312-cp312-macosx_10_13_universal2.whl", hash = "sha256:f9e736f60f4911061235603a6119e72053073a12c6d7904011df2d8fad2c0e35", size = 2765380 },
+    { url = "https://files.pythonhosted.org/packages/81/dd/da6e329e51919b4f421c8738f3497e2ab08c168e76aaef7b6d5351862bdf/fonttools-4.55.3-cp312-cp312-macosx_10_13_x86_64.whl", hash = "sha256:7a8aa2c5e5b8b3bcb2e4538d929f6589a5c6bdb84fd16e2ed92649fb5454f11c", size = 2297940 },
+    { url = "https://files.pythonhosted.org/packages/00/44/f5ee560858425c99ef07e04919e736db09d6416408e5a8d3bbfb4a6623fd/fonttools-4.55.3-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:07f8288aacf0a38d174445fc78377a97fb0b83cfe352a90c9d9c1400571963c7", size = 4793327 },
+    { url = "https://files.pythonhosted.org/packages/24/da/0a001926d791c55e29ac3c52964957a20dbc1963615446b568b7432891c3/fonttools-4.55.3-cp312-cp312-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:b8d5e8916c0970fbc0f6f1bece0063363bb5857a7f170121a4493e31c3db3314", size = 4865624 },
+    { url = "https://files.pythonhosted.org/packages/3d/d8/1edd8b13a427a9fb6418373437caa586c0caa57f260af8e0548f4d11e340/fonttools-4.55.3-cp312-cp312-musllinux_1_2_aarch64.whl", hash = "sha256:ae3b6600565b2d80b7c05acb8e24d2b26ac407b27a3f2e078229721ba5698427", size = 4774166 },
+    { url = "https://files.pythonhosted.org/packages/9c/ec/ade054097976c3d6debc9032e09a351505a0196aa5493edf021be376f75e/fonttools-4.55.3-cp312-cp312-musllinux_1_2_x86_64.whl", hash = "sha256:54153c49913f45065c8d9e6d0c101396725c5621c8aee744719300f79771d75a", size = 5001832 },
+    { url = "https://files.pythonhosted.org/packages/e2/cd/233f0e31ad799bb91fc78099c8b4e5ec43b85a131688519640d6bae46f6a/fonttools-4.55.3-cp312-cp312-win32.whl", hash = "sha256:827e95fdbbd3e51f8b459af5ea10ecb4e30af50221ca103bea68218e9615de07", size = 2162228 },
+    { url = "https://files.pythonhosted.org/packages/46/45/a498b5291f6c0d91b2394b1ed7447442a57d1c9b9cf8f439aee3c316a56e/fonttools-4.55.3-cp312-cp312-win_amd64.whl", hash = "sha256:e6e8766eeeb2de759e862004aa11a9ea3d6f6d5ec710551a88b476192b64fd54", size = 2209118 },
     { url = "https://files.pythonhosted.org/packages/9c/9f/00142a19bad96eeeb1aed93f567adc19b7f2c1af6f5bc0a1c3de90b4b1ac/fonttools-4.55.3-cp313-cp313-macosx_10_13_universal2.whl", hash = "sha256:a430178ad3e650e695167cb53242dae3477b35c95bef6525b074d87493c4bf29", size = 2752812 },
     { url = "https://files.pythonhosted.org/packages/b0/20/14b8250d63ba65e162091fb0dda07730f90c303bbf5257e9ddacec7230d9/fonttools-4.55.3-cp313-cp313-macosx_10_13_x86_64.whl", hash = "sha256:529cef2ce91dc44f8e407cc567fae6e49a1786f2fefefa73a294704c415322a4", size = 2291521 },
     { url = "https://files.pythonhosted.org/packages/34/47/a681cfd10245eb74f65e491a934053ec75c4af639655446558f29818e45e/fonttools-4.55.3-cp313-cp313-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:8e75f12c82127486fac2d8bfbf5bf058202f54bf4f158d367e41647b972342ca", size = 4770980 },
@@ -283,20 +380,20 @@ wheels = [
 ]
 
 [[package]]
-name = "graphviz"
-version = "0.20.3"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/fa/83/5a40d19b8347f017e417710907f824915fba411a9befd092e52746b63e9f/graphviz-0.20.3.zip", hash = "sha256:09d6bc81e6a9fa392e7ba52135a9d49f1ed62526f96499325930e87ca1b5925d", size = 256455 }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/00/be/d59db2d1d52697c6adc9eacaf50e8965b6345cc143f671e1ed068818d5cf/graphviz-0.20.3-py3-none-any.whl", hash = "sha256:81f848f2904515d8cd359cc611faba817598d2feaac4027b266aa3eda7b3dde5", size = 47126 },
-]
-
-[[package]]
 name = "grpcio"
 version = "1.69.0"
 source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/e4/87/06a145284cbe86c91ca517fe6b57be5efbb733c0d6374b407f0992054d18/grpcio-1.69.0.tar.gz", hash = "sha256:936fa44241b5379c5afc344e1260d467bee495747eaf478de825bab2791da6f5", size = 12738244 }
 wheels = [
+    { url = "https://files.pythonhosted.org/packages/61/1d/8f28f147d7f3f5d6b6082f14e1e0f40d58e50bc2bd30d2377c730c57a286/grpcio-1.69.0-cp312-cp312-linux_armv7l.whl", hash = "sha256:fc18a4de8c33491ad6f70022af5c460b39611e39578a4d84de0fe92f12d5d47b", size = 5161414 },
+    { url = "https://files.pythonhosted.org/packages/35/4b/9ab8ea65e515e1844feced1ef9e7a5d8359c48d986c93f3d2a2006fbdb63/grpcio-1.69.0-cp312-cp312-macosx_10_14_universal2.whl", hash = "sha256:0f0270bd9ffbff6961fe1da487bdcd594407ad390cc7960e738725d4807b18c4", size = 11108909 },
+    { url = "https://files.pythonhosted.org/packages/99/68/1856fde2b3c3162bdfb9845978608deef3606e6907fdc2c87443fce6ecd0/grpcio-1.69.0-cp312-cp312-manylinux_2_17_aarch64.whl", hash = "sha256:dc48f99cc05e0698e689b51a05933253c69a8c8559a47f605cff83801b03af0e", size = 5658302 },
+    { url = "https://files.pythonhosted.org/packages/3e/21/3fa78d38dc5080d0d677103fad3a8cd55091635cc2069a7c06c7a54e6c4d/grpcio-1.69.0-cp312-cp312-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:1e925954b18d41aeb5ae250262116d0970893b38232689c4240024e4333ac084", size = 6306201 },
+    { url = "https://files.pythonhosted.org/packages/f3/cb/5c47b82fd1baf43dba973ae399095d51aaf0085ab0439838b4cbb1e87e3c/grpcio-1.69.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:87d222569273720366f68a99cb62e6194681eb763ee1d3b1005840678d4884f9", size = 5919649 },
+    { url = "https://files.pythonhosted.org/packages/c6/67/59d1a56a0f9508a29ea03e1ce800bdfacc1f32b4f6b15274b2e057bf8758/grpcio-1.69.0-cp312-cp312-musllinux_1_1_i686.whl", hash = "sha256:b62b0f41e6e01a3e5082000b612064c87c93a49b05f7602fe1b7aa9fd5171a1d", size = 6648974 },
+    { url = "https://files.pythonhosted.org/packages/f8/fe/ca70c14d98c6400095f19a0f4df8273d09c2106189751b564b26019f1dbe/grpcio-1.69.0-cp312-cp312-musllinux_1_1_x86_64.whl", hash = "sha256:db6f9fd2578dbe37db4b2994c94a1d9c93552ed77dca80e1657bb8a05b898b55", size = 6215144 },
+    { url = "https://files.pythonhosted.org/packages/b3/94/b2b0a9fd487fc8262e20e6dd0ec90d9fa462c82a43b4855285620f6e9d01/grpcio-1.69.0-cp312-cp312-win32.whl", hash = "sha256:b192b81076073ed46f4b4dd612b8897d9a1e39d4eabd822e5da7b38497ed77e1", size = 3644552 },
+    { url = "https://files.pythonhosted.org/packages/93/99/81aec9f85412e3255a591ae2ccb799238e074be774e5f741abae08a23418/grpcio-1.69.0-cp312-cp312-win_amd64.whl", hash = "sha256:1227ff7836f7b3a4ab04e5754f1d001fa52a730685d3dc894ed8bc262cc96c01", size = 4399532 },
     { url = "https://files.pythonhosted.org/packages/54/47/3ff4501365f56b7cc16617695dbd4fd838c5e362bc7fa9fee09d592f7d78/grpcio-1.69.0-cp313-cp313-linux_armv7l.whl", hash = "sha256:a78a06911d4081a24a1761d16215a08e9b6d4d29cdbb7e427e6c7e17b06bcc5d", size = 5162928 },
     { url = "https://files.pythonhosted.org/packages/c0/63/437174c5fa951052c9ecc5f373f62af6f3baf25f3f5ef35cbf561806b371/grpcio-1.69.0-cp313-cp313-macosx_10_14_universal2.whl", hash = "sha256:dc5a351927d605b2721cbb46158e431dd49ce66ffbacb03e709dc07a491dde35", size = 11103027 },
     { url = "https://files.pythonhosted.org/packages/53/df/53566a6fdc26b6d1f0585896e1cc4825961039bca5a6a314ff29d79b5d5b/grpcio-1.69.0-cp313-cp313-manylinux_2_17_aarch64.whl", hash = "sha256:3629d8a8185f5139869a6a17865d03113a260e311e78fbe313f1a71603617589", size = 5659277 },
@@ -309,11 +406,20 @@ wheels = [
 ]
 
 [[package]]
+name = "idna"
+version = "3.10"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/f1/70/7703c29685631f5a7590aa73f1f1d3fa9a380e654b86af429e0934a32f7d/idna-3.10.tar.gz", hash = "sha256:12f65c9b470abda6dc35cf8e63cc574b1c52b11df2c86030af0ac09b01b13ea9", size = 190490 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/76/c6/c88e154df9c4e1a2a66ccf0005a88dfb2650c1dffb6f5ce603dfbd452ce3/idna-3.10-py3-none-any.whl", hash = "sha256:946d195a0d259cbba61165e88e65941f16e9b36ea6ddb97f00452bae8b1287d3", size = 70442 },
+]
+
+[[package]]
 name = "ipykernel"
 version = "6.29.5"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "appnope", marker = "sys_platform == 'darwin' or (extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu126')" },
+    { name = "appnope", marker = "sys_platform == 'darwin' or (extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
     { name = "comm" },
     { name = "debugpy" },
     { name = "ipython" },
@@ -337,11 +443,11 @@ name = "ipython"
 version = "8.31.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "colorama", marker = "sys_platform == 'win32' or (extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu126')" },
+    { name = "colorama", marker = "sys_platform == 'win32' or (extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
     { name = "decorator" },
     { name = "jedi" },
     { name = "matplotlib-inline" },
-    { name = "pexpect", marker = "(sys_platform != 'emscripten' and sys_platform != 'win32') or (sys_platform == 'emscripten' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu126') or (sys_platform == 'win32' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu126')" },
+    { name = "pexpect", marker = "(sys_platform != 'emscripten' and sys_platform != 'win32') or (sys_platform == 'emscripten' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124') or (sys_platform == 'win32' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
     { name = "prompt-toolkit" },
     { name = "pygments" },
     { name = "stack-data" },
@@ -377,6 +483,15 @@ wheels = [
 ]
 
 [[package]]
+name = "joblib"
+version = "1.4.2"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/64/33/60135848598c076ce4b231e1b1895170f45fbcaeaa2c9d5e38b04db70c35/joblib-1.4.2.tar.gz", hash = "sha256:2382c5816b2636fbd20a09e0f4e9dad4736765fdfb7dca582943b9c1366b3f0e", size = 2116621 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/91/29/df4b9b42f2be0b623cbd5e2140cafcaa2bef0759a00b7b70104dcfe2fb51/joblib-1.4.2-py3-none-any.whl", hash = "sha256:06d478d5674cbc267e7496a410ee875abd68e4340feff4490bcb7afb88060ae6", size = 301817 },
+]
+
+[[package]]
 name = "jupyter-client"
 version = "8.6.3"
 source = { registry = "https://pypi.org/simple" }
@@ -398,7 +513,7 @@ version = "5.7.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "platformdirs" },
-    { name = "pywin32", marker = "(platform_python_implementation != 'PyPy' and sys_platform == 'win32') or (platform_python_implementation == 'PyPy' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu126') or (sys_platform != 'win32' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu126')" },
+    { name = "pywin32", marker = "(platform_python_implementation != 'PyPy' and sys_platform == 'win32') or (platform_python_implementation == 'PyPy' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124') or (sys_platform != 'win32' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
     { name = "traitlets" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/00/11/b56381fa6c3f4cc5d2cf54a7dbf98ad9aa0b339ef7a601d6053538b079a7/jupyter_core-5.7.2.tar.gz", hash = "sha256:aa5f8d32bbf6b431ac830496da7392035d6f61b4f54872f15c4bd2a9c3f536d9", size = 87629 }
@@ -412,6 +527,21 @@ version = "1.4.8"
 source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/82/59/7c91426a8ac292e1cdd53a63b6d9439abd573c875c3f92c146767dd33faf/kiwisolver-1.4.8.tar.gz", hash = "sha256:23d5f023bdc8c7e54eb65f03ca5d5bb25b601eac4d7f1a042888a1f45237987e", size = 97538 }
 wheels = [
+    { url = "https://files.pythonhosted.org/packages/fc/aa/cea685c4ab647f349c3bc92d2daf7ae34c8e8cf405a6dcd3a497f58a2ac3/kiwisolver-1.4.8-cp312-cp312-macosx_10_13_universal2.whl", hash = "sha256:d6af5e8815fd02997cb6ad9bbed0ee1e60014438ee1a5c2444c96f87b8843502", size = 124152 },
+    { url = "https://files.pythonhosted.org/packages/c5/0b/8db6d2e2452d60d5ebc4ce4b204feeb16176a851fd42462f66ade6808084/kiwisolver-1.4.8-cp312-cp312-macosx_10_13_x86_64.whl", hash = "sha256:bade438f86e21d91e0cf5dd7c0ed00cda0f77c8c1616bd83f9fc157fa6760d31", size = 66555 },
+    { url = "https://files.pythonhosted.org/packages/60/26/d6a0db6785dd35d3ba5bf2b2df0aedc5af089962c6eb2cbf67a15b81369e/kiwisolver-1.4.8-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:b83dc6769ddbc57613280118fb4ce3cd08899cc3369f7d0e0fab518a7cf37fdb", size = 65067 },
+    { url = "https://files.pythonhosted.org/packages/c9/ed/1d97f7e3561e09757a196231edccc1bcf59d55ddccefa2afc9c615abd8e0/kiwisolver-1.4.8-cp312-cp312-manylinux_2_12_i686.manylinux2010_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:111793b232842991be367ed828076b03d96202c19221b5ebab421ce8bcad016f", size = 1378443 },
+    { url = "https://files.pythonhosted.org/packages/29/61/39d30b99954e6b46f760e6289c12fede2ab96a254c443639052d1b573fbc/kiwisolver-1.4.8-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:257af1622860e51b1a9d0ce387bf5c2c4f36a90594cb9514f55b074bcc787cfc", size = 1472728 },
+    { url = "https://files.pythonhosted.org/packages/0c/3e/804163b932f7603ef256e4a715e5843a9600802bb23a68b4e08c8c0ff61d/kiwisolver-1.4.8-cp312-cp312-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl", hash = "sha256:69b5637c3f316cab1ec1c9a12b8c5f4750a4c4b71af9157645bf32830e39c03a", size = 1478388 },
+    { url = "https://files.pythonhosted.org/packages/8a/9e/60eaa75169a154700be74f875a4d9961b11ba048bef315fbe89cb6999056/kiwisolver-1.4.8-cp312-cp312-manylinux_2_17_s390x.manylinux2014_s390x.whl", hash = "sha256:782bb86f245ec18009890e7cb8d13a5ef54dcf2ebe18ed65f795e635a96a1c6a", size = 1413849 },
+    { url = "https://files.pythonhosted.org/packages/bc/b3/9458adb9472e61a998c8c4d95cfdfec91c73c53a375b30b1428310f923e4/kiwisolver-1.4.8-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:cc978a80a0db3a66d25767b03688f1147a69e6237175c0f4ffffaaedf744055a", size = 1475533 },
+    { url = "https://files.pythonhosted.org/packages/e4/7a/0a42d9571e35798de80aef4bb43a9b672aa7f8e58643d7bd1950398ffb0a/kiwisolver-1.4.8-cp312-cp312-musllinux_1_2_aarch64.whl", hash = "sha256:36dbbfd34838500a31f52c9786990d00150860e46cd5041386f217101350f0d3", size = 2268898 },
+    { url = "https://files.pythonhosted.org/packages/d9/07/1255dc8d80271400126ed8db35a1795b1a2c098ac3a72645075d06fe5c5d/kiwisolver-1.4.8-cp312-cp312-musllinux_1_2_i686.whl", hash = "sha256:eaa973f1e05131de5ff3569bbba7f5fd07ea0595d3870ed4a526d486fe57fa1b", size = 2425605 },
+    { url = "https://files.pythonhosted.org/packages/84/df/5a3b4cf13780ef6f6942df67b138b03b7e79e9f1f08f57c49957d5867f6e/kiwisolver-1.4.8-cp312-cp312-musllinux_1_2_ppc64le.whl", hash = "sha256:a66f60f8d0c87ab7f59b6fb80e642ebb29fec354a4dfad687ca4092ae69d04f4", size = 2375801 },
+    { url = "https://files.pythonhosted.org/packages/8f/10/2348d068e8b0f635c8c86892788dac7a6b5c0cb12356620ab575775aad89/kiwisolver-1.4.8-cp312-cp312-musllinux_1_2_s390x.whl", hash = "sha256:858416b7fb777a53f0c59ca08190ce24e9abbd3cffa18886a5781b8e3e26f65d", size = 2520077 },
+    { url = "https://files.pythonhosted.org/packages/32/d8/014b89fee5d4dce157d814303b0fce4d31385a2af4c41fed194b173b81ac/kiwisolver-1.4.8-cp312-cp312-musllinux_1_2_x86_64.whl", hash = "sha256:085940635c62697391baafaaeabdf3dd7a6c3643577dde337f4d66eba021b2b8", size = 2338410 },
+    { url = "https://files.pythonhosted.org/packages/bd/72/dfff0cc97f2a0776e1c9eb5bef1ddfd45f46246c6533b0191887a427bca5/kiwisolver-1.4.8-cp312-cp312-win_amd64.whl", hash = "sha256:01c3d31902c7db5fb6182832713d3b4122ad9317c2c5877d0539227d96bb2e50", size = 71853 },
+    { url = "https://files.pythonhosted.org/packages/dc/85/220d13d914485c0948a00f0b9eb419efaf6da81b7d72e88ce2391f7aed8d/kiwisolver-1.4.8-cp312-cp312-win_arm64.whl", hash = "sha256:a3c44cb68861de93f0c4a8175fbaa691f0aa22550c331fefef02b618a9dcb476", size = 65424 },
     { url = "https://files.pythonhosted.org/packages/79/b3/e62464a652f4f8cd9006e13d07abad844a47df1e6537f73ddfbf1bc997ec/kiwisolver-1.4.8-cp313-cp313-macosx_10_13_universal2.whl", hash = "sha256:1c8ceb754339793c24aee1c9fb2485b5b1f5bb1c2c214ff13368431e51fc9a09", size = 124156 },
     { url = "https://files.pythonhosted.org/packages/8d/2d/f13d06998b546a2ad4f48607a146e045bbe48030774de29f90bdc573df15/kiwisolver-1.4.8-cp313-cp313-macosx_10_13_x86_64.whl", hash = "sha256:54a62808ac74b5e55a04a408cda6156f986cefbcf0ada13572696b507cc92fa1", size = 66555 },
     { url = "https://files.pythonhosted.org/packages/59/e3/b8bd14b0a54998a9fd1e8da591c60998dc003618cb19a3f94cb233ec1511/kiwisolver-1.4.8-cp313-cp313-macosx_11_0_arm64.whl", hash = "sha256:68269e60ee4929893aad82666821aaacbd455284124817af45c11e50a4b42e3c", size = 65071 },
@@ -471,6 +601,16 @@ version = "3.0.2"
 source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/b2/97/5d42485e71dfc078108a86d6de8fa46db44a1a9295e89c5d6d4a06e23a62/markupsafe-3.0.2.tar.gz", hash = "sha256:ee55d3edf80167e48ea11a923c7386f4669df67d7994554387f84e7d8b0a2bf0", size = 20537 }
 wheels = [
+    { url = "https://files.pythonhosted.org/packages/22/09/d1f21434c97fc42f09d290cbb6350d44eb12f09cc62c9476effdb33a18aa/MarkupSafe-3.0.2-cp312-cp312-macosx_10_13_universal2.whl", hash = "sha256:9778bd8ab0a994ebf6f84c2b949e65736d5575320a17ae8984a77fab08db94cf", size = 14274 },
+    { url = "https://files.pythonhosted.org/packages/6b/b0/18f76bba336fa5aecf79d45dcd6c806c280ec44538b3c13671d49099fdd0/MarkupSafe-3.0.2-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:846ade7b71e3536c4e56b386c2a47adf5741d2d8b94ec9dc3e92e5e1ee1e2225", size = 12348 },
+    { url = "https://files.pythonhosted.org/packages/e0/25/dd5c0f6ac1311e9b40f4af06c78efde0f3b5cbf02502f8ef9501294c425b/MarkupSafe-3.0.2-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:1c99d261bd2d5f6b59325c92c73df481e05e57f19837bdca8413b9eac4bd8028", size = 24149 },
+    { url = "https://files.pythonhosted.org/packages/f3/f0/89e7aadfb3749d0f52234a0c8c7867877876e0a20b60e2188e9850794c17/MarkupSafe-3.0.2-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:e17c96c14e19278594aa4841ec148115f9c7615a47382ecb6b82bd8fea3ab0c8", size = 23118 },
+    { url = "https://files.pythonhosted.org/packages/d5/da/f2eeb64c723f5e3777bc081da884b414671982008c47dcc1873d81f625b6/MarkupSafe-3.0.2-cp312-cp312-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:88416bd1e65dcea10bc7569faacb2c20ce071dd1f87539ca2ab364bf6231393c", size = 22993 },
+    { url = "https://files.pythonhosted.org/packages/da/0e/1f32af846df486dce7c227fe0f2398dc7e2e51d4a370508281f3c1c5cddc/MarkupSafe-3.0.2-cp312-cp312-musllinux_1_2_aarch64.whl", hash = "sha256:2181e67807fc2fa785d0592dc2d6206c019b9502410671cc905d132a92866557", size = 24178 },
+    { url = "https://files.pythonhosted.org/packages/c4/f6/bb3ca0532de8086cbff5f06d137064c8410d10779c4c127e0e47d17c0b71/MarkupSafe-3.0.2-cp312-cp312-musllinux_1_2_i686.whl", hash = "sha256:52305740fe773d09cffb16f8ed0427942901f00adedac82ec8b67752f58a1b22", size = 23319 },
+    { url = "https://files.pythonhosted.org/packages/a2/82/8be4c96ffee03c5b4a034e60a31294daf481e12c7c43ab8e34a1453ee48b/MarkupSafe-3.0.2-cp312-cp312-musllinux_1_2_x86_64.whl", hash = "sha256:ad10d3ded218f1039f11a75f8091880239651b52e9bb592ca27de44eed242a48", size = 23352 },
+    { url = "https://files.pythonhosted.org/packages/51/ae/97827349d3fcffee7e184bdf7f41cd6b88d9919c80f0263ba7acd1bbcb18/MarkupSafe-3.0.2-cp312-cp312-win32.whl", hash = "sha256:0f4ca02bea9a23221c0182836703cbf8930c5e9454bacce27e767509fa286a30", size = 15097 },
+    { url = "https://files.pythonhosted.org/packages/c1/80/a61f99dc3a936413c3ee4e1eecac96c0da5ed07ad56fd975f1a9da5bc630/MarkupSafe-3.0.2-cp312-cp312-win_amd64.whl", hash = "sha256:8e06879fc22a25ca47312fbe7c8264eb0b662f6db27cb2d3bbbc74b1df4b9b87", size = 15601 },
     { url = "https://files.pythonhosted.org/packages/83/0e/67eb10a7ecc77a0c2bbe2b0235765b98d164d81600746914bebada795e97/MarkupSafe-3.0.2-cp313-cp313-macosx_10_13_universal2.whl", hash = "sha256:ba9527cdd4c926ed0760bc301f6728ef34d841f405abf9d4f959c478421e4efd", size = 14274 },
     { url = "https://files.pythonhosted.org/packages/2b/6d/9409f3684d3335375d04e5f05744dfe7e9f120062c9857df4ab490a1031a/MarkupSafe-3.0.2-cp313-cp313-macosx_11_0_arm64.whl", hash = "sha256:f8b3d067f2e40fe93e1ccdd6b2e1d16c43140e76f02fb1319a05cf2b79d99430", size = 12352 },
     { url = "https://files.pythonhosted.org/packages/d2/f5/6eadfcd3885ea85fe2a7c128315cc1bb7241e1987443d78c8fe712d03091/MarkupSafe-3.0.2-cp313-cp313-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:569511d3b58c8791ab4c2e1285575265991e6d8f8700c7be0e88f86cb0672094", size = 24122 },
@@ -510,6 +650,12 @@ dependencies = [
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/68/dd/fa2e1a45fce2d09f4aea3cee169760e672c8262325aa5796c49d543dc7e6/matplotlib-3.10.0.tar.gz", hash = "sha256:b886d02a581b96704c9d1ffe55709e49b4d2d52709ccebc4be42db856e511278", size = 36686418 }
 wheels = [
+    { url = "https://files.pythonhosted.org/packages/44/c7/6b2d8cb7cc251d53c976799cacd3200add56351c175ba89ab9cbd7c1e68a/matplotlib-3.10.0-cp312-cp312-macosx_10_13_x86_64.whl", hash = "sha256:4659665bc7c9b58f8c00317c3c2a299f7f258eeae5a5d56b4c64226fca2f7c59", size = 8172465 },
+    { url = "https://files.pythonhosted.org/packages/42/2a/6d66d0fba41e13e9ca6512a0a51170f43e7e7ed3a8dfa036324100775612/matplotlib-3.10.0-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:d44cb942af1693cced2604c33a9abcef6205601c445f6d0dc531d813af8a2f5a", size = 8043300 },
+    { url = "https://files.pythonhosted.org/packages/90/60/2a60342b27b90a16bada939a85e29589902b41073f59668b904b15ea666c/matplotlib-3.10.0-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:a994f29e968ca002b50982b27168addfd65f0105610b6be7fa515ca4b5307c95", size = 8448936 },
+    { url = "https://files.pythonhosted.org/packages/a7/b2/d872fc3d753516870d520595ddd8ce4dd44fa797a240999f125f58521ad7/matplotlib-3.10.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:9b0558bae37f154fffda54d779a592bc97ca8b4701f1c710055b609a3bac44c8", size = 8594151 },
+    { url = "https://files.pythonhosted.org/packages/f4/bd/b2f60cf7f57d014ab33e4f74602a2b5bdc657976db8196bbc022185f6f9c/matplotlib-3.10.0-cp312-cp312-musllinux_1_2_x86_64.whl", hash = "sha256:503feb23bd8c8acc75541548a1d709c059b7184cde26314896e10a9f14df5f12", size = 9400347 },
+    { url = "https://files.pythonhosted.org/packages/9f/6e/264673e64001b99d747aff5a288eca82826c024437a3694e19aed1decf46/matplotlib-3.10.0-cp312-cp312-win_amd64.whl", hash = "sha256:c40ba2eb08b3f5de88152c2333c58cee7edcead0a2a0d60fcafa116b17117adc", size = 8039144 },
     { url = "https://files.pythonhosted.org/packages/72/11/1b2a094d95dcb6e6edd4a0b238177c439006c6b7a9fe8d31801237bf512f/matplotlib-3.10.0-cp313-cp313-macosx_10_13_x86_64.whl", hash = "sha256:96f2886f5c1e466f21cc41b70c5a0cd47bfa0015eb2d5793c88ebce658600e25", size = 8173073 },
     { url = "https://files.pythonhosted.org/packages/0d/c4/87b6ad2723070511a411ea719f9c70fde64605423b184face4e94986de9d/matplotlib-3.10.0-cp313-cp313-macosx_11_0_arm64.whl", hash = "sha256:12eaf48463b472c3c0f8dbacdbf906e573013df81a0ab82f0616ea4b11281908", size = 8043892 },
     { url = "https://files.pythonhosted.org/packages/57/69/cb0812a136550b21361335e9ffb7d459bf6d13e03cb7b015555d5143d2d6/matplotlib-3.10.0-cp313-cp313-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:2fbbabc82fde51391c4da5006f965e36d86d95f6ee83fb594b279564a4c5d0d2", size = 8450532 },
@@ -569,6 +715,16 @@ version = "2.2.2"
 source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/ec/d0/c12ddfd3a02274be06ffc71f3efc6d0e457b0409c4481596881e748cb264/numpy-2.2.2.tar.gz", hash = "sha256:ed6906f61834d687738d25988ae117683705636936cc605be0bb208b23df4d8f", size = 20233295 }
 wheels = [
+    { url = "https://files.pythonhosted.org/packages/0c/e6/847d15770ab7a01e807bdfcd4ead5bdae57c0092b7dc83878171b6af97bb/numpy-2.2.2-cp312-cp312-macosx_10_13_x86_64.whl", hash = "sha256:ac9bea18d6d58a995fac1b2cb4488e17eceeac413af014b1dd26170b766d8467", size = 20912636 },
+    { url = "https://files.pythonhosted.org/packages/d1/af/f83580891577b13bd7e261416120e036d0d8fb508c8a43a73e38928b794b/numpy-2.2.2-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:23ae9f0c2d889b7b2d88a3791f6c09e2ef827c2446f1c4a3e3e76328ee4afd9a", size = 14098403 },
+    { url = "https://files.pythonhosted.org/packages/2b/86/d019fb60a9d0f1d4cf04b014fe88a9135090adfadcc31c1fadbb071d7fa7/numpy-2.2.2-cp312-cp312-macosx_14_0_arm64.whl", hash = "sha256:3074634ea4d6df66be04f6728ee1d173cfded75d002c75fac79503a880bf3825", size = 5128938 },
+    { url = "https://files.pythonhosted.org/packages/7a/1b/50985edb6f1ec495a1c36452e860476f5b7ecdc3fc59ea89ccad3c4926c5/numpy-2.2.2-cp312-cp312-macosx_14_0_x86_64.whl", hash = "sha256:8ec0636d3f7d68520afc6ac2dc4b8341ddb725039de042faf0e311599f54eb37", size = 6661937 },
+    { url = "https://files.pythonhosted.org/packages/f4/1b/17efd94cad1b9d605c3f8907fb06bcffc4ce4d1d14d46b95316cccccf2b9/numpy-2.2.2-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:2ffbb1acd69fdf8e89dd60ef6182ca90a743620957afb7066385a7bbe88dc748", size = 14049518 },
+    { url = "https://files.pythonhosted.org/packages/5b/73/65d2f0b698df1731e851e3295eb29a5ab8aa06f763f7e4188647a809578d/numpy-2.2.2-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:0349b025e15ea9d05c3d63f9657707a4e1d471128a3b1d876c095f328f8ff7f0", size = 16099146 },
+    { url = "https://files.pythonhosted.org/packages/d5/69/308f55c0e19d4b5057b5df286c5433822e3c8039ede06d4051d96f1c2c4e/numpy-2.2.2-cp312-cp312-musllinux_1_2_aarch64.whl", hash = "sha256:463247edcee4a5537841d5350bc87fe8e92d7dd0e8c71c995d2c6eecb8208278", size = 15246336 },
+    { url = "https://files.pythonhosted.org/packages/f0/d8/d8d333ad0d8518d077a21aeea7b7c826eff766a2b1ce1194dea95ca0bacf/numpy-2.2.2-cp312-cp312-musllinux_1_2_x86_64.whl", hash = "sha256:9dd47ff0cb2a656ad69c38da850df3454da88ee9a6fde0ba79acceee0e79daba", size = 17863507 },
+    { url = "https://files.pythonhosted.org/packages/82/6e/0b84ad3103ffc16d6673e63b5acbe7901b2af96c2837174c6318c98e27ab/numpy-2.2.2-cp312-cp312-win32.whl", hash = "sha256:4525b88c11906d5ab1b0ec1f290996c0020dd318af8b49acaa46f198b1ffc283", size = 6276491 },
+    { url = "https://files.pythonhosted.org/packages/fc/84/7f801a42a67b9772a883223a0a1e12069a14626c81a732bd70aac57aebc1/numpy-2.2.2-cp312-cp312-win_amd64.whl", hash = "sha256:5acea83b801e98541619af398cc0109ff48016955cc0818f478ee9ef1c5c3dcb", size = 12616372 },
     { url = "https://files.pythonhosted.org/packages/e1/fe/df5624001f4f5c3e0b78e9017bfab7fdc18a8d3b3d3161da3d64924dd659/numpy-2.2.2-cp313-cp313-macosx_10_13_x86_64.whl", hash = "sha256:b208cfd4f5fe34e1535c08983a1a6803fdbc7a1e86cf13dd0c61de0b51a0aadc", size = 20899188 },
     { url = "https://files.pythonhosted.org/packages/a9/80/d349c3b5ed66bd3cb0214be60c27e32b90a506946857b866838adbe84040/numpy-2.2.2-cp313-cp313-macosx_11_0_arm64.whl", hash = "sha256:d0bbe7dd86dca64854f4b6ce2ea5c60b51e36dfd597300057cf473d3615f2369", size = 14113972 },
     { url = "https://files.pythonhosted.org/packages/9d/50/949ec9cbb28c4b751edfa64503f0913cbfa8d795b4a251e7980f13a8a655/numpy-2.2.2-cp313-cp313-macosx_14_0_arm64.whl", hash = "sha256:22ea3bb552ade325530e72a0c557cdf2dea8914d3a5e1fecf58fa5dbcc6f43cd", size = 5114294 },
@@ -636,7 +792,7 @@ name = "nvidia-cudnn-cu12"
 version = "9.1.0.70"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "nvidia-cublas-cu12", marker = "(platform_machine != 'aarch64' and sys_platform == 'linux' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu126') or (sys_platform != 'darwin' and sys_platform != 'linux' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu126') or (extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu126')" },
+    { name = "nvidia-cublas-cu12", marker = "(platform_machine != 'aarch64' and sys_platform == 'linux') or (sys_platform != 'darwin' and sys_platform != 'linux')" },
 ]
 wheels = [
     { url = "https://files.pythonhosted.org/packages/9f/fd/713452cd72343f682b1c7b9321e23829f00b842ceaedcda96e742ea0b0b3/nvidia_cudnn_cu12-9.1.0.70-py3-none-manylinux2014_x86_64.whl", hash = "sha256:165764f44ef8c61fcdfdfdbe769d687e06374059fbb388b6c89ecb0e28793a6f", size = 664752741 },
@@ -648,7 +804,7 @@ name = "nvidia-cufft-cu12"
 version = "11.2.1.3"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "nvidia-nvjitlink-cu12", marker = "(platform_machine != 'aarch64' and sys_platform == 'linux' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu126') or (sys_platform != 'darwin' and sys_platform != 'linux' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu126') or (extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu126')" },
+    { name = "nvidia-nvjitlink-cu12", marker = "(platform_machine != 'aarch64' and sys_platform == 'linux') or (sys_platform != 'darwin' and sys_platform != 'linux')" },
 ]
 wheels = [
     { url = "https://files.pythonhosted.org/packages/7a/8a/0e728f749baca3fbeffad762738276e5df60851958be7783af121a7221e7/nvidia_cufft_cu12-11.2.1.3-py3-none-manylinux2014_aarch64.whl", hash = "sha256:5dad8008fc7f92f5ddfa2101430917ce2ffacd86824914c82e28990ad7f00399", size = 211422548 },
@@ -671,9 +827,9 @@ name = "nvidia-cusolver-cu12"
 version = "11.6.1.9"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "nvidia-cublas-cu12", marker = "(platform_machine != 'aarch64' and sys_platform == 'linux' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu126') or (sys_platform != 'darwin' and sys_platform != 'linux' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu126') or (extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu126')" },
-    { name = "nvidia-cusparse-cu12", marker = "(platform_machine != 'aarch64' and sys_platform == 'linux' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu126') or (sys_platform != 'darwin' and sys_platform != 'linux' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu126') or (extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu126')" },
-    { name = "nvidia-nvjitlink-cu12", marker = "(platform_machine != 'aarch64' and sys_platform == 'linux' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu126') or (sys_platform != 'darwin' and sys_platform != 'linux' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu126') or (extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu126')" },
+    { name = "nvidia-cublas-cu12", marker = "(platform_machine != 'aarch64' and sys_platform == 'linux') or (sys_platform != 'darwin' and sys_platform != 'linux')" },
+    { name = "nvidia-cusparse-cu12", marker = "(platform_machine != 'aarch64' and sys_platform == 'linux') or (sys_platform != 'darwin' and sys_platform != 'linux')" },
+    { name = "nvidia-nvjitlink-cu12", marker = "(platform_machine != 'aarch64' and sys_platform == 'linux') or (sys_platform != 'darwin' and sys_platform != 'linux')" },
 ]
 wheels = [
     { url = "https://files.pythonhosted.org/packages/46/6b/a5c33cf16af09166845345275c34ad2190944bcc6026797a39f8e0a282e0/nvidia_cusolver_cu12-11.6.1.9-py3-none-manylinux2014_aarch64.whl", hash = "sha256:d338f155f174f90724bbde3758b7ac375a70ce8e706d70b018dd3375545fc84e", size = 127634111 },
@@ -686,7 +842,7 @@ name = "nvidia-cusparse-cu12"
 version = "12.3.1.170"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "nvidia-nvjitlink-cu12", marker = "(platform_machine != 'aarch64' and sys_platform == 'linux' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu126') or (sys_platform != 'darwin' and sys_platform != 'linux' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu126') or (extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu126')" },
+    { name = "nvidia-nvjitlink-cu12", marker = "(platform_machine != 'aarch64' and sys_platform == 'linux') or (sys_platform != 'darwin' and sys_platform != 'linux')" },
 ]
 wheels = [
     { url = "https://files.pythonhosted.org/packages/96/a9/c0d2f83a53d40a4a41be14cea6a0bf9e668ffcf8b004bd65633f433050c0/nvidia_cusparse_cu12-12.3.1.170-py3-none-manylinux2014_aarch64.whl", hash = "sha256:9d32f62896231ebe0480efd8a7f702e143c98cfaa0e8a76df3386c1ba2b54df3", size = 207381987 },
@@ -742,6 +898,23 @@ wheels = [
 ]
 
 [[package]]
+name = "onnx"
+version = "1.17.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "numpy" },
+    { name = "protobuf" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/9a/54/0e385c26bf230d223810a9c7d06628d954008a5e5e4b73ee26ef02327282/onnx-1.17.0.tar.gz", hash = "sha256:48ca1a91ff73c1d5e3ea2eef20ae5d0e709bb8a2355ed798ffc2169753013fd3", size = 12165120 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/b4/dd/c416a11a28847fafb0db1bf43381979a0f522eb9107b831058fde012dd56/onnx-1.17.0-cp312-cp312-macosx_12_0_universal2.whl", hash = "sha256:0e906e6a83437de05f8139ea7eaf366bf287f44ae5cc44b2850a30e296421f2f", size = 16651271 },
+    { url = "https://files.pythonhosted.org/packages/f0/6c/f040652277f514ecd81b7251841f96caa5538365af7df07f86c6018cda2b/onnx-1.17.0-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:3d955ba2939878a520a97614bcf2e79c1df71b29203e8ced478fa78c9a9c63c2", size = 15907522 },
+    { url = "https://files.pythonhosted.org/packages/3d/7c/67f4952d1b56b3f74a154b97d0dd0630d525923b354db117d04823b8b49b/onnx-1.17.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:4f3fb5cc4e2898ac5312a7dc03a65133dd2abf9a5e520e69afb880a7251ec97a", size = 16046307 },
+    { url = "https://files.pythonhosted.org/packages/ae/20/6da11042d2ab870dfb4ce4a6b52354d7651b6b4112038b6d2229ab9904c4/onnx-1.17.0-cp312-cp312-win32.whl", hash = "sha256:317870fca3349d19325a4b7d1b5628f6de3811e9710b1e3665c68b073d0e68d7", size = 14424235 },
+    { url = "https://files.pythonhosted.org/packages/35/55/c4d11bee1fdb0c4bd84b4e3562ff811a19b63266816870ae1f95567aa6e1/onnx-1.17.0-cp312-cp312-win_amd64.whl", hash = "sha256:659b8232d627a5460d74fd3c96947ae83db6d03f035ac633e20cd69cfa029227", size = 14530453 },
+]
+
+[[package]]
 name = "opencv-python"
 version = "4.11.0.86"
 source = { registry = "https://pypi.org/simple" }
@@ -785,6 +958,40 @@ wheels = [
 ]
 
 [[package]]
+name = "pandas"
+version = "2.2.3"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "numpy" },
+    { name = "python-dateutil" },
+    { name = "pytz" },
+    { name = "tzdata" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/9c/d6/9f8431bacc2e19dca897724cd097b1bb224a6ad5433784a44b587c7c13af/pandas-2.2.3.tar.gz", hash = "sha256:4f18ba62b61d7e192368b84517265a99b4d7ee8912f8708660fb4a366cc82667", size = 4399213 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/17/a3/fb2734118db0af37ea7433f57f722c0a56687e14b14690edff0cdb4b7e58/pandas-2.2.3-cp312-cp312-macosx_10_9_x86_64.whl", hash = "sha256:b1d432e8d08679a40e2a6d8b2f9770a5c21793a6f9f47fdd52c5ce1948a5a8a9", size = 12529893 },
+    { url = "https://files.pythonhosted.org/packages/e1/0c/ad295fd74bfac85358fd579e271cded3ac969de81f62dd0142c426b9da91/pandas-2.2.3-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:a5a1595fe639f5988ba6a8e5bc9649af3baf26df3998a0abe56c02609392e0a4", size = 11363475 },
+    { url = "https://files.pythonhosted.org/packages/c6/2a/4bba3f03f7d07207481fed47f5b35f556c7441acddc368ec43d6643c5777/pandas-2.2.3-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.whl", hash = "sha256:5de54125a92bb4d1c051c0659e6fcb75256bf799a732a87184e5ea503965bce3", size = 15188645 },
+    { url = "https://files.pythonhosted.org/packages/38/f8/d8fddee9ed0d0c0f4a2132c1dfcf0e3e53265055da8df952a53e7eaf178c/pandas-2.2.3-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:fffb8ae78d8af97f849404f21411c95062db1496aeb3e56f146f0355c9989319", size = 12739445 },
+    { url = "https://files.pythonhosted.org/packages/20/e8/45a05d9c39d2cea61ab175dbe6a2de1d05b679e8de2011da4ee190d7e748/pandas-2.2.3-cp312-cp312-musllinux_1_2_aarch64.whl", hash = "sha256:6dfcb5ee8d4d50c06a51c2fffa6cff6272098ad6540aed1a76d15fb9318194d8", size = 16359235 },
+    { url = "https://files.pythonhosted.org/packages/1d/99/617d07a6a5e429ff90c90da64d428516605a1ec7d7bea494235e1c3882de/pandas-2.2.3-cp312-cp312-musllinux_1_2_x86_64.whl", hash = "sha256:062309c1b9ea12a50e8ce661145c6aab431b1e99530d3cd60640e255778bd43a", size = 14056756 },
+    { url = "https://files.pythonhosted.org/packages/29/d4/1244ab8edf173a10fd601f7e13b9566c1b525c4f365d6bee918e68381889/pandas-2.2.3-cp312-cp312-win_amd64.whl", hash = "sha256:59ef3764d0fe818125a5097d2ae867ca3fa64df032331b7e0917cf5d7bf66b13", size = 11504248 },
+    { url = "https://files.pythonhosted.org/packages/64/22/3b8f4e0ed70644e85cfdcd57454686b9057c6c38d2f74fe4b8bc2527214a/pandas-2.2.3-cp313-cp313-macosx_10_13_x86_64.whl", hash = "sha256:f00d1345d84d8c86a63e476bb4955e46458b304b9575dcf71102b5c705320015", size = 12477643 },
+    { url = "https://files.pythonhosted.org/packages/e4/93/b3f5d1838500e22c8d793625da672f3eec046b1a99257666c94446969282/pandas-2.2.3-cp313-cp313-macosx_11_0_arm64.whl", hash = "sha256:3508d914817e153ad359d7e069d752cdd736a247c322d932eb89e6bc84217f28", size = 11281573 },
+    { url = "https://files.pythonhosted.org/packages/f5/94/6c79b07f0e5aab1dcfa35a75f4817f5c4f677931d4234afcd75f0e6a66ca/pandas-2.2.3-cp313-cp313-manylinux2014_aarch64.manylinux_2_17_aarch64.whl", hash = "sha256:22a9d949bfc9a502d320aa04e5d02feab689d61da4e7764b62c30b991c42c5f0", size = 15196085 },
+    { url = "https://files.pythonhosted.org/packages/e8/31/aa8da88ca0eadbabd0a639788a6da13bb2ff6edbbb9f29aa786450a30a91/pandas-2.2.3-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:f3a255b2c19987fbbe62a9dfd6cff7ff2aa9ccab3fc75218fd4b7530f01efa24", size = 12711809 },
+    { url = "https://files.pythonhosted.org/packages/ee/7c/c6dbdb0cb2a4344cacfb8de1c5808ca885b2e4dcfde8008266608f9372af/pandas-2.2.3-cp313-cp313-musllinux_1_2_aarch64.whl", hash = "sha256:800250ecdadb6d9c78eae4990da62743b857b470883fa27f652db8bdde7f6659", size = 16356316 },
+    { url = "https://files.pythonhosted.org/packages/57/b7/8b757e7d92023b832869fa8881a992696a0bfe2e26f72c9ae9f255988d42/pandas-2.2.3-cp313-cp313-musllinux_1_2_x86_64.whl", hash = "sha256:6374c452ff3ec675a8f46fd9ab25c4ad0ba590b71cf0656f8b6daa5202bca3fb", size = 14022055 },
+    { url = "https://files.pythonhosted.org/packages/3b/bc/4b18e2b8c002572c5a441a64826252ce5da2aa738855747247a971988043/pandas-2.2.3-cp313-cp313-win_amd64.whl", hash = "sha256:61c5ad4043f791b61dd4752191d9f07f0ae412515d59ba8f005832a532f8736d", size = 11481175 },
+    { url = "https://files.pythonhosted.org/packages/76/a3/a5d88146815e972d40d19247b2c162e88213ef51c7c25993942c39dbf41d/pandas-2.2.3-cp313-cp313t-macosx_10_13_x86_64.whl", hash = "sha256:3b71f27954685ee685317063bf13c7709a7ba74fc996b84fc6821c59b0f06468", size = 12615650 },
+    { url = "https://files.pythonhosted.org/packages/9c/8c/f0fd18f6140ddafc0c24122c8a964e48294acc579d47def376fef12bcb4a/pandas-2.2.3-cp313-cp313t-macosx_11_0_arm64.whl", hash = "sha256:38cf8125c40dae9d5acc10fa66af8ea6fdf760b2714ee482ca691fc66e6fcb18", size = 11290177 },
+    { url = "https://files.pythonhosted.org/packages/ed/f9/e995754eab9c0f14c6777401f7eece0943840b7a9fc932221c19d1abee9f/pandas-2.2.3-cp313-cp313t-manylinux2014_aarch64.manylinux_2_17_aarch64.whl", hash = "sha256:ba96630bc17c875161df3818780af30e43be9b166ce51c9a18c1feae342906c2", size = 14651526 },
+    { url = "https://files.pythonhosted.org/packages/25/b0/98d6ae2e1abac4f35230aa756005e8654649d305df9a28b16b9ae4353bff/pandas-2.2.3-cp313-cp313t-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:1db71525a1538b30142094edb9adc10be3f3e176748cd7acc2240c2f2e5aa3a4", size = 11871013 },
+    { url = "https://files.pythonhosted.org/packages/cc/57/0f72a10f9db6a4628744c8e8f0df4e6e21de01212c7c981d31e50ffc8328/pandas-2.2.3-cp313-cp313t-musllinux_1_2_aarch64.whl", hash = "sha256:15c0e1e02e93116177d29ff83e8b1619c93ddc9c49083f237d4312337a61165d", size = 15711620 },
+    { url = "https://files.pythonhosted.org/packages/ab/5f/b38085618b950b79d2d9164a711c52b10aefc0ae6833b96f626b7021b2ed/pandas-2.2.3-cp313-cp313t-musllinux_1_2_x86_64.whl", hash = "sha256:ad5b65698ab28ed8d7f18790a0dc58005c7629f227be9ecc1072aa74c0c1d43a", size = 13098436 },
+]
+
+[[package]]
 name = "parso"
 version = "0.8.4"
 source = { registry = "https://pypi.org/simple" }
@@ -811,6 +1018,17 @@ version = "11.1.0"
 source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/f3/af/c097e544e7bd278333db77933e535098c259609c4eb3b85381109602fb5b/pillow-11.1.0.tar.gz", hash = "sha256:368da70808b36d73b4b390a8ffac11069f8a5c85f29eff1f1b01bcf3ef5b2a20", size = 46742715 }
 wheels = [
+    { url = "https://files.pythonhosted.org/packages/95/20/9ce6ed62c91c073fcaa23d216e68289e19d95fb8188b9fb7a63d36771db8/pillow-11.1.0-cp312-cp312-macosx_10_13_x86_64.whl", hash = "sha256:2062ffb1d36544d42fcaa277b069c88b01bb7298f4efa06731a7fd6cc290b81a", size = 3226818 },
+    { url = "https://files.pythonhosted.org/packages/b9/d8/f6004d98579a2596c098d1e30d10b248798cceff82d2b77aa914875bfea1/pillow-11.1.0-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:a85b653980faad27e88b141348707ceeef8a1186f75ecc600c395dcac19f385b", size = 3101662 },
+    { url = "https://files.pythonhosted.org/packages/08/d9/892e705f90051c7a2574d9f24579c9e100c828700d78a63239676f960b74/pillow-11.1.0-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:9409c080586d1f683df3f184f20e36fb647f2e0bc3988094d4fd8c9f4eb1b3b3", size = 4329317 },
+    { url = "https://files.pythonhosted.org/packages/8c/aa/7f29711f26680eab0bcd3ecdd6d23ed6bce180d82e3f6380fb7ae35fcf3b/pillow-11.1.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:7fdadc077553621911f27ce206ffcbec7d3f8d7b50e0da39f10997e8e2bb7f6a", size = 4412999 },
+    { url = "https://files.pythonhosted.org/packages/c8/c4/8f0fe3b9e0f7196f6d0bbb151f9fba323d72a41da068610c4c960b16632a/pillow-11.1.0-cp312-cp312-manylinux_2_28_aarch64.whl", hash = "sha256:93a18841d09bcdd774dcdc308e4537e1f867b3dec059c131fde0327899734aa1", size = 4368819 },
+    { url = "https://files.pythonhosted.org/packages/38/0d/84200ed6a871ce386ddc82904bfadc0c6b28b0c0ec78176871a4679e40b3/pillow-11.1.0-cp312-cp312-manylinux_2_28_x86_64.whl", hash = "sha256:9aa9aeddeed452b2f616ff5507459e7bab436916ccb10961c4a382cd3e03f47f", size = 4496081 },
+    { url = "https://files.pythonhosted.org/packages/84/9c/9bcd66f714d7e25b64118e3952d52841a4babc6d97b6d28e2261c52045d4/pillow-11.1.0-cp312-cp312-musllinux_1_2_aarch64.whl", hash = "sha256:3cdcdb0b896e981678eee140d882b70092dac83ac1cdf6b3a60e2216a73f2b91", size = 4296513 },
+    { url = "https://files.pythonhosted.org/packages/db/61/ada2a226e22da011b45f7104c95ebda1b63dcbb0c378ad0f7c2a710f8fd2/pillow-11.1.0-cp312-cp312-musllinux_1_2_x86_64.whl", hash = "sha256:36ba10b9cb413e7c7dfa3e189aba252deee0602c86c309799da5a74009ac7a1c", size = 4431298 },
+    { url = "https://files.pythonhosted.org/packages/e7/c4/fc6e86750523f367923522014b821c11ebc5ad402e659d8c9d09b3c9d70c/pillow-11.1.0-cp312-cp312-win32.whl", hash = "sha256:cfd5cd998c2e36a862d0e27b2df63237e67273f2fc78f47445b14e73a810e7e6", size = 2291630 },
+    { url = "https://files.pythonhosted.org/packages/08/5c/2104299949b9d504baf3f4d35f73dbd14ef31bbd1ddc2c1b66a5b7dfda44/pillow-11.1.0-cp312-cp312-win_amd64.whl", hash = "sha256:a697cd8ba0383bba3d2d3ada02b34ed268cb548b369943cd349007730c92bddf", size = 2626369 },
+    { url = "https://files.pythonhosted.org/packages/37/f3/9b18362206b244167c958984b57c7f70a0289bfb59a530dd8af5f699b910/pillow-11.1.0-cp312-cp312-win_arm64.whl", hash = "sha256:4dd43a78897793f60766563969442020e90eb7847463eca901e41ba186a7d4a5", size = 2375240 },
     { url = "https://files.pythonhosted.org/packages/b3/31/9ca79cafdce364fd5c980cd3416c20ce1bebd235b470d262f9d24d810184/pillow-11.1.0-cp313-cp313-macosx_10_13_x86_64.whl", hash = "sha256:ae98e14432d458fc3de11a77ccb3ae65ddce70f730e7c76140653048c71bfcbc", size = 3226640 },
     { url = "https://files.pythonhosted.org/packages/ac/0f/ff07ad45a1f172a497aa393b13a9d81a32e1477ef0e869d030e3c1532521/pillow-11.1.0-cp313-cp313-macosx_11_0_arm64.whl", hash = "sha256:cc1331b6d5a6e144aeb5e626f4375f5b7ae9934ba620c0ac6b3e43d5e683a0f0", size = 3101437 },
     { url = "https://files.pythonhosted.org/packages/08/2f/9906fca87a68d29ec4530be1f893149e0cb64a86d1f9f70a7cfcdfe8ae44/pillow-11.1.0-cp313-cp313-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:758e9d4ef15d3560214cddbc97b8ef3ef86ce04d62ddac17ad39ba87e89bd3b1", size = 4326605 },
@@ -921,6 +1139,15 @@ dependencies = [
     { name = "numpy" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/6b/1a/cdfce175d663568215b3a6b6170ad2a526932cc1021dffabda56a5c3f189/pycocotools-2.0.8.tar.gz", hash = "sha256:8f2bcedb786ba26c367a3680f9c4eb5b2ad9dccb2b34eaeb205e0a021e1dfb8d", size = 24993 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/20/b6/d3287bdb2f1954d5739337035a424b6ec012bc6fed0af476c92309cec001/pycocotools-2.0.8-cp312-cp312-macosx_10_9_universal2.whl", hash = "sha256:dd4616621d062882db677de5c64b1b0f6efbcaed9fd284b61e7ba4b16ab24d7a", size = 162686 },
+    { url = "https://files.pythonhosted.org/packages/ce/1d/3f32a8fd8b0d0c6f952f030ac90fceb318204c19de33b1cbc4cccee51a03/pycocotools-2.0.8-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:5683ba2612c39094a2e8453d40349768a3da6673376786651481d6f553ff7b50", size = 429594 },
+    { url = "https://files.pythonhosted.org/packages/3c/ce/e51566bce4067327c299fe8b6de18f9275e0c0ceaf8e4820ea9af689101c/pycocotools-2.0.8-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:b89f399eb851d18f68dfa7f126380394ec0820915c7b3831dd37563bc58daa95", size = 443497 },
+    { url = "https://files.pythonhosted.org/packages/87/f2/038244a12c3297a2a7821bd6e72deaa350831c142b0380a14c9749009d83/pycocotools-2.0.8-cp312-cp312-musllinux_1_1_aarch64.whl", hash = "sha256:e6d528c4f35580347ee3cd57f92cf0926e9b6a688d0904b2ea8a814ae2e57a47", size = 428855 },
+    { url = "https://files.pythonhosted.org/packages/74/fd/88025b72eaff58fe4066823ebecb3232c3b59f2a080cb3d4c974e1082732/pycocotools-2.0.8-cp312-cp312-musllinux_1_1_x86_64.whl", hash = "sha256:56bbe8be608def61da0b4430562b8d5ff14525f509631a667cfd8405325193da", size = 444322 },
+    { url = "https://files.pythonhosted.org/packages/4a/9b/8f89d36e4a23166ccabe5c9fed00baffaa6a67609add316fc1334bbf4016/pycocotools-2.0.8-cp312-cp312-win_amd64.whl", hash = "sha256:d004033e760a172b2ccbdf4a62d20d2bcf0c9b40dc3c0d1d724045b0a6944862", size = 83255 },
+    { url = "https://files.pythonhosted.org/packages/4d/82/73ba66a13b2288ecc60ed910dd8c16e6c584f3ca5407e706e5903d256712/pycocotools-2.0.8-cp312-cp312-win_arm64.whl", hash = "sha256:87853ca11e9b130e461d6b5284ea475efe35429060a915844e1998d206ba028e", size = 68922 },
+]
 
 [[package]]
 name = "pycparser"
@@ -954,6 +1181,20 @@ dependencies = [
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/fc/01/f3e5ac5e7c25833db5eb555f7b7ab24cd6f8c322d3a3ad2d67a952dc0abc/pydantic_core-2.27.2.tar.gz", hash = "sha256:eb026e5a4c1fee05726072337ff51d1efb6f59090b7da90d30ea58625b1ffb39", size = 413443 }
 wheels = [
+    { url = "https://files.pythonhosted.org/packages/d6/74/51c8a5482ca447871c93e142d9d4a92ead74de6c8dc5e66733e22c9bba89/pydantic_core-2.27.2-cp312-cp312-macosx_10_12_x86_64.whl", hash = "sha256:9e0c8cfefa0ef83b4da9588448b6d8d2a2bf1a53c3f1ae5fca39eb3061e2f0b0", size = 1893127 },
+    { url = "https://files.pythonhosted.org/packages/d3/f3/c97e80721735868313c58b89d2de85fa80fe8dfeeed84dc51598b92a135e/pydantic_core-2.27.2-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:83097677b8e3bd7eaa6775720ec8e0405f1575015a463285a92bfdfe254529ef", size = 1811340 },
+    { url = "https://files.pythonhosted.org/packages/9e/91/840ec1375e686dbae1bd80a9e46c26a1e0083e1186abc610efa3d9a36180/pydantic_core-2.27.2-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:172fce187655fece0c90d90a678424b013f8fbb0ca8b036ac266749c09438cb7", size = 1822900 },
+    { url = "https://files.pythonhosted.org/packages/f6/31/4240bc96025035500c18adc149aa6ffdf1a0062a4b525c932065ceb4d868/pydantic_core-2.27.2-cp312-cp312-manylinux_2_17_armv7l.manylinux2014_armv7l.whl", hash = "sha256:519f29f5213271eeeeb3093f662ba2fd512b91c5f188f3bb7b27bc5973816934", size = 1869177 },
+    { url = "https://files.pythonhosted.org/packages/fa/20/02fbaadb7808be578317015c462655c317a77a7c8f0ef274bc016a784c54/pydantic_core-2.27.2-cp312-cp312-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl", hash = "sha256:05e3a55d124407fffba0dd6b0c0cd056d10e983ceb4e5dbd10dda135c31071d6", size = 2038046 },
+    { url = "https://files.pythonhosted.org/packages/06/86/7f306b904e6c9eccf0668248b3f272090e49c275bc488a7b88b0823444a4/pydantic_core-2.27.2-cp312-cp312-manylinux_2_17_s390x.manylinux2014_s390x.whl", hash = "sha256:9c3ed807c7b91de05e63930188f19e921d1fe90de6b4f5cd43ee7fcc3525cb8c", size = 2685386 },
+    { url = "https://files.pythonhosted.org/packages/8d/f0/49129b27c43396581a635d8710dae54a791b17dfc50c70164866bbf865e3/pydantic_core-2.27.2-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:6fb4aadc0b9a0c063206846d603b92030eb6f03069151a625667f982887153e2", size = 1997060 },
+    { url = "https://files.pythonhosted.org/packages/0d/0f/943b4af7cd416c477fd40b187036c4f89b416a33d3cc0ab7b82708a667aa/pydantic_core-2.27.2-cp312-cp312-manylinux_2_5_i686.manylinux1_i686.whl", hash = "sha256:28ccb213807e037460326424ceb8b5245acb88f32f3d2777427476e1b32c48c4", size = 2004870 },
+    { url = "https://files.pythonhosted.org/packages/35/40/aea70b5b1a63911c53a4c8117c0a828d6790483f858041f47bab0b779f44/pydantic_core-2.27.2-cp312-cp312-musllinux_1_1_aarch64.whl", hash = "sha256:de3cd1899e2c279b140adde9357c4495ed9d47131b4a4eaff9052f23398076b3", size = 1999822 },
+    { url = "https://files.pythonhosted.org/packages/f2/b3/807b94fd337d58effc5498fd1a7a4d9d59af4133e83e32ae39a96fddec9d/pydantic_core-2.27.2-cp312-cp312-musllinux_1_1_armv7l.whl", hash = "sha256:220f892729375e2d736b97d0e51466252ad84c51857d4d15f5e9692f9ef12be4", size = 2130364 },
+    { url = "https://files.pythonhosted.org/packages/fc/df/791c827cd4ee6efd59248dca9369fb35e80a9484462c33c6649a8d02b565/pydantic_core-2.27.2-cp312-cp312-musllinux_1_1_x86_64.whl", hash = "sha256:a0fcd29cd6b4e74fe8ddd2c90330fd8edf2e30cb52acda47f06dd615ae72da57", size = 2158303 },
+    { url = "https://files.pythonhosted.org/packages/9b/67/4e197c300976af185b7cef4c02203e175fb127e414125916bf1128b639a9/pydantic_core-2.27.2-cp312-cp312-win32.whl", hash = "sha256:1e2cb691ed9834cd6a8be61228471d0a503731abfb42f82458ff27be7b2186fc", size = 1834064 },
+    { url = "https://files.pythonhosted.org/packages/1f/ea/cd7209a889163b8dcca139fe32b9687dd05249161a3edda62860430457a5/pydantic_core-2.27.2-cp312-cp312-win_amd64.whl", hash = "sha256:cc3f1a99a4f4f9dd1de4fe0312c114e740b5ddead65bb4102884b384c15d8bc9", size = 1989046 },
+    { url = "https://files.pythonhosted.org/packages/bc/49/c54baab2f4658c26ac633d798dab66b4c3a9bbf47cff5284e9c182f4137a/pydantic_core-2.27.2-cp312-cp312-win_arm64.whl", hash = "sha256:3911ac9284cd8a1792d3cb26a2da18f3ca26c6908cc434a18f730dc0db7bfa3b", size = 1885092 },
     { url = "https://files.pythonhosted.org/packages/41/b1/9bc383f48f8002f99104e3acff6cba1231b29ef76cfa45d1506a5cad1f84/pydantic_core-2.27.2-cp313-cp313-macosx_10_12_x86_64.whl", hash = "sha256:7d14bd329640e63852364c306f4d23eb744e0f8193148d4044dd3dacdaacbd8b", size = 1892709 },
     { url = "https://files.pythonhosted.org/packages/10/6c/e62b8657b834f3eb2961b49ec8e301eb99946245e70bf42c8817350cbefc/pydantic_core-2.27.2-cp313-cp313-macosx_11_0_arm64.whl", hash = "sha256:82f91663004eb8ed30ff478d77c4d1179b3563df6cdb15c0817cd1cdaf34d154", size = 1811273 },
     { url = "https://files.pythonhosted.org/packages/ba/15/52cfe49c8c986e081b863b102d6b859d9defc63446b642ccbbb3742bf371/pydantic_core-2.27.2-cp313-cp313-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:71b24c7d61131bb83df10cc7e687433609963a944ccf45190cfc21e0887b08c9", size = 1823027 },
@@ -1022,10 +1263,22 @@ wheels = [
 ]
 
 [[package]]
+name = "pytz"
+version = "2025.1"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/5f/57/df1c9157c8d5a05117e455d66fd7cf6dbc46974f832b1058ed4856785d8a/pytz-2025.1.tar.gz", hash = "sha256:c2db42be2a2518b28e65f9207c4d05e6ff547d1efa4086469ef855e4ab70178e", size = 319617 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/eb/38/ac33370d784287baa1c3d538978b5e2ea064d4c1b93ffbd12826c190dd10/pytz-2025.1-py2.py3-none-any.whl", hash = "sha256:89dd22dca55b46eac6eda23b2d72721bf1bdfef212645d81513ef5d03038de57", size = 507930 },
+]
+
+[[package]]
 name = "pywin32"
 version = "308"
 source = { registry = "https://pypi.org/simple" }
 wheels = [
+    { url = "https://files.pythonhosted.org/packages/00/7c/d00d6bdd96de4344e06c4afbf218bc86b54436a94c01c71a8701f613aa56/pywin32-308-cp312-cp312-win32.whl", hash = "sha256:587f3e19696f4bf96fde9d8a57cec74a57021ad5f204c9e627e15c33ff568897", size = 5939729 },
+    { url = "https://files.pythonhosted.org/packages/21/27/0c8811fbc3ca188f93b5354e7c286eb91f80a53afa4e11007ef661afa746/pywin32-308-cp312-cp312-win_amd64.whl", hash = "sha256:00b3e11ef09ede56c6a43c71f2d31857cf7c54b0ab6e78ac659497abd2834f47", size = 6543015 },
+    { url = "https://files.pythonhosted.org/packages/9d/0f/d40f8373608caed2255781a3ad9a51d03a594a1248cd632d6a298daca693/pywin32-308-cp312-cp312-win_arm64.whl", hash = "sha256:9b4de86c8d909aed15b7011182c8cab38c8850de36e6afb1f0db22b8959e3091", size = 7976033 },
     { url = "https://files.pythonhosted.org/packages/a9/a4/aa562d8935e3df5e49c161b427a3a2efad2ed4e9cf81c3de636f1fdddfd0/pywin32-308-cp313-cp313-win32.whl", hash = "sha256:1c44539a37a5b7b21d02ab34e6a4d314e0788f1690d65b48e9b0b89f31abbbed", size = 5938579 },
     { url = "https://files.pythonhosted.org/packages/c7/50/b0efb8bb66210da67a53ab95fd7a98826a97ee21f1d22949863e6d588b22/pywin32-308-cp313-cp313-win_amd64.whl", hash = "sha256:fd380990e792eaf6827fcb7e187b2b4b1cede0585e3d0c9e84201ec27b9905e4", size = 6542056 },
     { url = "https://files.pythonhosted.org/packages/26/df/2b63e3e4f2df0224f8aaf6d131f54fe4e8c96400eb9df563e2aae2e1a1f9/pywin32-308-cp313-cp313-win_arm64.whl", hash = "sha256:ef313c46d4c18dfb82a2431e3051ac8f112ccee1a34f29c263c583c568db63cd", size = 7974986 },
@@ -1037,6 +1290,15 @@ version = "6.0.2"
 source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/54/ed/79a089b6be93607fa5cdaedf301d7dfb23af5f25c398d5ead2525b063e17/pyyaml-6.0.2.tar.gz", hash = "sha256:d584d9ec91ad65861cc08d42e834324ef890a082e591037abe114850ff7bbc3e", size = 130631 }
 wheels = [
+    { url = "https://files.pythonhosted.org/packages/86/0c/c581167fc46d6d6d7ddcfb8c843a4de25bdd27e4466938109ca68492292c/PyYAML-6.0.2-cp312-cp312-macosx_10_9_x86_64.whl", hash = "sha256:c70c95198c015b85feafc136515252a261a84561b7b1d51e3384e0655ddf25ab", size = 183873 },
+    { url = "https://files.pythonhosted.org/packages/a8/0c/38374f5bb272c051e2a69281d71cba6fdb983413e6758b84482905e29a5d/PyYAML-6.0.2-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:ce826d6ef20b1bc864f0a68340c8b3287705cae2f8b4b1d932177dcc76721725", size = 173302 },
+    { url = "https://files.pythonhosted.org/packages/c3/93/9916574aa8c00aa06bbac729972eb1071d002b8e158bd0e83a3b9a20a1f7/PyYAML-6.0.2-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:1f71ea527786de97d1a0cc0eacd1defc0985dcf6b3f17bb77dcfc8c34bec4dc5", size = 739154 },
+    { url = "https://files.pythonhosted.org/packages/95/0f/b8938f1cbd09739c6da569d172531567dbcc9789e0029aa070856f123984/PyYAML-6.0.2-cp312-cp312-manylinux_2_17_s390x.manylinux2014_s390x.whl", hash = "sha256:9b22676e8097e9e22e36d6b7bda33190d0d400f345f23d4065d48f4ca7ae0425", size = 766223 },
+    { url = "https://files.pythonhosted.org/packages/b9/2b/614b4752f2e127db5cc206abc23a8c19678e92b23c3db30fc86ab731d3bd/PyYAML-6.0.2-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:80bab7bfc629882493af4aa31a4cfa43a4c57c83813253626916b8c7ada83476", size = 767542 },
+    { url = "https://files.pythonhosted.org/packages/d4/00/dd137d5bcc7efea1836d6264f049359861cf548469d18da90cd8216cf05f/PyYAML-6.0.2-cp312-cp312-musllinux_1_1_aarch64.whl", hash = "sha256:0833f8694549e586547b576dcfaba4a6b55b9e96098b36cdc7ebefe667dfed48", size = 731164 },
+    { url = "https://files.pythonhosted.org/packages/c9/1f/4f998c900485e5c0ef43838363ba4a9723ac0ad73a9dc42068b12aaba4e4/PyYAML-6.0.2-cp312-cp312-musllinux_1_1_x86_64.whl", hash = "sha256:8b9c7197f7cb2738065c481a0461e50ad02f18c78cd75775628afb4d7137fb3b", size = 756611 },
+    { url = "https://files.pythonhosted.org/packages/df/d1/f5a275fdb252768b7a11ec63585bc38d0e87c9e05668a139fea92b80634c/PyYAML-6.0.2-cp312-cp312-win32.whl", hash = "sha256:ef6107725bd54b262d6dedcc2af448a266975032bc85ef0172c5f059da6325b4", size = 140591 },
+    { url = "https://files.pythonhosted.org/packages/0c/e8/4f648c598b17c3d06e8753d7d13d57542b30d56e6c2dedf9c331ae56312e/PyYAML-6.0.2-cp312-cp312-win_amd64.whl", hash = "sha256:7e7401d0de89a9a855c839bc697c079a4af81cf878373abd7dc625847d25cbd8", size = 156338 },
     { url = "https://files.pythonhosted.org/packages/ef/e3/3af305b830494fa85d95f6d95ef7fa73f2ee1cc8ef5b495c7c3269fb835f/PyYAML-6.0.2-cp313-cp313-macosx_10_13_x86_64.whl", hash = "sha256:efdca5630322a10774e8e98e1af481aad470dd62c3170801852d752aa7a783ba", size = 181309 },
     { url = "https://files.pythonhosted.org/packages/45/9f/3b1c20a0b7a3200524eb0076cc027a970d320bd3a6592873c85c92a08731/PyYAML-6.0.2-cp313-cp313-macosx_11_0_arm64.whl", hash = "sha256:50187695423ffe49e2deacb8cd10510bc361faac997de9efef88badc3bb9e2d1", size = 171679 },
     { url = "https://files.pythonhosted.org/packages/7c/9a/337322f27005c33bcb656c655fa78325b730324c78620e8328ae28b64d0c/PyYAML-6.0.2-cp313-cp313-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:0ffe8360bab4910ef1b9e87fb812d8bc0a308b0d0eef8c8f44e0254ab3b07133", size = 733428 },
@@ -1053,10 +1315,22 @@ name = "pyzmq"
 version = "26.2.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "cffi", marker = "implementation_name == 'pypy' or (extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu126')" },
+    { name = "cffi", marker = "implementation_name == 'pypy' or (extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/fd/05/bed626b9f7bb2322cdbbf7b4bd8f54b1b617b0d2ab2d3547d6e39428a48e/pyzmq-26.2.0.tar.gz", hash = "sha256:070672c258581c8e4f640b5159297580a9974b026043bd4ab0470be9ed324f1f", size = 271975 }
 wheels = [
+    { url = "https://files.pythonhosted.org/packages/28/2f/78a766c8913ad62b28581777ac4ede50c6d9f249d39c2963e279524a1bbe/pyzmq-26.2.0-cp312-cp312-macosx_10_15_universal2.whl", hash = "sha256:ded0fc7d90fe93ae0b18059930086c51e640cdd3baebdc783a695c77f123dcd9", size = 1343105 },
+    { url = "https://files.pythonhosted.org/packages/b7/9c/4b1e2d3d4065be715e007fe063ec7885978fad285f87eae1436e6c3201f4/pyzmq-26.2.0-cp312-cp312-macosx_10_9_x86_64.whl", hash = "sha256:17bf5a931c7f6618023cdacc7081f3f266aecb68ca692adac015c383a134ca52", size = 1008365 },
+    { url = "https://files.pythonhosted.org/packages/4f/ef/5a23ec689ff36d7625b38d121ef15abfc3631a9aecb417baf7a4245e4124/pyzmq-26.2.0-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:55cf66647e49d4621a7e20c8d13511ef1fe1efbbccf670811864452487007e08", size = 665923 },
+    { url = "https://files.pythonhosted.org/packages/ae/61/d436461a47437d63c6302c90724cf0981883ec57ceb6073873f32172d676/pyzmq-26.2.0-cp312-cp312-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:4661c88db4a9e0f958c8abc2b97472e23061f0bc737f6f6179d7a27024e1faa5", size = 903400 },
+    { url = "https://files.pythonhosted.org/packages/47/42/fc6d35ecefe1739a819afaf6f8e686f7f02a4dd241c78972d316f403474c/pyzmq-26.2.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:ea7f69de383cb47522c9c208aec6dd17697db7875a4674c4af3f8cfdac0bdeae", size = 860034 },
+    { url = "https://files.pythonhosted.org/packages/07/3b/44ea6266a6761e9eefaa37d98fabefa112328808ac41aa87b4bbb668af30/pyzmq-26.2.0-cp312-cp312-manylinux_2_28_x86_64.whl", hash = "sha256:7f98f6dfa8b8ccaf39163ce872bddacca38f6a67289116c8937a02e30bbe9711", size = 860579 },
+    { url = "https://files.pythonhosted.org/packages/38/6f/4df2014ab553a6052b0e551b37da55166991510f9e1002c89cab7ce3b3f2/pyzmq-26.2.0-cp312-cp312-musllinux_1_1_aarch64.whl", hash = "sha256:e3e0210287329272539eea617830a6a28161fbbd8a3271bf4150ae3e58c5d0e6", size = 1196246 },
+    { url = "https://files.pythonhosted.org/packages/38/9d/ee240fc0c9fe9817f0c9127a43238a3e28048795483c403cc10720ddef22/pyzmq-26.2.0-cp312-cp312-musllinux_1_1_i686.whl", hash = "sha256:6b274e0762c33c7471f1a7471d1a2085b1a35eba5cdc48d2ae319f28b6fc4de3", size = 1507441 },
+    { url = "https://files.pythonhosted.org/packages/85/4f/01711edaa58d535eac4a26c294c617c9a01f09857c0ce191fd574d06f359/pyzmq-26.2.0-cp312-cp312-musllinux_1_1_x86_64.whl", hash = "sha256:29c6a4635eef69d68a00321e12a7d2559fe2dfccfa8efae3ffb8e91cd0b36a8b", size = 1406498 },
+    { url = "https://files.pythonhosted.org/packages/07/18/907134c85c7152f679ed744e73e645b365f3ad571f38bdb62e36f347699a/pyzmq-26.2.0-cp312-cp312-win32.whl", hash = "sha256:989d842dc06dc59feea09e58c74ca3e1678c812a4a8a2a419046d711031f69c7", size = 575533 },
+    { url = "https://files.pythonhosted.org/packages/ce/2c/a6f4a20202a4d3c582ad93f95ee78d79bbdc26803495aec2912b17dbbb6c/pyzmq-26.2.0-cp312-cp312-win_amd64.whl", hash = "sha256:2a50625acdc7801bc6f74698c5c583a491c61d73c6b7ea4dee3901bb99adb27a", size = 637768 },
+    { url = "https://files.pythonhosted.org/packages/5f/0e/eb16ff731632d30554bf5af4dbba3ffcd04518219d82028aea4ae1b02ca5/pyzmq-26.2.0-cp312-cp312-win_arm64.whl", hash = "sha256:4d29ab8592b6ad12ebbf92ac2ed2bedcfd1cec192d8e559e2e099f648570e19b", size = 540675 },
     { url = "https://files.pythonhosted.org/packages/04/a7/0f7e2f6c126fe6e62dbae0bc93b1bd3f1099cf7fea47a5468defebe3f39d/pyzmq-26.2.0-cp313-cp313-macosx_10_13_x86_64.whl", hash = "sha256:9dd8cd1aeb00775f527ec60022004d030ddc51d783d056e3e23e74e623e33726", size = 1006564 },
     { url = "https://files.pythonhosted.org/packages/31/b6/a187165c852c5d49f826a690857684333a6a4a065af0a6015572d2284f6a/pyzmq-26.2.0-cp313-cp313-macosx_10_15_universal2.whl", hash = "sha256:28c812d9757fe8acecc910c9ac9dafd2ce968c00f9e619db09e9f8f54c3a68a3", size = 1340447 },
     { url = "https://files.pythonhosted.org/packages/68/ba/f4280c58ff71f321602a6e24fd19879b7e79793fb8ab14027027c0fb58ef/pyzmq-26.2.0-cp313-cp313-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:4d80b1dd99c1942f74ed608ddb38b181b87476c6a966a88a950c7dee118fdf50", size = 665485 },
@@ -1081,6 +1355,49 @@ wheels = [
 ]
 
 [[package]]
+name = "requests"
+version = "2.32.3"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "certifi" },
+    { name = "charset-normalizer" },
+    { name = "idna" },
+    { name = "urllib3" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/63/70/2bf7780ad2d390a8d301ad0b550f1581eadbd9a20f896afe06353c2a2913/requests-2.32.3.tar.gz", hash = "sha256:55365417734eb18255590a9ff9eb97e9e1da868d4ccd6402399eaf68af20a760", size = 131218 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/f9/9b/335f9764261e915ed497fcdeb11df5dfd6f7bf257d4a6a2a686d80da4d54/requests-2.32.3-py3-none-any.whl", hash = "sha256:70761cfe03c773ceb22aa2f671b4757976145175cdfca038c02654d061d6dcc6", size = 64928 },
+]
+
+[[package]]
+name = "scikit-learn"
+version = "1.6.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "joblib" },
+    { name = "numpy" },
+    { name = "scipy" },
+    { name = "threadpoolctl" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/9e/a5/4ae3b3a0755f7b35a280ac90b28817d1f380318973cff14075ab41ef50d9/scikit_learn-1.6.1.tar.gz", hash = "sha256:b4fc2525eca2c69a59260f583c56a7557c6ccdf8deafdba6e060f94c1c59738e", size = 7068312 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/0a/18/c797c9b8c10380d05616db3bfb48e2a3358c767affd0857d56c2eb501caa/scikit_learn-1.6.1-cp312-cp312-macosx_10_13_x86_64.whl", hash = "sha256:926f207c804104677af4857b2c609940b743d04c4c35ce0ddc8ff4f053cddc1b", size = 12104516 },
+    { url = "https://files.pythonhosted.org/packages/c4/b7/2e35f8e289ab70108f8cbb2e7a2208f0575dc704749721286519dcf35f6f/scikit_learn-1.6.1-cp312-cp312-macosx_12_0_arm64.whl", hash = "sha256:2c2cae262064e6a9b77eee1c8e768fc46aa0b8338c6a8297b9b6759720ec0ff2", size = 11167837 },
+    { url = "https://files.pythonhosted.org/packages/a4/f6/ff7beaeb644bcad72bcfd5a03ff36d32ee4e53a8b29a639f11bcb65d06cd/scikit_learn-1.6.1-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:1061b7c028a8663fb9a1a1baf9317b64a257fcb036dae5c8752b2abef31d136f", size = 12253728 },
+    { url = "https://files.pythonhosted.org/packages/29/7a/8bce8968883e9465de20be15542f4c7e221952441727c4dad24d534c6d99/scikit_learn-1.6.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:2e69fab4ebfc9c9b580a7a80111b43d214ab06250f8a7ef590a4edf72464dd86", size = 13147700 },
+    { url = "https://files.pythonhosted.org/packages/62/27/585859e72e117fe861c2079bcba35591a84f801e21bc1ab85bce6ce60305/scikit_learn-1.6.1-cp312-cp312-win_amd64.whl", hash = "sha256:70b1d7e85b1c96383f872a519b3375f92f14731e279a7b4c6cfd650cf5dffc52", size = 11110613 },
+    { url = "https://files.pythonhosted.org/packages/2e/59/8eb1872ca87009bdcdb7f3cdc679ad557b992c12f4b61f9250659e592c63/scikit_learn-1.6.1-cp313-cp313-macosx_10_13_x86_64.whl", hash = "sha256:2ffa1e9e25b3d93990e74a4be2c2fc61ee5af85811562f1288d5d055880c4322", size = 12010001 },
+    { url = "https://files.pythonhosted.org/packages/9d/05/f2fc4effc5b32e525408524c982c468c29d22f828834f0625c5ef3d601be/scikit_learn-1.6.1-cp313-cp313-macosx_12_0_arm64.whl", hash = "sha256:dc5cf3d68c5a20ad6d571584c0750ec641cc46aeef1c1507be51300e6003a7e1", size = 11096360 },
+    { url = "https://files.pythonhosted.org/packages/c8/e4/4195d52cf4f113573fb8ebc44ed5a81bd511a92c0228889125fac2f4c3d1/scikit_learn-1.6.1-cp313-cp313-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:c06beb2e839ecc641366000ca84f3cf6fa9faa1777e29cf0c04be6e4d096a348", size = 12209004 },
+    { url = "https://files.pythonhosted.org/packages/94/be/47e16cdd1e7fcf97d95b3cb08bde1abb13e627861af427a3651fcb80b517/scikit_learn-1.6.1-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:e8ca8cb270fee8f1f76fa9bfd5c3507d60c6438bbee5687f81042e2bb98e5a97", size = 13171776 },
+    { url = "https://files.pythonhosted.org/packages/34/b0/ca92b90859070a1487827dbc672f998da95ce83edce1270fc23f96f1f61a/scikit_learn-1.6.1-cp313-cp313-win_amd64.whl", hash = "sha256:7a1c43c8ec9fde528d664d947dc4c0789be4077a3647f232869f41d9bf50e0fb", size = 11071865 },
+    { url = "https://files.pythonhosted.org/packages/12/ae/993b0fb24a356e71e9a894e42b8a9eec528d4c70217353a1cd7a48bc25d4/scikit_learn-1.6.1-cp313-cp313t-macosx_10_13_x86_64.whl", hash = "sha256:a17c1dea1d56dcda2fac315712f3651a1fea86565b64b48fa1bc090249cbf236", size = 11955804 },
+    { url = "https://files.pythonhosted.org/packages/d6/54/32fa2ee591af44507eac86406fa6bba968d1eb22831494470d0a2e4a1eb1/scikit_learn-1.6.1-cp313-cp313t-macosx_12_0_arm64.whl", hash = "sha256:6a7aa5f9908f0f28f4edaa6963c0a6183f1911e63a69aa03782f0d924c830a35", size = 11100530 },
+    { url = "https://files.pythonhosted.org/packages/3f/58/55856da1adec655bdce77b502e94a267bf40a8c0b89f8622837f89503b5a/scikit_learn-1.6.1-cp313-cp313t-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:0650e730afb87402baa88afbf31c07b84c98272622aaba002559b614600ca691", size = 12433852 },
+    { url = "https://files.pythonhosted.org/packages/ff/4f/c83853af13901a574f8f13b645467285a48940f185b690936bb700a50863/scikit_learn-1.6.1-cp313-cp313t-win_amd64.whl", hash = "sha256:3f59fe08dc03ea158605170eb52b22a105f238a5d512c4470ddeca71feae8e5f", size = 11337256 },
+]
+
+[[package]]
 name = "scipy"
 version = "1.15.1"
 source = { registry = "https://pypi.org/simple" }
@@ -1089,6 +1406,14 @@ dependencies = [
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/76/c6/8eb0654ba0c7d0bb1bf67bf8fbace101a8e4f250f7722371105e8b6f68fc/scipy-1.15.1.tar.gz", hash = "sha256:033a75ddad1463970c96a88063a1df87ccfddd526437136b6ee81ff0312ebdf6", size = 59407493 }
 wheels = [
+    { url = "https://files.pythonhosted.org/packages/d8/6e/a9c42d0d39e09ed7fd203d0ac17adfea759cba61ab457671fe66e523dbec/scipy-1.15.1-cp312-cp312-macosx_10_13_x86_64.whl", hash = "sha256:c09aa9d90f3500ea4c9b393ee96f96b0ccb27f2f350d09a47f533293c78ea776", size = 41478318 },
+    { url = "https://files.pythonhosted.org/packages/04/ee/e3e535c81828618878a7433992fecc92fa4df79393f31a8fea1d05615091/scipy-1.15.1-cp312-cp312-macosx_12_0_arm64.whl", hash = "sha256:0ac102ce99934b162914b1e4a6b94ca7da0f4058b6d6fd65b0cef330c0f3346f", size = 32596696 },
+    { url = "https://files.pythonhosted.org/packages/c4/5e/b1b0124be8e76f87115f16b8915003eec4b7060298117715baf13f51942c/scipy-1.15.1-cp312-cp312-macosx_14_0_arm64.whl", hash = "sha256:09c52320c42d7f5c7748b69e9f0389266fd4f82cf34c38485c14ee976cb8cb04", size = 24870366 },
+    { url = "https://files.pythonhosted.org/packages/14/36/c00cb73eefda85946172c27913ab995c6ad4eee00fa4f007572e8c50cd51/scipy-1.15.1-cp312-cp312-macosx_14_0_x86_64.whl", hash = "sha256:cdde8414154054763b42b74fe8ce89d7f3d17a7ac5dd77204f0e142cdc9239e9", size = 28007461 },
+    { url = "https://files.pythonhosted.org/packages/68/94/aff5c51b3799349a9d1e67a056772a0f8a47db371e83b498d43467806557/scipy-1.15.1-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:4c9d8fc81d6a3b6844235e6fd175ee1d4c060163905a2becce8e74cb0d7554ce", size = 38068174 },
+    { url = "https://files.pythonhosted.org/packages/b0/3c/0de11ca154e24a57b579fb648151d901326d3102115bc4f9a7a86526ce54/scipy-1.15.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:0fb57b30f0017d4afa5fe5f5b150b8f807618819287c21cbe51130de7ccdaed2", size = 40249869 },
+    { url = "https://files.pythonhosted.org/packages/15/09/472e8d0a6b33199d1bb95e49bedcabc0976c3724edd9b0ef7602ccacf41e/scipy-1.15.1-cp312-cp312-musllinux_1_2_x86_64.whl", hash = "sha256:491d57fe89927fa1aafbe260f4cfa5ffa20ab9f1435025045a5315006a91b8f5", size = 42629068 },
+    { url = "https://files.pythonhosted.org/packages/ff/ba/31c7a8131152822b3a2cdeba76398ffb404d81d640de98287d236da90c49/scipy-1.15.1-cp312-cp312-win_amd64.whl", hash = "sha256:900f3fa3db87257510f011c292a5779eb627043dd89731b9c461cd16ef76ab3d", size = 43621992 },
     { url = "https://files.pythonhosted.org/packages/2b/bf/dd68965a4c5138a630eeed0baec9ae96e5d598887835bdde96cdd2fe4780/scipy-1.15.1-cp313-cp313-macosx_10_13_x86_64.whl", hash = "sha256:100193bb72fbff37dbd0bf14322314fc7cbe08b7ff3137f11a34d06dc0ee6b85", size = 41441136 },
     { url = "https://files.pythonhosted.org/packages/ef/5e/4928581312922d7e4d416d74c416a660addec4dd5ea185401df2269ba5a0/scipy-1.15.1-cp313-cp313-macosx_12_0_arm64.whl", hash = "sha256:2114a08daec64980e4b4cbdf5bee90935af66d750146b1d2feb0d3ac30613692", size = 32533699 },
     { url = "https://files.pythonhosted.org/packages/32/90/03f99c43041852837686898c66767787cd41c5843d7a1509c39ffef683e9/scipy-1.15.1-cp313-cp313-macosx_14_0_arm64.whl", hash = "sha256:6b3e71893c6687fc5e29208d518900c24ea372a862854c9888368c0b267387ab", size = 24807289 },
@@ -1121,6 +1446,23 @@ version = "6.2.1"
 source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/da/1c/90e6ec0f0de20108fdd7d5665ac2916b1e8c893ce2f8d7481fd37eabbb97/simsimd-6.2.1.tar.gz", hash = "sha256:5e202c5386a4141946b7aee05faac8ebc2e36bca0a360b24080e57b59bc4ef6a", size = 165828 }
 wheels = [
+    { url = "https://files.pythonhosted.org/packages/81/87/1f521d471d9079d89dd6860b9dd5d0f39c1633675a30b71acd0bd37cbba5/simsimd-6.2.1-cp312-cp312-macosx_10_13_universal2.whl", hash = "sha256:9b3315e41bb759dc038ecd6f4fa7bcf278bf72ee7d982f752482cdc732aea271", size = 169397 },
+    { url = "https://files.pythonhosted.org/packages/4b/1a/b0627589737dc75ccd2ed58893e9e7f8b8e082531bd34d319481d88018d5/simsimd-6.2.1-cp312-cp312-macosx_10_13_x86_64.whl", hash = "sha256:8d476c874bafa0d12d4c8c5c47faf17407f3c96140616384421c2aa980342b6f", size = 101478 },
+    { url = "https://files.pythonhosted.org/packages/e0/b7/e766f0ce9b595927ae1c534f1409b768187e8af567f4412ca220b67c1155/simsimd-6.2.1-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:e9d4f15c06cc221d29e181197c7bbf92c5e829220cbeb3cd1cf080de78b04f2a", size = 93439 },
+    { url = "https://files.pythonhosted.org/packages/ae/48/3b5ec9b3a6063bae2f280f5168aca7099a44fa7ec8b42875b98c79c1d49b/simsimd-6.2.1-cp312-cp312-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:d286fd4538cb1a1c70e69da00a3acee301519d578931b41161f4f1379d1195c6", size = 251469 },
+    { url = "https://files.pythonhosted.org/packages/70/86/16e8d5b9bdd34f75c7515adfad249f394653131bd1a1366076cf6113e84b/simsimd-6.2.1-cp312-cp312-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl", hash = "sha256:050f68cfa85f1fb2cfa156280928e42926e3977034b755023ce1315bf59e87ff", size = 302974 },
+    { url = "https://files.pythonhosted.org/packages/02/09/3f4240f2b43957aa0d72a2203b2549c0326c7baf97b7f78c72d48d4cd3d2/simsimd-6.2.1-cp312-cp312-manylinux_2_17_s390x.manylinux2014_s390x.whl", hash = "sha256:67bb4b17e04919545f29c7b708faaccbe027f164f8b5c9f4328604fa8f5560ea", size = 227864 },
+    { url = "https://files.pythonhosted.org/packages/07/4a/8c46806493c3a98025f01d81d9f55e0e574f11279c2ad77be919262ea9eb/simsimd-6.2.1-cp312-cp312-manylinux_2_28_aarch64.whl", hash = "sha256:3d6bffd999dbb36e606b065e0180365efac2606049c4f7818e4cba2d34c3678f", size = 432491 },
+    { url = "https://files.pythonhosted.org/packages/13/44/b56f207031405af52c6158c40e9f1121fe3a716d98946d9fa5919cf00266/simsimd-6.2.1-cp312-cp312-manylinux_2_28_x86_64.whl", hash = "sha256:25adb244fb75dbf49af0d1bcac4ed4a3fef8e847d78449faa5595af0a3e20d61", size = 633061 },
+    { url = "https://files.pythonhosted.org/packages/4c/ad/241f87641af09a1789af8df559aa86b45218d087e09c37c2dd8c013819d6/simsimd-6.2.1-cp312-cp312-musllinux_1_2_aarch64.whl", hash = "sha256:b4542cee77e801a9c27370fc36ae271514fc0fb2ce14a35f8b25f47989e3d267", size = 468544 },
+    { url = "https://files.pythonhosted.org/packages/e2/3e/357aca7df85ed1092dfa50b91cf1b7c0df6f70b384a0e3798132dd824b5c/simsimd-6.2.1-cp312-cp312-musllinux_1_2_armv7l.whl", hash = "sha256:4f665228f8ff4911790b485e74b00fa9586a141dde6011970be71bb303b5a22f", size = 269133 },
+    { url = "https://files.pythonhosted.org/packages/f0/67/079ca2c58bbc5812802c6ac1b332a6ef889d73cf1188726f36edc27898f6/simsimd-6.2.1-cp312-cp312-musllinux_1_2_i686.whl", hash = "sha256:783b4308f80ae00763b0eaa0dac26196958f9c2df60d35a0347ebd2f82ece46d", size = 344412 },
+    { url = "https://files.pythonhosted.org/packages/3c/f0/500c9002276259c17e3a6a13a7c7f84e5119602decadbf40429c978655b0/simsimd-6.2.1-cp312-cp312-musllinux_1_2_ppc64le.whl", hash = "sha256:95055e72cfe313c1c8694783bf8a631cc15673b3b775abef367e396d931db0b8", size = 389546 },
+    { url = "https://files.pythonhosted.org/packages/55/a2/d3f4c6aabba0430758367b3de5bbab59b979bf3525c039b882001f1d2ade/simsimd-6.2.1-cp312-cp312-musllinux_1_2_s390x.whl", hash = "sha256:a98f2b383f51b4f4ee568a637fc7958a347fdae0bd184cff8faa8030b6454a39", size = 316912 },
+    { url = "https://files.pythonhosted.org/packages/f8/a3/2514189c3aaa1beb1714b36be86e2d3af7067c3c95152d78cc4cffff6d87/simsimd-6.2.1-cp312-cp312-musllinux_1_2_x86_64.whl", hash = "sha256:2e474fd10ceb38e2c9f826108a7762f8ff7912974846d86f08c4e7b19cd35ed4", size = 670006 },
+    { url = "https://files.pythonhosted.org/packages/ef/23/dbf7c4aed7542260784dc7bc2056a4e5b6d716a14a9b40989d5c3096990a/simsimd-6.2.1-cp312-cp312-win32.whl", hash = "sha256:b2530ea44fffeab25e5752bec6a5991f30fbc430b04647980db5b195c0971d48", size = 55019 },
+    { url = "https://files.pythonhosted.org/packages/a0/d8/57304c2317822634abd475f5912584a3cfa13363740e9ec72c0622c894f1/simsimd-6.2.1-cp312-cp312-win_amd64.whl", hash = "sha256:dc23283235d5b8f0373b95a547e26da2d7785647a5d0fa15c282fc8c49c0dcb0", size = 87133 },
+    { url = "https://files.pythonhosted.org/packages/3f/7b/ca333232a8bc87d1e846fa2feb9f0d4778500c30493726cb48f04551dfab/simsimd-6.2.1-cp312-cp312-win_arm64.whl", hash = "sha256:5692ce7e56253178eea9dbd58191734918409b83d54b07cfdcecf868d0150a73", size = 60401 },
     { url = "https://files.pythonhosted.org/packages/9b/f2/4ec7ed52c910a58a07043c5f3355adf4055246dafb79be57d0726e1a4aa0/simsimd-6.2.1-cp313-cp313-macosx_10_13_universal2.whl", hash = "sha256:76b32fdc7142c9714e94651ece8bc00dd5139c554813211552aa358e44af0e07", size = 169399 },
     { url = "https://files.pythonhosted.org/packages/61/d3/5af24e4f42e2b5bc3a06456ea9068d0fbcd23d8ceeb0e09fe54ed72cfdba/simsimd-6.2.1-cp313-cp313-macosx_10_13_x86_64.whl", hash = "sha256:f44e5e2319427f94db658c6f75caae78850da505902874a1664a83ef5713f333", size = 101484 },
     { url = "https://files.pythonhosted.org/packages/cf/86/816050f0fd0767e960c6b900e3c97fd6a4ae54a6aa5b8ef24846757a3f7d/simsimd-6.2.1-cp313-cp313-macosx_11_0_arm64.whl", hash = "sha256:05323cbad7200592c2e53fbcc759e615594e8ca444ef5eddf9f3fb196ad4de9c", size = 93447 },
@@ -1169,6 +1511,23 @@ version = "3.11.3"
 source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/49/ab/8a1713cf175b10e48a5e2ef0dd246dc19e40943d95e71ce17bcfc7ad3719/stringzilla-3.11.3.tar.gz", hash = "sha256:da78c583942fadd18099dee98220c21341fba1ed9d776e865eea9dacd7623e1b", size = 186702 }
 wheels = [
+    { url = "https://files.pythonhosted.org/packages/9a/63/6ea69be53111aebababeb096e482313f67fdba358480fdd18641bb0938f6/stringzilla-3.11.3-cp312-cp312-macosx_10_13_universal2.whl", hash = "sha256:1dd26a065f80aaa8808940b0eb4479123fb0e9be3a57f3270374f6c0c62cbfea", size = 121864 },
+    { url = "https://files.pythonhosted.org/packages/44/45/4d9b87a8c6a5b71727945c7ce6dd053a27b849ef49847dbcee3a74ae0227/stringzilla-3.11.3-cp312-cp312-macosx_10_13_x86_64.whl", hash = "sha256:fe947994c4fda9479741e1d853a338050ebee1cfd03fdde649fbc878cce6aa89", size = 79452 },
+    { url = "https://files.pythonhosted.org/packages/c4/b7/6af84714d8b3a11fbd17564e5d6874dcd09eda9432ed5e10214beea68ae1/stringzilla-3.11.3-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:aa77d589ad1cfaa606e5d47cf480dbc78ff30bf66e52a02503d1360ffddfd0b0", size = 79345 },
+    { url = "https://files.pythonhosted.org/packages/8c/f8/51dc4f826f67810da40ce820ff6ab518ad69a7c41737a1140b88942408df/stringzilla-3.11.3-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:cbcac25ce171d7b1f5858de9a57314401fdafa1c9b3011c0acea8521c1b15349", size = 231910 },
+    { url = "https://files.pythonhosted.org/packages/cb/b6/0ecb9184194a61e3df795aac79983e618e992c475d2aa6b3e71b717d5d46/stringzilla-3.11.3-cp312-cp312-manylinux_2_17_ppc64le.manylinux2014_ppc64le.manylinux_2_28_ppc64le.whl", hash = "sha256:1c2d3d6c963c6574adf88db6e0c8dde8b14fdbabae36b158c76b0b361ae5c2eb", size = 234654 },
+    { url = "https://files.pythonhosted.org/packages/ad/38/388787c9e014a2c355007b0a9c6a155b5df395ad2e4a84ac2b2317b2ade8/stringzilla-3.11.3-cp312-cp312-manylinux_2_17_s390x.manylinux2014_s390x.manylinux_2_28_s390x.whl", hash = "sha256:66e388a2d4eebe99a942352edfdca5901ae1ae25b48a5b6ccd68806df0026fd8", size = 206179 },
+    { url = "https://files.pythonhosted.org/packages/ca/71/c1df7eb6f590abbea044c545beda326daae91987a5dfd70b75577e4f6832/stringzilla-3.11.3-cp312-cp312-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:b6e85740acc4cc9b5c1c6e50ac7b4e1c20a7ccf762f02d5bd0905ba1e817bc78", size = 212188 },
+    { url = "https://files.pythonhosted.org/packages/2e/0b/10d23ab1018b6944e33164f281188d794c422f85da3e67c45779e04ee766/stringzilla-3.11.3-cp312-cp312-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:e509019baa5c4164ebad0f26ac576c61d4c3ed6b78db52c78ff6a2ae770fce8e", size = 308194 },
+    { url = "https://files.pythonhosted.org/packages/72/68/eff5a992689fa5c0f9d4232153f57fba558a48b5e5c508d7a84df83a313d/stringzilla-3.11.3-cp312-cp312-musllinux_1_2_aarch64.whl", hash = "sha256:b2967769ab3ac22c42572a02b8bfc5a713ad55dc156156f9586174899199b58d", size = 226854 },
+    { url = "https://files.pythonhosted.org/packages/45/e4/8cb5006e584db597e9fe20a034934ad0ef25799f72810b55dedd28c04dfa/stringzilla-3.11.3-cp312-cp312-musllinux_1_2_armv7l.whl", hash = "sha256:547b7cc8227f29e41f67947fa178637b8718985579f4664a35a34fd8582961eb", size = 201931 },
+    { url = "https://files.pythonhosted.org/packages/51/a1/bf664064ea1c52880875f95f211314d879c707d8f9c22fed3b907b4500a9/stringzilla-3.11.3-cp312-cp312-musllinux_1_2_i686.whl", hash = "sha256:15aa1dbcaed94708be5730902fb6838fdccf654f14880dfd7c667a9aec384b19", size = 213481 },
+    { url = "https://files.pythonhosted.org/packages/f3/16/318ba61ddff122917301fbddd0c2eee40b6ea797bb3a87e0d3dce6eccecb/stringzilla-3.11.3-cp312-cp312-musllinux_1_2_ppc64le.whl", hash = "sha256:3139adb8b54955817ca3a8d80a95bb04354e25d14664ff6501a6306ca82b9f07", size = 231875 },
+    { url = "https://files.pythonhosted.org/packages/a3/6d/65e2d5ab4c1a639e58b123c355d9b55b4fa12c12d7b15689025cab1d8668/stringzilla-3.11.3-cp312-cp312-musllinux_1_2_s390x.whl", hash = "sha256:df7e6826a3ce161cf52c0d15778b79f2f51a5e2abfaa23aa50d2f69a4a5c33d8", size = 207610 },
+    { url = "https://files.pythonhosted.org/packages/41/29/a91242294073df5f889110264dbb858c282499c1085a4d542e3e7daa043b/stringzilla-3.11.3-cp312-cp312-musllinux_1_2_x86_64.whl", hash = "sha256:442a642475b528f309a8639157a00043b3d6b8fe4d79866580da0a6d79b389c1", size = 302405 },
+    { url = "https://files.pythonhosted.org/packages/0a/6c/da539e01d00f4c72825b40a5cc754a110d028a89a32487893e85402140ba/stringzilla-3.11.3-cp312-cp312-win32.whl", hash = "sha256:1d03730e091319475912da7041c6f6e95f1e8c02cf45857b2527cf82423fc213", size = 68764 },
+    { url = "https://files.pythonhosted.org/packages/f9/4b/1650060c96c6780aea3e0af61e03594a350b864dc1099ce71098e30a89e1/stringzilla-3.11.3-cp312-cp312-win_amd64.whl", hash = "sha256:0afcda94e091710aa7eea0a2b17b2ac0f0c4c7bf01f69f4dbe5cc2426b6a9694", size = 80029 },
+    { url = "https://files.pythonhosted.org/packages/49/f5/0eb947a665beb7753c4dc843bce3e92edaf444a0a328793f0b5d44da25f3/stringzilla-3.11.3-cp312-cp312-win_arm64.whl", hash = "sha256:3506b6af6606db52f9cfa8495e5ed518ff915cb3e35fc3da9ac9b4a0e47fe84d", size = 69673 },
     { url = "https://files.pythonhosted.org/packages/ff/30/15b9323af53b12316cba82823fce2e90fd917a14267a8a02f67982f7f605/stringzilla-3.11.3-cp313-cp313-macosx_10_13_universal2.whl", hash = "sha256:96445414cdcbfbf5e52cb8b7cf17112ab02384f9efc202d6e84659f7cb591061", size = 121871 },
     { url = "https://files.pythonhosted.org/packages/31/e3/a17fd0c3beab839e91a5a399dbe2981e7d040c9295a3cb02b50c632cb001/stringzilla-3.11.3-cp313-cp313-macosx_10_13_x86_64.whl", hash = "sha256:2b7c7bf6e81c24232a34db434a17a4bce6f639f9907bc77fda1ab082763e581d", size = 79461 },
     { url = "https://files.pythonhosted.org/packages/08/d8/de3f955d57624ef7d6e79841755f89a45359018f3c28adf9eead03051706/stringzilla-3.11.3-cp313-cp313-macosx_11_0_arm64.whl", hash = "sha256:46b44ab850a79dee12a9cd34844394bec223653833e867fd7f0b62e5c677cced", size = 79346 },
@@ -1186,6 +1545,27 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/c7/92/a845f3fc63e1603205962e79d87c0644ec035937bf3eb2590fdab358dba2/stringzilla-3.11.3-cp313-cp313-win32.whl", hash = "sha256:cbb28cdfc23e7434cb24dc4ef4599ccb38603c15fd60a7c9472db38925de2699", size = 68766 },
     { url = "https://files.pythonhosted.org/packages/a9/17/f73a0e90c96a90ac4075af5ab48052dc9363632dba3cba8162a908fbc0e8/stringzilla-3.11.3-cp313-cp313-win_amd64.whl", hash = "sha256:9849e2f0d1e58670bd19342c85da69c4cf23ef69c138c928f3e6fb941314a9d2", size = 80032 },
     { url = "https://files.pythonhosted.org/packages/33/ec/1eaefaace793c63c84ca77d9855d7a1d89a45014a4da6e6284bef1762f10/stringzilla-3.11.3-cp313-cp313-win_arm64.whl", hash = "sha256:2747ce2a37c7a0a4d113fa6810efcb53d5d638fdf02b86e508e8bf938821a73c", size = 69682 },
+]
+
+[[package]]
+name = "supervision"
+version = "0.25.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "contourpy" },
+    { name = "defusedxml" },
+    { name = "matplotlib" },
+    { name = "numpy" },
+    { name = "opencv-python" },
+    { name = "pillow" },
+    { name = "pyyaml" },
+    { name = "requests" },
+    { name = "scipy" },
+    { name = "tqdm" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/4c/87/3daaa3aec1766f93d4c07d33f933a5ded0a6243a099b6b399b6268053bfe/supervision-0.25.1.tar.gz", hash = "sha256:61781b4abe4fa6ff95c58af6aec7dd3451a78e7e6a797e9ea2787f93771dd031", size = 146657 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/c1/24/d3bcad7ece751166ed308c6deb7e7d02a62a7f5a6e01e61ff2787c538fb0/supervision-0.25.1-py3-none-any.whl", hash = "sha256:ebc015c22983bc64563beda75f5f529e465e4020b318da07948ce03148307a72", size = 181480 },
 ]
 
 [[package]]
@@ -1231,38 +1611,182 @@ wheels = [
 ]
 
 [[package]]
+name = "threadpoolctl"
+version = "3.5.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/bd/55/b5148dcbf72f5cde221f8bfe3b6a540da7aa1842f6b491ad979a6c8b84af/threadpoolctl-3.5.0.tar.gz", hash = "sha256:082433502dd922bf738de0d8bcc4fdcbf0979ff44c42bd40f5af8a282f6fa107", size = 41936 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/4b/2c/ffbf7a134b9ab11a67b0cf0726453cedd9c5043a4fe7a35d1cefa9a1bcfb/threadpoolctl-3.5.0-py3-none-any.whl", hash = "sha256:56c1e26c150397e58c4926da8eeee87533b1e32bef131bd4bf6a2f45f3185467", size = 18414 },
+]
+
+[[package]]
 name = "torch"
-version = "2.6.0"
+version = "2.5.1"
+source = { registry = "https://download.pytorch.org/whl/cpu" }
+resolution-markers = [
+    "python_full_version >= '3.13' and platform_machine == 'aarch64' and sys_platform == 'linux'",
+    "python_full_version < '3.13' and platform_machine == 'aarch64' and sys_platform == 'linux'",
+]
+dependencies = [
+    { name = "filelock", marker = "(platform_machine == 'aarch64' and sys_platform == 'linux' and extra == 'extra-6-cvnets-cpu') or (platform_machine != 'aarch64' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124') or (sys_platform != 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+    { name = "fsspec", marker = "(platform_machine == 'aarch64' and sys_platform == 'linux' and extra == 'extra-6-cvnets-cpu') or (platform_machine != 'aarch64' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124') or (sys_platform != 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+    { name = "jinja2", marker = "(platform_machine == 'aarch64' and sys_platform == 'linux' and extra == 'extra-6-cvnets-cpu') or (platform_machine != 'aarch64' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124') or (sys_platform != 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+    { name = "networkx", marker = "(platform_machine == 'aarch64' and sys_platform == 'linux' and extra == 'extra-6-cvnets-cpu') or (platform_machine != 'aarch64' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124') or (sys_platform != 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+    { name = "setuptools", marker = "(platform_machine == 'aarch64' and sys_platform == 'linux' and extra == 'extra-6-cvnets-cpu') or (platform_machine != 'aarch64' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124') or (sys_platform != 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+    { name = "sympy", marker = "(platform_machine == 'aarch64' and sys_platform == 'linux' and extra == 'extra-6-cvnets-cpu') or (platform_machine != 'aarch64' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124') or (sys_platform != 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+    { name = "typing-extensions", marker = "(platform_machine == 'aarch64' and sys_platform == 'linux' and extra == 'extra-6-cvnets-cpu') or (platform_machine != 'aarch64' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124') or (sys_platform != 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+]
+wheels = [
+    { url = "https://download.pytorch.org/whl/cpu/torch-2.5.1-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:36d1be99281b6f602d9639bd0af3ee0006e7aab16f6718d86f709d395b6f262c" },
+    { url = "https://download.pytorch.org/whl/cpu/torch-2.5.1-cp312-none-macosx_11_0_arm64.whl", hash = "sha256:8c712df61101964eb11910a846514011f0b6f5920c55dbf567bff8a34163d5b1" },
+]
+
+[[package]]
+name = "torch"
+version = "2.5.1"
+source = { registry = "https://download.pytorch.org/whl/cu124" }
+resolution-markers = [
+    "python_full_version >= '3.13' and platform_machine == 'aarch64' and sys_platform == 'linux'",
+    "python_full_version < '3.13' and platform_machine == 'aarch64' and sys_platform == 'linux'",
+]
+dependencies = [
+    { name = "filelock", marker = "(platform_machine == 'aarch64' and sys_platform == 'linux' and extra == 'extra-6-cvnets-cu124') or (platform_machine != 'aarch64' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124') or (sys_platform != 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+    { name = "fsspec", marker = "(platform_machine == 'aarch64' and sys_platform == 'linux' and extra == 'extra-6-cvnets-cu124') or (platform_machine != 'aarch64' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124') or (sys_platform != 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+    { name = "jinja2", marker = "(platform_machine == 'aarch64' and sys_platform == 'linux' and extra == 'extra-6-cvnets-cu124') or (platform_machine != 'aarch64' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124') or (sys_platform != 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+    { name = "networkx", marker = "(platform_machine == 'aarch64' and sys_platform == 'linux' and extra == 'extra-6-cvnets-cu124') or (platform_machine != 'aarch64' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124') or (sys_platform != 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+    { name = "setuptools", marker = "(platform_machine == 'aarch64' and sys_platform == 'linux' and extra == 'extra-6-cvnets-cu124') or (platform_machine != 'aarch64' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124') or (sys_platform != 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+    { name = "sympy", marker = "(platform_machine == 'aarch64' and sys_platform == 'linux' and extra == 'extra-6-cvnets-cu124') or (platform_machine != 'aarch64' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124') or (sys_platform != 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+    { name = "typing-extensions", marker = "(platform_machine == 'aarch64' and sys_platform == 'linux' and extra == 'extra-6-cvnets-cu124') or (platform_machine != 'aarch64' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124') or (sys_platform != 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+]
+wheels = [
+    { url = "https://download.pytorch.org/whl/cu124/torch-2.5.1-cp312-cp312-linux_aarch64.whl", hash = "sha256:302041d457ee169fd925b53da283c13365c6de75c6bb3e84130774b10e2fbb39" },
+]
+
+[[package]]
+name = "torch"
+version = "2.5.1"
 source = { registry = "https://pypi.org/simple" }
 resolution-markers = [
-    "sys_platform == 'darwin'",
-    "platform_machine == 'aarch64' and sys_platform == 'linux'",
-    "(platform_machine != 'aarch64' and sys_platform == 'linux') or (sys_platform != 'darwin' and sys_platform != 'linux')",
+    "python_full_version >= '3.13' and sys_platform == 'darwin'",
+    "python_full_version < '3.13' and sys_platform == 'darwin'",
+    "python_full_version < '3.13' and platform_machine == 'aarch64' and sys_platform == 'linux'",
 ]
 dependencies = [
     { name = "filelock", marker = "sys_platform == 'darwin'" },
     { name = "fsspec", marker = "sys_platform == 'darwin'" },
     { name = "jinja2", marker = "sys_platform == 'darwin'" },
     { name = "networkx", marker = "sys_platform == 'darwin'" },
-    { name = "nvidia-cublas-cu12", marker = "(platform_machine == 'x86_64' and sys_platform == 'linux' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu126') or (extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu126')" },
-    { name = "nvidia-cuda-cupti-cu12", marker = "(platform_machine == 'x86_64' and sys_platform == 'linux' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu126') or (extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu126')" },
-    { name = "nvidia-cuda-nvrtc-cu12", marker = "(platform_machine == 'x86_64' and sys_platform == 'linux' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu126') or (extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu126')" },
-    { name = "nvidia-cuda-runtime-cu12", marker = "(platform_machine == 'x86_64' and sys_platform == 'linux' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu126') or (extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu126')" },
-    { name = "nvidia-cudnn-cu12", marker = "(platform_machine == 'x86_64' and sys_platform == 'linux' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu126') or (extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu126')" },
-    { name = "nvidia-cufft-cu12", marker = "(platform_machine == 'x86_64' and sys_platform == 'linux' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu126') or (extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu126')" },
-    { name = "nvidia-curand-cu12", marker = "(platform_machine == 'x86_64' and sys_platform == 'linux' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu126') or (extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu126')" },
-    { name = "nvidia-cusolver-cu12", marker = "(platform_machine == 'x86_64' and sys_platform == 'linux' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu126') or (extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu126')" },
-    { name = "nvidia-cusparse-cu12", marker = "(platform_machine == 'x86_64' and sys_platform == 'linux' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu126') or (extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu126')" },
-    { name = "nvidia-cusparselt-cu12", marker = "(platform_machine == 'x86_64' and sys_platform == 'linux' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu126') or (extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu126')" },
-    { name = "nvidia-nccl-cu12", marker = "(platform_machine == 'x86_64' and sys_platform == 'linux' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu126') or (extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu126')" },
-    { name = "nvidia-nvjitlink-cu12", marker = "(platform_machine == 'x86_64' and sys_platform == 'linux' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu126') or (extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu126')" },
-    { name = "nvidia-nvtx-cu12", marker = "(platform_machine == 'x86_64' and sys_platform == 'linux' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu126') or (extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu126')" },
     { name = "setuptools", marker = "sys_platform == 'darwin'" },
     { name = "sympy", marker = "sys_platform == 'darwin'" },
-    { name = "triton", marker = "(platform_machine == 'x86_64' and sys_platform == 'linux' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu126') or (extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu126')" },
     { name = "typing-extensions", marker = "sys_platform == 'darwin'" },
 ]
 wheels = [
+    { url = "https://files.pythonhosted.org/packages/8b/5c/36c114d120bfe10f9323ed35061bc5878cc74f3f594003854b0ea298942f/torch-2.5.1-cp312-cp312-manylinux1_x86_64.whl", hash = "sha256:ed231a4b3a5952177fafb661213d690a72caaad97d5824dd4fc17ab9e15cec03", size = 906389343 },
+    { url = "https://files.pythonhosted.org/packages/6d/69/d8ada8b6e0a4257556d5b4ddeb4345ea8eeaaef3c98b60d1cca197c7ad8e/torch-2.5.1-cp312-cp312-manylinux2014_aarch64.whl", hash = "sha256:3f4b7f10a247e0dcd7ea97dc2d3bfbfc90302ed36d7f3952b0008d0df264e697", size = 91811673 },
+    { url = "https://files.pythonhosted.org/packages/5f/ba/607d013b55b9fd805db2a5c2662ec7551f1910b4eef39653eeaba182c5b2/torch-2.5.1-cp312-cp312-win_amd64.whl", hash = "sha256:73e58e78f7d220917c5dbfad1a40e09df9929d3b95d25e57d9f8558f84c9a11c", size = 203046841 },
+    { url = "https://files.pythonhosted.org/packages/57/6c/bf52ff061da33deb9f94f4121fde7ff3058812cb7d2036c97bc167793bd1/torch-2.5.1-cp312-none-macosx_11_0_arm64.whl", hash = "sha256:8c712df61101964eb11910a846514011f0b6f5920c55dbf567bff8a34163d5b1", size = 63858109 },
+    { url = "https://files.pythonhosted.org/packages/69/72/20cb30f3b39a9face296491a86adb6ff8f1a47a897e4d14667e6cf89d5c3/torch-2.5.1-cp313-cp313-manylinux1_x86_64.whl", hash = "sha256:9b61edf3b4f6e3b0e0adda8b3960266b9009d02b37555971f4d1c8f7a05afed7", size = 906393265 },
+]
+
+[[package]]
+name = "torch"
+version = "2.5.1+cpu"
+source = { registry = "https://download.pytorch.org/whl/cpu" }
+resolution-markers = [
+    "(python_full_version >= '3.13' and platform_machine != 'aarch64' and sys_platform == 'linux') or (python_full_version >= '3.13' and sys_platform != 'darwin' and sys_platform != 'linux')",
+    "(python_full_version < '3.13' and platform_machine != 'aarch64' and sys_platform == 'linux') or (python_full_version < '3.13' and sys_platform != 'darwin' and sys_platform != 'linux')",
+]
+dependencies = [
+    { name = "filelock", marker = "(platform_machine != 'aarch64' and sys_platform == 'linux' and extra == 'extra-6-cvnets-cpu') or (sys_platform != 'darwin' and sys_platform != 'linux' and extra == 'extra-6-cvnets-cpu') or (sys_platform == 'darwin' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124') or (sys_platform == 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+    { name = "fsspec", marker = "(platform_machine != 'aarch64' and sys_platform == 'linux' and extra == 'extra-6-cvnets-cpu') or (sys_platform != 'darwin' and sys_platform != 'linux' and extra == 'extra-6-cvnets-cpu') or (sys_platform == 'darwin' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124') or (sys_platform == 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+    { name = "jinja2", marker = "(platform_machine != 'aarch64' and sys_platform == 'linux' and extra == 'extra-6-cvnets-cpu') or (sys_platform != 'darwin' and sys_platform != 'linux' and extra == 'extra-6-cvnets-cpu') or (sys_platform == 'darwin' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124') or (sys_platform == 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+    { name = "networkx", marker = "(platform_machine != 'aarch64' and sys_platform == 'linux' and extra == 'extra-6-cvnets-cpu') or (sys_platform != 'darwin' and sys_platform != 'linux' and extra == 'extra-6-cvnets-cpu') or (sys_platform == 'darwin' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124') or (sys_platform == 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+    { name = "setuptools", marker = "(platform_machine != 'aarch64' and sys_platform == 'linux' and extra == 'extra-6-cvnets-cpu') or (sys_platform != 'darwin' and sys_platform != 'linux' and extra == 'extra-6-cvnets-cpu') or (sys_platform == 'darwin' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124') or (sys_platform == 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+    { name = "sympy", marker = "(platform_machine != 'aarch64' and sys_platform == 'linux' and extra == 'extra-6-cvnets-cpu') or (sys_platform != 'darwin' and sys_platform != 'linux' and extra == 'extra-6-cvnets-cpu') or (sys_platform == 'darwin' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124') or (sys_platform == 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+    { name = "typing-extensions", marker = "(platform_machine != 'aarch64' and sys_platform == 'linux' and extra == 'extra-6-cvnets-cpu') or (sys_platform != 'darwin' and sys_platform != 'linux' and extra == 'extra-6-cvnets-cpu') or (sys_platform == 'darwin' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124') or (sys_platform == 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+]
+wheels = [
+    { url = "https://download.pytorch.org/whl/cpu/torch-2.5.1%2Bcpu-cp312-cp312-linux_x86_64.whl", hash = "sha256:4856f9d6925121d13c2df07aa7580b767f449dfe71ae5acde9c27535d5da4840" },
+    { url = "https://download.pytorch.org/whl/cpu/torch-2.5.1%2Bcpu-cp312-cp312-win_amd64.whl", hash = "sha256:a6b720410350765d3d77c01a5ce098a6c45af446284e45e87a98b8a16e7d564d" },
+    { url = "https://download.pytorch.org/whl/cpu/torch-2.5.1%2Bcpu-cp313-cp313-linux_x86_64.whl", hash = "sha256:5dbbdf83caa90d0bcaa50e4933ca424889133b35226db79000877d4ec5d9ea37" },
+]
+
+[[package]]
+name = "torch"
+version = "2.5.1+cu124"
+source = { registry = "https://download.pytorch.org/whl/cu124" }
+resolution-markers = [
+    "python_full_version >= '3.13' and sys_platform == 'darwin'",
+    "python_full_version < '3.13' and sys_platform == 'darwin'",
+    "(python_full_version >= '3.13' and platform_machine != 'aarch64' and sys_platform == 'linux') or (python_full_version >= '3.13' and sys_platform != 'darwin' and sys_platform != 'linux')",
+    "(python_full_version < '3.13' and platform_machine != 'aarch64' and sys_platform == 'linux') or (python_full_version < '3.13' and sys_platform != 'darwin' and sys_platform != 'linux')",
+]
+dependencies = [
+    { name = "filelock", marker = "(platform_machine != 'aarch64' and extra == 'extra-6-cvnets-cu124') or (sys_platform != 'linux' and extra == 'extra-6-cvnets-cu124') or (extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+    { name = "fsspec", marker = "(platform_machine != 'aarch64' and extra == 'extra-6-cvnets-cu124') or (sys_platform != 'linux' and extra == 'extra-6-cvnets-cu124') or (extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+    { name = "jinja2", marker = "(platform_machine != 'aarch64' and extra == 'extra-6-cvnets-cu124') or (sys_platform != 'linux' and extra == 'extra-6-cvnets-cu124') or (extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+    { name = "networkx", marker = "(platform_machine != 'aarch64' and extra == 'extra-6-cvnets-cu124') or (sys_platform != 'linux' and extra == 'extra-6-cvnets-cu124') or (extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+    { name = "nvidia-cublas-cu12", marker = "(platform_machine == 'x86_64' and sys_platform == 'linux' and extra == 'extra-6-cvnets-cu124') or (platform_machine != 'x86_64' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124') or (sys_platform != 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+    { name = "nvidia-cuda-cupti-cu12", marker = "(platform_machine == 'x86_64' and sys_platform == 'linux' and extra == 'extra-6-cvnets-cu124') or (platform_machine != 'x86_64' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124') or (sys_platform != 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+    { name = "nvidia-cuda-nvrtc-cu12", marker = "(platform_machine == 'x86_64' and sys_platform == 'linux' and extra == 'extra-6-cvnets-cu124') or (platform_machine != 'x86_64' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124') or (sys_platform != 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+    { name = "nvidia-cuda-runtime-cu12", marker = "(platform_machine == 'x86_64' and sys_platform == 'linux' and extra == 'extra-6-cvnets-cu124') or (platform_machine != 'x86_64' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124') or (sys_platform != 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+    { name = "nvidia-cudnn-cu12", marker = "(platform_machine == 'x86_64' and sys_platform == 'linux' and extra == 'extra-6-cvnets-cu124') or (platform_machine != 'x86_64' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124') or (sys_platform != 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+    { name = "nvidia-cufft-cu12", marker = "(platform_machine == 'x86_64' and sys_platform == 'linux' and extra == 'extra-6-cvnets-cu124') or (platform_machine != 'x86_64' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124') or (sys_platform != 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+    { name = "nvidia-curand-cu12", marker = "(platform_machine == 'x86_64' and sys_platform == 'linux' and extra == 'extra-6-cvnets-cu124') or (platform_machine != 'x86_64' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124') or (sys_platform != 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+    { name = "nvidia-cusolver-cu12", marker = "(platform_machine == 'x86_64' and sys_platform == 'linux' and extra == 'extra-6-cvnets-cu124') or (platform_machine != 'x86_64' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124') or (sys_platform != 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+    { name = "nvidia-cusparse-cu12", marker = "(platform_machine == 'x86_64' and sys_platform == 'linux' and extra == 'extra-6-cvnets-cu124') or (platform_machine != 'x86_64' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124') or (sys_platform != 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+    { name = "nvidia-nccl-cu12", marker = "(platform_machine == 'x86_64' and sys_platform == 'linux' and extra == 'extra-6-cvnets-cu124') or (platform_machine != 'x86_64' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124') or (sys_platform != 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+    { name = "nvidia-nvjitlink-cu12", marker = "(platform_machine == 'x86_64' and sys_platform == 'linux' and extra == 'extra-6-cvnets-cu124') or (platform_machine != 'x86_64' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124') or (sys_platform != 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+    { name = "nvidia-nvtx-cu12", marker = "(platform_machine == 'x86_64' and sys_platform == 'linux' and extra == 'extra-6-cvnets-cu124') or (platform_machine != 'x86_64' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124') or (sys_platform != 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+    { name = "setuptools", marker = "(platform_machine != 'aarch64' and extra == 'extra-6-cvnets-cu124') or (sys_platform != 'linux' and extra == 'extra-6-cvnets-cu124') or (extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+    { name = "sympy", marker = "(platform_machine != 'aarch64' and extra == 'extra-6-cvnets-cu124') or (sys_platform != 'linux' and extra == 'extra-6-cvnets-cu124') or (extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+    { name = "triton", version = "3.1.0", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version < '3.13' and platform_machine == 'x86_64' and sys_platform == 'linux' and extra == 'extra-6-cvnets-cu124') or (python_full_version >= '3.13' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124') or (platform_machine != 'x86_64' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124') or (sys_platform != 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+    { name = "typing-extensions", marker = "(platform_machine != 'aarch64' and extra == 'extra-6-cvnets-cu124') or (sys_platform != 'linux' and extra == 'extra-6-cvnets-cu124') or (extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+]
+wheels = [
+    { url = "https://download.pytorch.org/whl/cu124/torch-2.5.1%2Bcu124-cp312-cp312-linux_x86_64.whl", hash = "sha256:bf6484bfe5bc4f92a4a1a1bf553041505e19a911f717065330eb061afe0e14d7" },
+    { url = "https://download.pytorch.org/whl/cu124/torch-2.5.1%2Bcu124-cp312-cp312-win_amd64.whl", hash = "sha256:3c3f705fb125edbd77f9579fa11a138c56af8968a10fc95834cdd9fdf4f1f1a6" },
+    { url = "https://download.pytorch.org/whl/cu124/torch-2.5.1%2Bcu124-cp313-cp313-linux_x86_64.whl", hash = "sha256:e9bebf91ede89267577911da4b0709ac6113a0cff6a1c2202c046b1ec2a51601" },
+]
+
+[[package]]
+name = "torch"
+version = "2.6.0"
+source = { registry = "https://pypi.org/simple" }
+resolution-markers = [
+    "python_full_version >= '3.13' and sys_platform == 'darwin'",
+    "(python_full_version >= '3.13' and platform_machine != 'aarch64' and sys_platform == 'linux') or (python_full_version >= '3.13' and sys_platform != 'darwin' and sys_platform != 'linux')",
+    "(python_full_version < '3.13' and platform_machine != 'aarch64' and sys_platform == 'linux') or (python_full_version < '3.13' and sys_platform != 'darwin' and sys_platform != 'linux')",
+    "python_full_version >= '3.13' and platform_machine == 'aarch64' and sys_platform == 'linux'",
+]
+dependencies = [
+    { name = "filelock", marker = "(python_full_version >= '3.13' and sys_platform == 'darwin' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu124') or (python_full_version >= '3.13' and sys_platform == 'linux' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu124') or (platform_machine != 'aarch64' and sys_platform == 'linux' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu124') or (sys_platform != 'darwin' and sys_platform != 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124') or (sys_platform != 'darwin' and sys_platform != 'linux' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu124') or (sys_platform == 'darwin' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124') or (sys_platform == 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+    { name = "fsspec", marker = "(python_full_version >= '3.13' and sys_platform == 'darwin' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu124') or (python_full_version >= '3.13' and sys_platform == 'linux' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu124') or (platform_machine != 'aarch64' and sys_platform == 'linux' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu124') or (sys_platform != 'darwin' and sys_platform != 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124') or (sys_platform != 'darwin' and sys_platform != 'linux' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu124') or (sys_platform == 'darwin' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124') or (sys_platform == 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+    { name = "jinja2", marker = "(python_full_version >= '3.13' and sys_platform == 'darwin' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu124') or (python_full_version >= '3.13' and sys_platform == 'linux' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu124') or (platform_machine != 'aarch64' and sys_platform == 'linux' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu124') or (sys_platform != 'darwin' and sys_platform != 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124') or (sys_platform != 'darwin' and sys_platform != 'linux' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu124') or (sys_platform == 'darwin' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124') or (sys_platform == 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+    { name = "networkx", marker = "(python_full_version >= '3.13' and sys_platform == 'darwin' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu124') or (python_full_version >= '3.13' and sys_platform == 'linux' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu124') or (platform_machine != 'aarch64' and sys_platform == 'linux' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu124') or (sys_platform != 'darwin' and sys_platform != 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124') or (sys_platform != 'darwin' and sys_platform != 'linux' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu124') or (sys_platform == 'darwin' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124') or (sys_platform == 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+    { name = "nvidia-cublas-cu12", marker = "(platform_machine == 'x86_64' and sys_platform == 'linux' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu124') or (extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+    { name = "nvidia-cuda-cupti-cu12", marker = "(platform_machine == 'x86_64' and sys_platform == 'linux' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu124') or (extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+    { name = "nvidia-cuda-nvrtc-cu12", marker = "(platform_machine == 'x86_64' and sys_platform == 'linux' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu124') or (extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+    { name = "nvidia-cuda-runtime-cu12", marker = "(platform_machine == 'x86_64' and sys_platform == 'linux' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu124') or (extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+    { name = "nvidia-cudnn-cu12", marker = "(platform_machine == 'x86_64' and sys_platform == 'linux' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu124') or (extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+    { name = "nvidia-cufft-cu12", marker = "(platform_machine == 'x86_64' and sys_platform == 'linux' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu124') or (extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+    { name = "nvidia-curand-cu12", marker = "(platform_machine == 'x86_64' and sys_platform == 'linux' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu124') or (extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+    { name = "nvidia-cusolver-cu12", marker = "(platform_machine == 'x86_64' and sys_platform == 'linux' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu124') or (extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+    { name = "nvidia-cusparse-cu12", marker = "(platform_machine == 'x86_64' and sys_platform == 'linux' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu124') or (extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+    { name = "nvidia-cusparselt-cu12", marker = "(platform_machine == 'x86_64' and sys_platform == 'linux' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu124') or (extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+    { name = "nvidia-nccl-cu12", marker = "(platform_machine == 'x86_64' and sys_platform == 'linux' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu124') or (extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+    { name = "nvidia-nvjitlink-cu12", marker = "(platform_machine == 'x86_64' and sys_platform == 'linux' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu124') or (extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+    { name = "nvidia-nvtx-cu12", marker = "(platform_machine == 'x86_64' and sys_platform == 'linux' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu124') or (extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+    { name = "setuptools", marker = "(python_full_version >= '3.13' and sys_platform == 'darwin' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu124') or (python_full_version >= '3.13' and sys_platform == 'linux' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu124') or (platform_machine != 'aarch64' and sys_platform == 'linux' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu124') or (sys_platform != 'darwin' and sys_platform != 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124') or (sys_platform != 'darwin' and sys_platform != 'linux' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu124') or (sys_platform == 'darwin' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124') or (sys_platform == 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+    { name = "sympy", marker = "(python_full_version >= '3.13' and sys_platform == 'darwin' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu124') or (python_full_version >= '3.13' and sys_platform == 'linux' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu124') or (platform_machine != 'aarch64' and sys_platform == 'linux' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu124') or (sys_platform != 'darwin' and sys_platform != 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124') or (sys_platform != 'darwin' and sys_platform != 'linux' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu124') or (sys_platform == 'darwin' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124') or (sys_platform == 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+    { name = "triton", version = "3.2.0", source = { registry = "https://pypi.org/simple" }, marker = "(platform_machine == 'x86_64' and sys_platform == 'linux' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu124') or (extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+    { name = "typing-extensions", marker = "(python_full_version >= '3.13' and sys_platform == 'darwin' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu124') or (python_full_version >= '3.13' and sys_platform == 'linux' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu124') or (platform_machine != 'aarch64' and sys_platform == 'linux' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu124') or (sys_platform != 'darwin' and sys_platform != 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124') or (sys_platform != 'darwin' and sys_platform != 'linux' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu124') or (sys_platform == 'darwin' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124') or (sys_platform == 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+]
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/e5/35/0c52d708144c2deb595cd22819a609f78fdd699b95ff6f0ebcd456e3c7c1/torch-2.6.0-cp312-cp312-manylinux1_x86_64.whl", hash = "sha256:2bb8987f3bb1ef2675897034402373ddfc8f5ef0e156e2d8cfc47cacafdda4a9", size = 766624563 },
+    { url = "https://files.pythonhosted.org/packages/01/d6/455ab3fbb2c61c71c8842753b566012e1ed111e7a4c82e0e1c20d0c76b62/torch-2.6.0-cp312-cp312-manylinux_2_28_aarch64.whl", hash = "sha256:b789069020c5588c70d5c2158ac0aa23fd24a028f34a8b4fcb8fcb4d7efcf5fb", size = 95607867 },
+    { url = "https://files.pythonhosted.org/packages/18/cf/ae99bd066571656185be0d88ee70abc58467b76f2f7c8bfeb48735a71fe6/torch-2.6.0-cp312-cp312-win_amd64.whl", hash = "sha256:7e1448426d0ba3620408218b50aa6ada88aeae34f7a239ba5431f6c8774b1239", size = 204120469 },
+    { url = "https://files.pythonhosted.org/packages/81/b4/605ae4173aa37fb5aa14605d100ff31f4f5d49f617928c9f486bb3aaec08/torch-2.6.0-cp312-none-macosx_11_0_arm64.whl", hash = "sha256:9a610afe216a85a8b9bc9f8365ed561535c93e804c2a317ef7fabcc5deda0989", size = 66532538 },
     { url = "https://files.pythonhosted.org/packages/24/85/ead1349fc30fe5a32cadd947c91bda4a62fbfd7f8c34ee61f6398d38fb48/torch-2.6.0-cp313-cp313-manylinux1_x86_64.whl", hash = "sha256:4874a73507a300a5d089ceaff616a569e7bb7c613c56f37f63ec3ffac65259cf", size = 766626191 },
     { url = "https://files.pythonhosted.org/packages/dd/b0/26f06f9428b250d856f6d512413e9e800b78625f63801cbba13957432036/torch-2.6.0-cp313-cp313-manylinux_2_28_aarch64.whl", hash = "sha256:a0d5e1b9874c1a6c25556840ab8920569a7a4137afa8a63a32cee0bc7d89bd4b", size = 95611439 },
     { url = "https://files.pythonhosted.org/packages/c2/9c/fc5224e9770c83faed3a087112d73147cd7c7bfb7557dcf9ad87e1dda163/torch-2.6.0-cp313-cp313-win_amd64.whl", hash = "sha256:510c73251bee9ba02ae1cb6c9d4ee0907b3ce6020e62784e2d7598e0cfa4d6cc", size = 204126475 },
@@ -1270,54 +1794,16 @@ wheels = [
 ]
 
 [[package]]
-name = "torch"
-version = "2.6.0+cpu"
-source = { registry = "https://download.pytorch.org/whl/cpu" }
-resolution-markers = [
-    "(platform_machine != 'aarch64' and sys_platform == 'linux') or (sys_platform != 'darwin' and sys_platform != 'linux')",
-    "platform_machine == 'aarch64' and sys_platform == 'linux'",
-]
+name = "torch-tb-profiler"
+version = "0.4.3"
+source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "filelock", marker = "(sys_platform != 'darwin' and extra == 'extra-6-cvnets-cpu') or (extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu126')" },
-    { name = "fsspec", marker = "(sys_platform != 'darwin' and extra == 'extra-6-cvnets-cpu') or (extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu126')" },
-    { name = "jinja2", marker = "(sys_platform != 'darwin' and extra == 'extra-6-cvnets-cpu') or (extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu126')" },
-    { name = "networkx", marker = "(sys_platform != 'darwin' and extra == 'extra-6-cvnets-cpu') or (extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu126')" },
-    { name = "setuptools", marker = "(sys_platform != 'darwin' and extra == 'extra-6-cvnets-cpu') or (extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu126')" },
-    { name = "sympy", marker = "(sys_platform != 'darwin' and extra == 'extra-6-cvnets-cpu') or (extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu126')" },
-    { name = "typing-extensions", marker = "(sys_platform != 'darwin' and extra == 'extra-6-cvnets-cpu') or (extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu126')" },
+    { name = "pandas" },
+    { name = "tensorboard" },
 ]
+sdist = { url = "https://files.pythonhosted.org/packages/96/3f/1bdbeae21db91179c295bcecb7194d57cd0e184125c69e5a6e315ea4770f/torch_tb_profiler-0.4.3.tar.gz", hash = "sha256:8b8d29b2de960b3c4423087b23cec29beaf9ac3a8c7b046c18fd25b218f726b1", size = 1057029 }
 wheels = [
-    { url = "https://download.pytorch.org/whl/cpu/torch-2.6.0%2Bcpu-cp313-cp313-linux_x86_64.whl", hash = "sha256:e70ee2e37ad27a90201d101a41c2e10df7cf15a9ebd17c084f54cf2518c57bdf" },
-    { url = "https://download.pytorch.org/whl/cpu/torch-2.6.0%2Bcpu-cp313-cp313-manylinux_2_28_aarch64.whl", hash = "sha256:b5e7e8d561b263b5ad8049736281cd12c78e51e7bc1a913fd4098fd0e0b96347" },
-    { url = "https://download.pytorch.org/whl/cpu/torch-2.6.0%2Bcpu-cp313-cp313-win_amd64.whl", hash = "sha256:b436a6c62d086dc5b32f5721b59f0ca8ad3bf9de09ee9b5b83dbf1e7a7e22c60" },
-    { url = "https://download.pytorch.org/whl/cpu/torch-2.6.0%2Bcpu-cp313-cp313t-linux_x86_64.whl", hash = "sha256:fb34d6cc4e6e20e66d74852c3d84e0301dc5e1a7c822076ef288886f978390f0" },
-    { url = "https://download.pytorch.org/whl/cpu/torch-2.6.0%2Bcpu-cp313-cp313t-manylinux_2_28_aarch64.whl", hash = "sha256:7cac05af909ee1c5c2915e8f3efaa1ea015e7e414be0ff53071402b9e4f3c7df" },
-]
-
-[[package]]
-name = "torch"
-version = "2.6.0+cu126"
-source = { registry = "https://download.pytorch.org/whl/cu126" }
-resolution-markers = [
-    "sys_platform == 'darwin'",
-    "(platform_machine != 'aarch64' and sys_platform == 'linux') or (sys_platform != 'darwin' and sys_platform != 'linux')",
-    "platform_machine == 'aarch64' and sys_platform == 'linux'",
-]
-dependencies = [
-    { name = "filelock", marker = "extra == 'extra-6-cvnets-cu126'" },
-    { name = "fsspec", marker = "extra == 'extra-6-cvnets-cu126'" },
-    { name = "jinja2", marker = "extra == 'extra-6-cvnets-cu126'" },
-    { name = "networkx", marker = "extra == 'extra-6-cvnets-cu126'" },
-    { name = "setuptools", marker = "extra == 'extra-6-cvnets-cu126'" },
-    { name = "sympy", marker = "extra == 'extra-6-cvnets-cu126'" },
-    { name = "typing-extensions", marker = "extra == 'extra-6-cvnets-cu126'" },
-]
-wheels = [
-    { url = "https://download.pytorch.org/whl/cu126/torch-2.6.0%2Bcu126-cp313-cp313-linux_aarch64.whl", hash = "sha256:e7913d9dcca60d352b296adf566ae9bb84c9e4d27414cf070b78a84c0a0ceb20" },
-    { url = "https://download.pytorch.org/whl/cu126/torch-2.6.0%2Bcu126-cp313-cp313-manylinux_2_28_x86_64.whl", hash = "sha256:2356c759696f4e296a7a08e8146c6381ccf2da40990fe400264b189a8a6c4bab" },
-    { url = "https://download.pytorch.org/whl/cu126/torch-2.6.0%2Bcu126-cp313-cp313-win_amd64.whl", hash = "sha256:a1ce724eb9813fcd05b99cb8b652b2d02f447caba65f1469abd7d50af5e5323f" },
-    { url = "https://download.pytorch.org/whl/cu126/torch-2.6.0%2Bcu126-cp313-cp313t-linux_aarch64.whl", hash = "sha256:e38a2564b15fba3fd8cb24d03d165b86a80fe3681b7207be5e500b100e19893c" },
-    { url = "https://download.pytorch.org/whl/cu126/torch-2.6.0%2Bcu126-cp313-cp313t-manylinux_2_28_x86_64.whl", hash = "sha256:90d9c64ab8961595e05d4816e7190f38d8a1cd9931909a669da7bc398b9bc26b" },
+    { url = "https://files.pythonhosted.org/packages/46/d0/891ec43349f287ea5c313ebc1320e4eda38ccd4c7a0951657213467eaab5/torch_tb_profiler-0.4.3-py3-none-any.whl", hash = "sha256:207a49b05572dd983e4ab29eb5e0fcadd60374a8f93c78ec638217e8d18788dc", size = 1053410 },
 ]
 
 [[package]]
@@ -1337,9 +1823,12 @@ dependencies = [
     { name = "lightning-utilities" },
     { name = "numpy" },
     { name = "packaging" },
-    { name = "torch", version = "2.6.0", source = { registry = "https://pypi.org/simple" }, marker = "(sys_platform == 'darwin' and extra == 'extra-6-cvnets-cpu') or (extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu126') or (extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu126')" },
-    { name = "torch", version = "2.6.0+cpu", source = { registry = "https://download.pytorch.org/whl/cpu" }, marker = "(sys_platform != 'darwin' and extra == 'extra-6-cvnets-cpu') or (extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu126')" },
-    { name = "torch", version = "2.6.0+cu126", source = { registry = "https://download.pytorch.org/whl/cu126" }, marker = "extra == 'extra-6-cvnets-cu126'" },
+    { name = "torch", version = "2.5.1", source = { registry = "https://download.pytorch.org/whl/cpu" }, marker = "(platform_machine == 'aarch64' and sys_platform == 'linux' and extra == 'extra-6-cvnets-cpu') or (platform_machine != 'aarch64' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124') or (sys_platform != 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+    { name = "torch", version = "2.5.1", source = { registry = "https://download.pytorch.org/whl/cu124" }, marker = "(platform_machine == 'aarch64' and sys_platform == 'linux' and extra == 'extra-6-cvnets-cu124') or (platform_machine != 'aarch64' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124') or (sys_platform != 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+    { name = "torch", version = "2.5.1", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version < '3.13' and platform_machine == 'aarch64' and sys_platform == 'linux' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu124') or (python_full_version < '3.13' and sys_platform == 'darwin' and extra != 'extra-6-cvnets-cu124') or (sys_platform != 'darwin' and sys_platform != 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124') or (sys_platform == 'darwin' and extra == 'extra-6-cvnets-cpu') or (sys_platform == 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+    { name = "torch", version = "2.5.1+cpu", source = { registry = "https://download.pytorch.org/whl/cpu" }, marker = "(platform_machine != 'aarch64' and sys_platform == 'linux' and extra == 'extra-6-cvnets-cpu') or (sys_platform != 'darwin' and sys_platform != 'linux' and extra == 'extra-6-cvnets-cpu') or (sys_platform == 'darwin' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124') or (sys_platform == 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+    { name = "torch", version = "2.5.1+cu124", source = { registry = "https://download.pytorch.org/whl/cu124" }, marker = "(platform_machine != 'aarch64' and extra == 'extra-6-cvnets-cu124') or (sys_platform != 'linux' and extra == 'extra-6-cvnets-cu124') or (extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+    { name = "torch", version = "2.6.0", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version >= '3.13' and sys_platform == 'darwin' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu124') or (python_full_version >= '3.13' and sys_platform == 'linux' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu124') or (platform_machine != 'aarch64' and sys_platform == 'linux' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu124') or (sys_platform != 'darwin' and sys_platform != 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124') or (sys_platform != 'darwin' and sys_platform != 'linux' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu124') or (sys_platform == 'darwin' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124') or (sys_platform == 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/14/c5/8d916585d4d6eb158105c21b28cd4b0ed296d74e499bf8f104368de16619/torchmetrics-1.6.1.tar.gz", hash = "sha256:a5dc236694b392180949fdd0a0fcf2b57135c8b600e557c725e077eb41e53e64", size = 540022 }
 wheels = [
@@ -1349,44 +1838,106 @@ wheels = [
 [package.optional-dependencies]
 detection = [
     { name = "pycocotools" },
-    { name = "torchvision", version = "0.21.0", source = { registry = "https://download.pytorch.org/whl/cpu" }, marker = "(platform_machine == 'aarch64' and sys_platform == 'linux' and extra == 'extra-6-cvnets-cpu') or (platform_machine != 'aarch64' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu126') or (sys_platform != 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu126')" },
-    { name = "torchvision", version = "0.21.0", source = { registry = "https://download.pytorch.org/whl/cu126" }, marker = "(platform_machine == 'aarch64' and sys_platform == 'linux' and extra == 'extra-6-cvnets-cu126') or (platform_machine != 'aarch64' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu126') or (sys_platform != 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu126')" },
-    { name = "torchvision", version = "0.21.0", source = { registry = "https://pypi.org/simple" }, marker = "(sys_platform == 'darwin' and extra == 'extra-6-cvnets-cpu') or (extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu126') or (extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu126')" },
-    { name = "torchvision", version = "0.21.0+cpu", source = { registry = "https://download.pytorch.org/whl/cpu" }, marker = "(platform_machine != 'aarch64' and sys_platform == 'linux' and extra == 'extra-6-cvnets-cpu') or (sys_platform != 'darwin' and sys_platform != 'linux' and extra == 'extra-6-cvnets-cpu') or (sys_platform == 'darwin' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu126') or (sys_platform == 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu126')" },
-    { name = "torchvision", version = "0.21.0+cu126", source = { registry = "https://download.pytorch.org/whl/cu126" }, marker = "(platform_machine != 'aarch64' and extra == 'extra-6-cvnets-cu126') or (sys_platform != 'linux' and extra == 'extra-6-cvnets-cu126') or (extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu126')" },
+    { name = "torchvision", version = "0.20.1", source = { registry = "https://download.pytorch.org/whl/cpu" }, marker = "(platform_machine == 'aarch64' and sys_platform == 'linux' and extra == 'extra-6-cvnets-cpu') or (platform_machine != 'aarch64' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124') or (sys_platform != 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+    { name = "torchvision", version = "0.20.1", source = { registry = "https://download.pytorch.org/whl/cu124" }, marker = "(platform_machine == 'aarch64' and sys_platform == 'linux' and extra == 'extra-6-cvnets-cu124') or (platform_machine != 'aarch64' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124') or (sys_platform != 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+    { name = "torchvision", version = "0.20.1", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version < '3.13' and platform_machine == 'aarch64' and sys_platform == 'linux' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu124') or (python_full_version < '3.13' and sys_platform == 'darwin' and extra != 'extra-6-cvnets-cu124') or (sys_platform != 'darwin' and sys_platform != 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124') or (sys_platform == 'darwin' and extra == 'extra-6-cvnets-cpu') or (sys_platform == 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+    { name = "torchvision", version = "0.20.1+cpu", source = { registry = "https://download.pytorch.org/whl/cpu" }, marker = "(platform_machine != 'aarch64' and sys_platform == 'linux' and extra == 'extra-6-cvnets-cpu') or (sys_platform != 'darwin' and sys_platform != 'linux' and extra == 'extra-6-cvnets-cpu') or (sys_platform == 'darwin' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124') or (sys_platform == 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+    { name = "torchvision", version = "0.20.1+cu124", source = { registry = "https://download.pytorch.org/whl/cu124" }, marker = "(platform_machine != 'aarch64' and extra == 'extra-6-cvnets-cu124') or (sys_platform != 'linux' and extra == 'extra-6-cvnets-cu124') or (extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+    { name = "torchvision", version = "0.21.0", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version >= '3.13' and sys_platform == 'darwin' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu124') or (python_full_version >= '3.13' and sys_platform == 'linux' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu124') or (platform_machine != 'aarch64' and sys_platform == 'linux' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu124') or (sys_platform != 'darwin' and sys_platform != 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124') or (sys_platform != 'darwin' and sys_platform != 'linux' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu124') or (sys_platform == 'darwin' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124') or (sys_platform == 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
 ]
 
 [[package]]
 name = "torchvision"
-version = "0.21.0"
+version = "0.20.1"
 source = { registry = "https://download.pytorch.org/whl/cpu" }
 resolution-markers = [
-    "platform_machine == 'aarch64' and sys_platform == 'linux'",
+    "python_full_version >= '3.13' and platform_machine == 'aarch64' and sys_platform == 'linux'",
+    "python_full_version < '3.13' and platform_machine == 'aarch64' and sys_platform == 'linux'",
 ]
 dependencies = [
-    { name = "numpy", marker = "(platform_machine == 'aarch64' and sys_platform == 'linux' and extra == 'extra-6-cvnets-cpu') or (platform_machine != 'aarch64' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu126') or (sys_platform != 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu126')" },
-    { name = "pillow", marker = "(platform_machine == 'aarch64' and sys_platform == 'linux' and extra == 'extra-6-cvnets-cpu') or (platform_machine != 'aarch64' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu126') or (sys_platform != 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu126')" },
-    { name = "torch", version = "2.6.0+cpu", source = { registry = "https://download.pytorch.org/whl/cpu" }, marker = "(platform_machine == 'aarch64' and sys_platform == 'linux' and extra == 'extra-6-cvnets-cpu') or (platform_machine != 'aarch64' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu126') or (sys_platform != 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu126')" },
+    { name = "numpy", marker = "(platform_machine == 'aarch64' and sys_platform == 'linux' and extra == 'extra-6-cvnets-cpu') or (platform_machine != 'aarch64' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124') or (sys_platform != 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+    { name = "pillow", marker = "(platform_machine == 'aarch64' and sys_platform == 'linux' and extra == 'extra-6-cvnets-cpu') or (platform_machine != 'aarch64' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124') or (sys_platform != 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+    { name = "torch", version = "2.5.1", source = { registry = "https://download.pytorch.org/whl/cpu" }, marker = "(platform_machine == 'aarch64' and sys_platform == 'linux' and extra == 'extra-6-cvnets-cpu') or (platform_machine != 'aarch64' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124') or (sys_platform != 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
 ]
 wheels = [
-    { url = "https://download.pytorch.org/whl/cpu/torchvision-0.21.0-cp313-cp313-linux_aarch64.whl", hash = "sha256:5045a3a5f21ec3eea6962fa5f2fa2d4283f854caec25ada493fcf4aab2925467" },
-    { url = "https://download.pytorch.org/whl/cpu/torchvision-0.21.0-cp313-cp313-macosx_11_0_arm64.whl", hash = "sha256:659b76c86757cb2ee4ca2db245e0740cfc3081fef46f0f1064d11adb4a8cee31" },
+    { url = "https://download.pytorch.org/whl/cpu/torchvision-0.20.1-cp312-cp312-linux_aarch64.whl", hash = "sha256:9f853ba4497ac4691815ad41b523ee23cf5ba4f87b1ce869d704052e233ca8b7" },
+    { url = "https://download.pytorch.org/whl/cpu/torchvision-0.20.1-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:1a31256ff945d64f006bb306813a7c95a531fe16bfb2535c837dd4c104533d7a" },
 ]
 
 [[package]]
 name = "torchvision"
-version = "0.21.0"
-source = { registry = "https://download.pytorch.org/whl/cu126" }
+version = "0.20.1"
+source = { registry = "https://download.pytorch.org/whl/cu124" }
 resolution-markers = [
-    "platform_machine == 'aarch64' and sys_platform == 'linux'",
+    "python_full_version >= '3.13' and platform_machine == 'aarch64' and sys_platform == 'linux'",
+    "python_full_version < '3.13' and platform_machine == 'aarch64' and sys_platform == 'linux'",
 ]
 dependencies = [
-    { name = "numpy", marker = "(platform_machine == 'aarch64' and sys_platform == 'linux' and extra == 'extra-6-cvnets-cu126') or (platform_machine != 'aarch64' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu126') or (sys_platform != 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu126')" },
-    { name = "pillow", marker = "(platform_machine == 'aarch64' and sys_platform == 'linux' and extra == 'extra-6-cvnets-cu126') or (platform_machine != 'aarch64' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu126') or (sys_platform != 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu126')" },
-    { name = "torch", version = "2.6.0+cu126", source = { registry = "https://download.pytorch.org/whl/cu126" }, marker = "(platform_machine == 'aarch64' and sys_platform == 'linux' and extra == 'extra-6-cvnets-cu126') or (platform_machine != 'aarch64' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu126') or (sys_platform != 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu126')" },
+    { name = "numpy", marker = "(platform_machine == 'aarch64' and sys_platform == 'linux' and extra == 'extra-6-cvnets-cu124') or (platform_machine != 'aarch64' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124') or (sys_platform != 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+    { name = "pillow", marker = "(platform_machine == 'aarch64' and sys_platform == 'linux' and extra == 'extra-6-cvnets-cu124') or (platform_machine != 'aarch64' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124') or (sys_platform != 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+    { name = "torch", version = "2.5.1", source = { registry = "https://download.pytorch.org/whl/cu124" }, marker = "(platform_machine == 'aarch64' and sys_platform == 'linux' and extra == 'extra-6-cvnets-cu124') or (platform_machine != 'aarch64' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124') or (sys_platform != 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
 ]
 wheels = [
-    { url = "https://download.pytorch.org/whl/cu126/torchvision-0.21.0-cp313-cp313-linux_aarch64.whl", hash = "sha256:ca6f1834818f369a251dc06bd3c2b524ad0788597f2246596197b6c204cae8d1" },
+    { url = "https://download.pytorch.org/whl/cu124/torchvision-0.20.1-cp312-cp312-linux_aarch64.whl", hash = "sha256:3e3289e53d0cb5d1b7f55b3f5912f46a08293c6791585ba2fc32c12cded9f9af" },
+]
+
+[[package]]
+name = "torchvision"
+version = "0.20.1"
+source = { registry = "https://pypi.org/simple" }
+resolution-markers = [
+    "python_full_version >= '3.13' and sys_platform == 'darwin'",
+    "python_full_version < '3.13' and sys_platform == 'darwin'",
+    "python_full_version < '3.13' and platform_machine == 'aarch64' and sys_platform == 'linux'",
+]
+dependencies = [
+    { name = "numpy", marker = "sys_platform == 'darwin'" },
+    { name = "pillow", marker = "sys_platform == 'darwin'" },
+    { name = "torch", version = "2.5.1", source = { registry = "https://pypi.org/simple" }, marker = "sys_platform == 'darwin'" },
+]
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/c5/eb/4ba19616378f2bc085999432fded2b7dfdbdccc6dd0fc293203452508100/torchvision-0.20.1-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:1a31256ff945d64f006bb306813a7c95a531fe16bfb2535c837dd4c104533d7a", size = 1787553 },
+    { url = "https://files.pythonhosted.org/packages/d4/75/00a852275ade58d3dc474530f7a7b6bc999a817148f0eb59d4fde12eb955/torchvision-0.20.1-cp312-cp312-manylinux1_x86_64.whl", hash = "sha256:17cd78adddf81dac57d7dccc9277a4d686425b1c55715f308769770cb26cad5c", size = 7240323 },
+    { url = "https://files.pythonhosted.org/packages/af/f0/ca1445406eb12cbeb7a41fc833a1941ede78e7c55621198b83ecd7bcfd0f/torchvision-0.20.1-cp312-cp312-manylinux2014_aarch64.whl", hash = "sha256:9f853ba4497ac4691815ad41b523ee23cf5ba4f87b1ce869d704052e233ca8b7", size = 14266936 },
+    { url = "https://files.pythonhosted.org/packages/c3/18/00993d420b1d6e88582e51d4bc82c824c99a2e9c045d50eaf9b34fff729a/torchvision-0.20.1-cp312-cp312-win_amd64.whl", hash = "sha256:4a330422c36dbfc946d3a6c1caec3489db07ecdf3675d83369adb2e5a0ca17c4", size = 1562392 },
+]
+
+[[package]]
+name = "torchvision"
+version = "0.20.1+cpu"
+source = { registry = "https://download.pytorch.org/whl/cpu" }
+resolution-markers = [
+    "(python_full_version >= '3.13' and platform_machine != 'aarch64' and sys_platform == 'linux') or (python_full_version >= '3.13' and sys_platform != 'darwin' and sys_platform != 'linux')",
+    "(python_full_version < '3.13' and platform_machine != 'aarch64' and sys_platform == 'linux') or (python_full_version < '3.13' and sys_platform != 'darwin' and sys_platform != 'linux')",
+]
+dependencies = [
+    { name = "numpy", marker = "(platform_machine != 'aarch64' and sys_platform == 'linux' and extra == 'extra-6-cvnets-cpu') or (sys_platform != 'darwin' and sys_platform != 'linux' and extra == 'extra-6-cvnets-cpu') or (sys_platform == 'darwin' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124') or (sys_platform == 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+    { name = "pillow", marker = "(platform_machine != 'aarch64' and sys_platform == 'linux' and extra == 'extra-6-cvnets-cpu') or (sys_platform != 'darwin' and sys_platform != 'linux' and extra == 'extra-6-cvnets-cpu') or (sys_platform == 'darwin' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124') or (sys_platform == 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+    { name = "torch", version = "2.5.1+cpu", source = { registry = "https://download.pytorch.org/whl/cpu" }, marker = "(platform_machine != 'aarch64' and sys_platform == 'linux' and extra == 'extra-6-cvnets-cpu') or (sys_platform != 'darwin' and sys_platform != 'linux' and extra == 'extra-6-cvnets-cpu') or (sys_platform == 'darwin' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124') or (sys_platform == 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+]
+wheels = [
+    { url = "https://download.pytorch.org/whl/cpu/torchvision-0.20.1%2Bcpu-cp312-cp312-linux_x86_64.whl", hash = "sha256:5f46c7ac7f00a065cb40bfb1e1bfc4ba16a35f5d46b3fe70cca6b3cea7f822f7" },
+    { url = "https://download.pytorch.org/whl/cpu/torchvision-0.20.1%2Bcpu-cp312-cp312-win_amd64.whl", hash = "sha256:64832095b9b8b8185f24788f1a531ae96c937bf797cd3474a2ea7511852e5cd7" },
+]
+
+[[package]]
+name = "torchvision"
+version = "0.20.1+cu124"
+source = { registry = "https://download.pytorch.org/whl/cu124" }
+resolution-markers = [
+    "python_full_version >= '3.13' and sys_platform == 'darwin'",
+    "python_full_version < '3.13' and sys_platform == 'darwin'",
+    "(python_full_version >= '3.13' and platform_machine != 'aarch64' and sys_platform == 'linux') or (python_full_version >= '3.13' and sys_platform != 'darwin' and sys_platform != 'linux')",
+    "(python_full_version < '3.13' and platform_machine != 'aarch64' and sys_platform == 'linux') or (python_full_version < '3.13' and sys_platform != 'darwin' and sys_platform != 'linux')",
+]
+dependencies = [
+    { name = "numpy", marker = "(platform_machine != 'aarch64' and extra == 'extra-6-cvnets-cu124') or (sys_platform != 'linux' and extra == 'extra-6-cvnets-cu124') or (extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+    { name = "pillow", marker = "(platform_machine != 'aarch64' and extra == 'extra-6-cvnets-cu124') or (sys_platform != 'linux' and extra == 'extra-6-cvnets-cu124') or (extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+    { name = "torch", version = "2.5.1+cu124", source = { registry = "https://download.pytorch.org/whl/cu124" }, marker = "(platform_machine != 'aarch64' and extra == 'extra-6-cvnets-cu124') or (sys_platform != 'linux' and extra == 'extra-6-cvnets-cu124') or (extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+]
+wheels = [
+    { url = "https://download.pytorch.org/whl/cu124/torchvision-0.20.1%2Bcu124-cp312-cp312-linux_x86_64.whl", hash = "sha256:d1053ec5054549e7dac2613b151bffe323f3c924939d296df4d7d34925aaf3ad" },
+    { url = "https://download.pytorch.org/whl/cu124/torchvision-0.20.1%2Bcu124-cp312-cp312-win_amd64.whl", hash = "sha256:0f6c7b3b0e13663fb3359e64f3604c0ab74c2b4809ae6949ace5635a5240f0e5" },
 ]
 
 [[package]]
@@ -1394,55 +1945,25 @@ name = "torchvision"
 version = "0.21.0"
 source = { registry = "https://pypi.org/simple" }
 resolution-markers = [
-    "sys_platform == 'darwin'",
-    "platform_machine == 'aarch64' and sys_platform == 'linux'",
-    "(platform_machine != 'aarch64' and sys_platform == 'linux') or (sys_platform != 'darwin' and sys_platform != 'linux')",
+    "python_full_version >= '3.13' and sys_platform == 'darwin'",
+    "(python_full_version >= '3.13' and platform_machine != 'aarch64' and sys_platform == 'linux') or (python_full_version >= '3.13' and sys_platform != 'darwin' and sys_platform != 'linux')",
+    "(python_full_version < '3.13' and platform_machine != 'aarch64' and sys_platform == 'linux') or (python_full_version < '3.13' and sys_platform != 'darwin' and sys_platform != 'linux')",
+    "python_full_version >= '3.13' and platform_machine == 'aarch64' and sys_platform == 'linux'",
 ]
 dependencies = [
-    { name = "numpy", marker = "sys_platform == 'darwin'" },
-    { name = "pillow", marker = "sys_platform == 'darwin'" },
-    { name = "torch", version = "2.6.0", source = { registry = "https://pypi.org/simple" }, marker = "sys_platform == 'darwin'" },
+    { name = "numpy", marker = "(python_full_version >= '3.13' and sys_platform == 'darwin' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu124') or (python_full_version >= '3.13' and sys_platform == 'linux' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu124') or (platform_machine != 'aarch64' and sys_platform == 'linux' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu124') or (sys_platform != 'darwin' and sys_platform != 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124') or (sys_platform != 'darwin' and sys_platform != 'linux' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu124') or (sys_platform == 'darwin' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124') or (sys_platform == 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+    { name = "pillow", marker = "(python_full_version >= '3.13' and sys_platform == 'darwin' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu124') or (python_full_version >= '3.13' and sys_platform == 'linux' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu124') or (platform_machine != 'aarch64' and sys_platform == 'linux' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu124') or (sys_platform != 'darwin' and sys_platform != 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124') or (sys_platform != 'darwin' and sys_platform != 'linux' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu124') or (sys_platform == 'darwin' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124') or (sys_platform == 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+    { name = "torch", version = "2.6.0", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version >= '3.13' and sys_platform == 'darwin' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu124') or (python_full_version >= '3.13' and sys_platform == 'linux' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu124') or (platform_machine != 'aarch64' and sys_platform == 'linux' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu124') or (sys_platform != 'darwin' and sys_platform != 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124') or (sys_platform != 'darwin' and sys_platform != 'linux' and extra != 'extra-6-cvnets-cpu' and extra != 'extra-6-cvnets-cu124') or (sys_platform == 'darwin' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124') or (sys_platform == 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
 ]
 wheels = [
+    { url = "https://files.pythonhosted.org/packages/6e/1b/28f527b22d5e8800184d0bc847f801ae92c7573a8c15979d92b7091c0751/torchvision-0.21.0-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:97a5814a93c793aaf0179cfc7f916024f4b63218929aee977b645633d074a49f", size = 1784140 },
+    { url = "https://files.pythonhosted.org/packages/36/63/0722e153fd27d64d5b0af45b5c8cb0e80b35a68cf0130303bc9a8bb095c7/torchvision-0.21.0-cp312-cp312-manylinux1_x86_64.whl", hash = "sha256:b578bcad8a4083b40d34f689b19ca9f7c63e511758d806510ea03c29ac568f7b", size = 7238673 },
+    { url = "https://files.pythonhosted.org/packages/bb/ea/03541ed901cdc30b934f897060d09bbf7a98466a08ad1680320f9ce0cbe0/torchvision-0.21.0-cp312-cp312-manylinux_2_28_aarch64.whl", hash = "sha256:5083a5b1fec2351bf5ea9900a741d54086db75baec4b1d21e39451e00977f1b1", size = 14701186 },
+    { url = "https://files.pythonhosted.org/packages/4c/6a/c7752603060d076dfed95135b78b047dc71792630cbcb022e3693d6f32ef/torchvision-0.21.0-cp312-cp312-win_amd64.whl", hash = "sha256:6eb75d41e3bbfc2f7642d0abba9383cc9ae6c5a4ca8d6b00628c225e1eaa63b3", size = 1560520 },
     { url = "https://files.pythonhosted.org/packages/f9/56/47d456b61c3bbce7bed4af3925c83d405bb87468e659fd3cf3d9840c3b51/torchvision-0.21.0-cp313-cp313-macosx_11_0_arm64.whl", hash = "sha256:659b76c86757cb2ee4ca2db245e0740cfc3081fef46f0f1064d11adb4a8cee31", size = 1784141 },
     { url = "https://files.pythonhosted.org/packages/cb/4c/99880813aa50e64447fb1c4c6c804a793d2d78f7f7c53e99ddee7fa175fa/torchvision-0.21.0-cp313-cp313-manylinux1_x86_64.whl", hash = "sha256:084ac3f5a1f50c70d630a488d19bf62f323018eae1b1c1232f2b7047d3a7b76d", size = 7238714 },
     { url = "https://files.pythonhosted.org/packages/0b/2d/3c3ee10608310a395594aac7da8640372ed79c6585910ccae6919658dcdc/torchvision-0.21.0-cp313-cp313-manylinux_2_28_aarch64.whl", hash = "sha256:5045a3a5f21ec3eea6962fa5f2fa2d4283f854caec25ada493fcf4aab2925467", size = 2281252 },
     { url = "https://files.pythonhosted.org/packages/ed/b4/fc60e3bc003879d3de842baea258fffc3586f4b49cd435a5ba1e09c33315/torchvision-0.21.0-cp313-cp313-win_amd64.whl", hash = "sha256:9147f5e096a9270684e3befdee350f3cacafd48e0c54ab195f45790a9c146d67", size = 1560519 },
-]
-
-[[package]]
-name = "torchvision"
-version = "0.21.0+cpu"
-source = { registry = "https://download.pytorch.org/whl/cpu" }
-resolution-markers = [
-    "(platform_machine != 'aarch64' and sys_platform == 'linux') or (sys_platform != 'darwin' and sys_platform != 'linux')",
-]
-dependencies = [
-    { name = "numpy", marker = "(platform_machine != 'aarch64' and sys_platform == 'linux' and extra == 'extra-6-cvnets-cpu') or (sys_platform != 'darwin' and sys_platform != 'linux' and extra == 'extra-6-cvnets-cpu') or (sys_platform == 'darwin' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu126') or (sys_platform == 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu126')" },
-    { name = "pillow", marker = "(platform_machine != 'aarch64' and sys_platform == 'linux' and extra == 'extra-6-cvnets-cpu') or (sys_platform != 'darwin' and sys_platform != 'linux' and extra == 'extra-6-cvnets-cpu') or (sys_platform == 'darwin' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu126') or (sys_platform == 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu126')" },
-    { name = "torch", version = "2.6.0+cpu", source = { registry = "https://download.pytorch.org/whl/cpu" }, marker = "(platform_machine != 'aarch64' and sys_platform == 'linux' and extra == 'extra-6-cvnets-cpu') or (sys_platform != 'darwin' and sys_platform != 'linux' and extra == 'extra-6-cvnets-cpu') or (sys_platform == 'darwin' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu126') or (sys_platform == 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu126')" },
-]
-wheels = [
-    { url = "https://download.pytorch.org/whl/cpu/torchvision-0.21.0%2Bcpu-cp313-cp313-linux_x86_64.whl", hash = "sha256:a76478c0f547e032116282d61a5a7d943142cf040f6c7d97941d7e96813c4c14" },
-    { url = "https://download.pytorch.org/whl/cpu/torchvision-0.21.0%2Bcpu-cp313-cp313-win_amd64.whl", hash = "sha256:883f8668b923781f1152a20d75e75ad94a4f1016328d86a7b889006a9156fb14" },
-]
-
-[[package]]
-name = "torchvision"
-version = "0.21.0+cu126"
-source = { registry = "https://download.pytorch.org/whl/cu126" }
-resolution-markers = [
-    "sys_platform == 'darwin'",
-    "(platform_machine != 'aarch64' and sys_platform == 'linux') or (sys_platform != 'darwin' and sys_platform != 'linux')",
-]
-dependencies = [
-    { name = "numpy", marker = "(platform_machine != 'aarch64' and extra == 'extra-6-cvnets-cu126') or (sys_platform != 'linux' and extra == 'extra-6-cvnets-cu126') or (extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu126')" },
-    { name = "pillow", marker = "(platform_machine != 'aarch64' and extra == 'extra-6-cvnets-cu126') or (sys_platform != 'linux' and extra == 'extra-6-cvnets-cu126') or (extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu126')" },
-    { name = "torch", version = "2.6.0+cu126", source = { registry = "https://download.pytorch.org/whl/cu126" }, marker = "(platform_machine != 'aarch64' and extra == 'extra-6-cvnets-cu126') or (sys_platform != 'linux' and extra == 'extra-6-cvnets-cu126') or (extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu126')" },
-]
-wheels = [
-    { url = "https://download.pytorch.org/whl/cu126/torchvision-0.21.0%2Bcu126-cp313-cp313-linux_x86_64.whl", hash = "sha256:ed7912ed64c110792401273ee8a9dda81fc2ef53a66a3f7b25238bc52900a987" },
-    { url = "https://download.pytorch.org/whl/cu126/torchvision-0.21.0%2Bcu126-cp313-cp313-win_amd64.whl", hash = "sha256:1112ebe400eca7af30060909ceec422708b2bb5ce470489c5ffb5cf93664779b" },
 ]
 
 [[package]]
@@ -1464,6 +1985,18 @@ wheels = [
 ]
 
 [[package]]
+name = "tqdm"
+version = "4.67.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "colorama", marker = "sys_platform == 'win32' or (extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/a8/4b/29b4ef32e036bb34e4ab51796dd745cdba7ed47ad142a9f4a1eb8e0c744d/tqdm-4.67.1.tar.gz", hash = "sha256:f8aef9c52c08c13a65f30ea34f4e5aac3fd1a34959879d7e59e63027286627f2", size = 169737 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/d0/30/dc54f88dd4a2b5dc8a0279bdd7270e735851848b762aeb1c1184ed1f6b14/tqdm-4.67.1-py3-none-any.whl", hash = "sha256:26445eca388f82e72884e0d580d5464cd801a3ea01e63e5601bdff9ba6a48de2", size = 78540 },
+]
+
+[[package]]
 name = "traitlets"
 version = "5.14.3"
 source = { registry = "https://pypi.org/simple" }
@@ -1474,9 +2007,28 @@ wheels = [
 
 [[package]]
 name = "triton"
+version = "3.1.0"
+source = { registry = "https://pypi.org/simple" }
+resolution-markers = [
+    "(python_full_version < '3.13' and platform_machine != 'aarch64' and sys_platform == 'linux') or (python_full_version < '3.13' and sys_platform != 'darwin' and sys_platform != 'linux')",
+]
+dependencies = [
+    { name = "filelock", marker = "(python_full_version < '3.13' and platform_machine != 'aarch64' and sys_platform == 'linux' and extra == 'extra-6-cvnets-cu124') or (python_full_version >= '3.13' and platform_machine != 'aarch64' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124') or (python_full_version < '3.13' and sys_platform != 'darwin' and sys_platform != 'linux' and extra == 'extra-6-cvnets-cu124') or (python_full_version >= '3.13' and sys_platform != 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124') or (platform_machine == 'aarch64' and sys_platform == 'linux' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124') or (sys_platform == 'darwin' and extra == 'extra-6-cvnets-cpu' and extra == 'extra-6-cvnets-cu124')" },
+]
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/78/eb/65f5ba83c2a123f6498a3097746607e5b2f16add29e36765305e4ac7fdd8/triton-3.1.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:c8182f42fd8080a7d39d666814fa36c5e30cc00ea7eeeb1a2983dbb4c99a0fdc", size = 209551444 },
+]
+
+[[package]]
+name = "triton"
 version = "3.2.0"
 source = { registry = "https://pypi.org/simple" }
+resolution-markers = [
+    "(python_full_version >= '3.13' and platform_machine != 'aarch64' and sys_platform == 'linux') or (python_full_version >= '3.13' and sys_platform != 'darwin' and sys_platform != 'linux')",
+    "(python_full_version < '3.13' and platform_machine != 'aarch64' and sys_platform == 'linux') or (python_full_version < '3.13' and sys_platform != 'darwin' and sys_platform != 'linux')",
+]
 wheels = [
+    { url = "https://files.pythonhosted.org/packages/06/00/59500052cb1cf8cf5316be93598946bc451f14072c6ff256904428eaf03c/triton-3.2.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:8d9b215efc1c26fa7eefb9a157915c92d52e000d2bf83e5f69704047e63f125c", size = 253159365 },
     { url = "https://files.pythonhosted.org/packages/c7/30/37a3384d1e2e9320331baca41e835e90a3767303642c7a80d4510152cbcf/triton-3.2.0-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:e5dfa23ba84541d7c0a531dfce76d8bcd19159d50a4a8b14ad01e91734a5c1b0", size = 253154278 },
 ]
 
@@ -1487,6 +2039,24 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/df/db/f35a00659bc03fec321ba8bce9420de607a1d37f8342eee1863174c69557/typing_extensions-4.12.2.tar.gz", hash = "sha256:1a7ead55c7e559dd4dee8856e3a88b41225abfe1ce8df57b7c13915fe121ffb8", size = 85321 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/26/9f/ad63fc0248c5379346306f8668cda6e2e2e9c95e01216d2b8ffd9ff037d0/typing_extensions-4.12.2-py3-none-any.whl", hash = "sha256:04e5ca0351e0f3f85c6853954072df659d0d13fac324d0072316b67d7794700d", size = 37438 },
+]
+
+[[package]]
+name = "tzdata"
+version = "2025.1"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/43/0f/fa4723f22942480be4ca9527bbde8d43f6c3f2fe8412f00e7f5f6746bc8b/tzdata-2025.1.tar.gz", hash = "sha256:24894909e88cdb28bd1636c6887801df64cb485bd593f2fd83ef29075a81d694", size = 194950 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/0f/dd/84f10e23edd882c6f968c21c2434fe67bd4a528967067515feca9e611e5e/tzdata-2025.1-py2.py3-none-any.whl", hash = "sha256:7e127113816800496f027041c570f50bcd464a020098a3b6b199517772303639", size = 346762 },
+]
+
+[[package]]
+name = "urllib3"
+version = "2.3.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/aa/63/e53da845320b757bf29ef6a9062f5c669fe997973f966045cb019c3f4b66/urllib3-2.3.0.tar.gz", hash = "sha256:f8c5449b3cf0861679ce7e0503c7b44b5ec981bec0d1d3795a07f1ba96f0204d", size = 307268 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/c8/19/4ec628951a74043532ca2cf5d97b7b14863931476d117c471e8e2b1eb39f/urllib3-2.3.0-py3-none-any.whl", hash = "sha256:1cee9ad369867bfdbbb48b7dd50374c0967a0bb7710050facf0dd6911440e3df", size = 128369 },
 ]
 
 [[package]]

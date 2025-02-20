@@ -4,11 +4,12 @@ version = "0.1.0"
 description = "Some computer vision networks"
 readme = "README.md"
 authors = [{ name = "Mateusz Kowalczyk", email = "mkowalczyk013@gmail.com" }]
-requires-python = ">=3.13"
+requires-python = ">=3.12"
 dependencies = [
     "albumentations>=1.4.23",
     "ipykernel>=6.29.5",
     "matplotlib>=3.10.0",
+    "onnx>=1.17.0",
     "opencv-python>=4.10.0.84",
     "pyclustering>=0.10.1.2",
     "pynvml>=12.0.0",
@@ -16,6 +17,7 @@ dependencies = [
     "scikit-learn>=1.6.1",
     "supervision>=0.25.1",
     "tensorboard>=2.18.0",
+    "torch-tb-profiler>=0.4.3",
     "torchinfo>=1.8.0",
     "torchmetrics[detection]>=1.6.0",
 ]
@@ -25,23 +27,23 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project.optional-dependencies]
-cpu = ["torch==2.6.0", "torchvision==0.21.0"]
-cu126 = ["torch==2.6.0", "torchvision==0.21.0"]
+cpu = ["torch==2.5.1", "torchvision==0.20.1"]
+cu124 = ["torch==2.5.1", "torchvision==0.20.1"]
 
 [tool.ruff]
 line-length = 120
 
 [tool.uv]
-conflicts = [[{ extra = "cpu" }, { extra = "cu126" }]]
+conflicts = [[{ extra = "cpu" }, { extra = "cu124" }]]
 
 [tool.uv.sources]
 torch = [
     { index = "pytorch-cpu", extra = "cpu", marker = "platform_system != 'Darwin'" },
-    { index = "pytorch-cu126", extra = "cu126" },
+    { index = "pytorch-cu124", extra = "cu124" },
 ]
 torchvision = [
     { index = "pytorch-cpu", extra = "cpu", marker = "platform_system != 'Darwin'" },
-    { index = "pytorch-cu126", extra = "cu126" },
+    { index = "pytorch-cu124", extra = "cu124" },
 ]
 
 [[tool.uv.index]]
@@ -50,6 +52,6 @@ url = "https://download.pytorch.org/whl/cpu"
 explicit = true
 
 [[tool.uv.index]]
-name = "pytorch-cu126"
-url = "https://download.pytorch.org/whl/cu126"
+name = "pytorch-cu124"
+url = "https://download.pytorch.org/whl/cu124"
 explicit = true
