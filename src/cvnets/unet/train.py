@@ -11,6 +11,7 @@ import torch.nn as nn
 from torch.optim import Optimizer
 from torch.utils.data import DataLoader
 from torch.utils.tensorboard.writer import SummaryWriter
+from torchmetrics.classification import BinaryJaccardIndex
 
 from cvnets.unet.dataset import ISICDataset
 from cvnets.unet.loss import ComboLoss, NamedLoss
@@ -63,9 +64,11 @@ def eval_step(
     model: nn.Module,
     loader: DataLoader,
     loss_fn: ComboLoss,
+    metric_fn: BinaryJaccardIndex,
     denormalizer: DeNormalizer,
-) -> tuple[NamedLoss, SummaryImages]:
+) -> tuple[NamedLoss, SummaryImages, float]:
     model.eval()
+    metric_fn.reset()
     accumulated_loss = torch.zeros(len(NamedLoss._fields))
     summary_images = SummaryImages(None, None, None)
 
@@ -75,6 +78,7 @@ def eval_step(
             logits = model(images)
             loss = loss_fn(logits, masks)
             accumulated_loss += torch.as_tensor(loss).detach().cpu()
+            metric_fn.update(logits, masks)
 
             if step == len(loader):
                 images_denorm = denormalizer(images)
@@ -83,8 +87,9 @@ def eval_step(
 
     accumulated_loss = accumulated_loss.div(len(loader)).tolist()
     accumulated_loss = NamedLoss(*accumulated_loss)
+    metric = metric_fn.compute().item()
 
-    return accumulated_loss, summary_images
+    return accumulated_loss, summary_images, metric
 
 
 def main(*, config_file: str | PathLike) -> None:
@@ -128,6 +133,7 @@ def main(*, config_file: str | PathLike) -> None:
         focal_gamma=config.FOCAL_GAMMA,
         beta=config.LOSS_BETA,
     )
+    metric_fn = BinaryJaccardIndex().to(DEVICE)
     early_stopping = EarlyStopping(
         patience=config.EARLY_STOPPING_PATIENCE,
         min_delta=config.EARLY_STOPPING_DELTA,
@@ -150,23 +156,24 @@ def main(*, config_file: str | PathLike) -> None:
     logging.info(f"Start training on {torch.cuda.get_device_name(DEVICE)}...")
     log = (
         "Epoch: {:3d}/{} | Time: {:6.2f} s | Total Loss: {:6.4f} | Focal Loss: {:6.4f} | Dice Loss: {:6.4f} | "
-        "Eval Total Loss: {:6.4f} | Eval Focal Loss: {:6.4f} | Eval Dice Loss: {:6.4f}"
+        "Eval Total Loss: {:6.4f} | Eval Focal Loss: {:6.4f} | Eval Dice Loss: {:6.4f} | Eval Jaccard Index: {:6.4f}"
     )
     current_run_dir = Path(writer.get_logdir())
 
     for epoch in range(1, config.EPOCHS + 1):
         t0 = time.perf_counter()
         train_loss, train_images = train_step(model, train_loader, loss_fn, optimizer, denormalizer)
-        eval_loss, eval_images = eval_step(model, eval_loader, loss_fn, denormalizer)
+        eval_loss, eval_images, eval_metric = eval_step(model, eval_loader, loss_fn, metric_fn, denormalizer)
         t1 = time.perf_counter()
 
-        logging.info(log.format(epoch, config.EPOCHS, t1 - t0, *train_loss, *eval_loss))
+        logging.info(log.format(epoch, config.EPOCHS, t1 - t0, *train_loss, *eval_loss, eval_metric))
 
         torch.save(model.state_dict(), current_run_dir.joinpath(model.__class__.__name__).with_suffix(".pt"))
 
         if config.VISUALIZE:
             writer.add_scalars("Train Loss", train_loss._asdict(), epoch)
             writer.add_scalars("Eval Loss", eval_loss._asdict(), epoch)
+            writer.add_scalar("Eval Jaccard Index", eval_metric, epoch)
             writer.add_images("Train Images", train_images.images, epoch)
             writer.add_images("Train True Masks", train_images.true_masks, epoch)
             writer.add_images("Train Pred Masks", train_images.pred_masks, epoch)

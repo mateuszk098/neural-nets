@@ -21,12 +21,16 @@ EARLY_STOPPING_DELTA: 1.e-4
 # Epochs and LR Scheduler
 EPOCHS: 100
 LR: 1.e-4
-LR_FACTOR: 0.5
-LR_PATIENCE: 5
+LR_FACTOR: 0.1
+LR_PATIENCE: 10
 LR_THRESHOLD: 1.e-4 # Roughly speaking, the same as EARLY_STOPPING_DELTA
 WEIGHT_DECAY: 1.e-2
 DECOUPLED_WEIGHT_DECAY: true
 
 # Miscellaneous
-NET_BASE: 32
+NET_BASE: 64
 VISUALIZE: true
+
+# Evaluation
+MODEL_FILE: "./runs/Feb21_20-58-46_Predator/UNet.pt"
+TEST_DIR: "~/Documents/Datasets/ISBI2016_ISIC/test/"
