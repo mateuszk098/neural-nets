@@ -15,7 +15,7 @@ from torchmetrics.classification import BinaryJaccardIndex
 
 from cvnets.unet.dataset import ISICDataset
 from cvnets.unet.loss import ComboLoss, NamedLoss
-from cvnets.unet.net import UNet
+from cvnets.unet.network import UNet
 from cvnets.unet.utils import DeNormalizer, EarlyStopping, initialize_seed, load_yaml, worker_init_fn
 
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
