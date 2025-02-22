@@ -10,7 +10,7 @@ Some neural network architectures implementation:
 - YOLOv2 (YOLO9000: Better, Faster, Stronger) &#8594; <https://arxiv.org/pdf/1612.08242>
 - Variational Autoencoder (Auto-Encoding Variational Bayes) &#8594; <https://arxiv.org/pdf/1312.6114>
 - UNet (U-Net: Convolutional Networks for Biomedical Image Segmentation) &#8594; <https://arxiv.org/pdf/1505.04597>
-- ResUNet (Road Extraction by Deep Residual U-Net) &#8594; <https://arxiv.org/abs/1711.10684>
+- ResUNet (Road Extraction by Deep Residual U-Net) &#8594; <https://arxiv.org/pdf/1711.10684>
 
 Build the project with uv &#8594; <https://github.com/astral-sh/uv>:
 
