@@ -17,19 +17,19 @@ class UNet(nn.Module):
 class Encoder(nn.Module):
     def __init__(self, in_channels: int, base: int) -> None:
         super().__init__()
-        self.eb1 = EncodingBlock(in_channels, base)
+        self.eb1 = ConvBlock(in_channels, base)
         self.mp1 = nn.MaxPool2d(2, 2)
 
-        self.eb2 = EncodingBlock(base, base * 2)
+        self.eb2 = ConvBlock(base, base * 2)
         self.mp2 = nn.MaxPool2d(2, 2)
 
-        self.eb3 = EncodingBlock(base * 2, base * 4)
+        self.eb3 = ConvBlock(base * 2, base * 4)
         self.mp3 = nn.MaxPool2d(2, 2)
 
-        self.eb4 = EncodingBlock(base * 4, base * 8)
+        self.eb4 = ConvBlock(base * 4, base * 8)
         self.mp4 = nn.MaxPool2d(2, 2)
 
-        self.eb5 = EncodingBlock(base * 8, base * 16)
+        self.eb5 = ConvBlock(base * 8, base * 16)
 
     def forward(self, x: Tensor) -> tuple[Tensor, ...]:
         eb1 = self.eb1(x)
@@ -53,16 +53,16 @@ class Decoder(nn.Module):
     def __init__(self, out_channels: int, base: int) -> None:
         super().__init__()
         self.up1 = UpsamplingBlock(base * 16, base * 8)
-        self.db1 = DecodingBlock(base * 16, base * 8)
+        self.db1 = ConvBlock(base * 16, base * 8)
 
         self.up2 = UpsamplingBlock(base * 8, base * 4)
-        self.db2 = DecodingBlock(base * 8, base * 4)
+        self.db2 = ConvBlock(base * 8, base * 4)
 
         self.up3 = UpsamplingBlock(base * 4, base * 2)
-        self.db3 = DecodingBlock(base * 4, base * 2)
+        self.db3 = ConvBlock(base * 4, base * 2)
 
         self.up4 = UpsamplingBlock(base * 2, base)
-        self.db4 = DecodingBlock(base * 2, base)
+        self.db4 = ConvBlock(base * 2, base)
 
         self.out = nn.Conv2d(base, out_channels, kernel_size=3, padding=1)
 
@@ -82,32 +82,16 @@ class Decoder(nn.Module):
         return self.out(db4)  # 64x64 -> 3x3
 
 
-class EncodingBlock(nn.Module):
+class ConvBlock(nn.Module):
     def __init__(self, in_channels: int, out_channels: int) -> None:
         super().__init__()
         self.block = nn.Sequential(
             nn.Conv2d(in_channels, out_channels, kernel_size=3, padding=1, bias=False),
             nn.BatchNorm2d(out_channels),
-            nn.ReLU(),
+            nn.ReLU(inplace=True),
             nn.Conv2d(out_channels, out_channels, kernel_size=3, padding=1, bias=False),
             nn.BatchNorm2d(out_channels),
-            nn.ReLU(),
-        )
-
-    def forward(self, x: Tensor) -> Tensor:
-        return self.block(x)
-
-
-class DecodingBlock(nn.Module):
-    def __init__(self, in_channels: int, out_channels: int) -> None:
-        super().__init__()
-        self.block = nn.Sequential(
-            nn.Conv2d(in_channels, out_channels, kernel_size=3, padding=1, bias=False),
-            nn.BatchNorm2d(out_channels),
-            nn.ReLU(),
-            nn.Conv2d(out_channels, out_channels, kernel_size=3, padding=1, bias=False),
-            nn.BatchNorm2d(out_channels),
-            nn.ReLU(),
+            nn.ReLU(inplace=True),
         )
 
     def forward(self, x: Tensor) -> Tensor:
@@ -120,7 +104,7 @@ class UpsamplingBlock(nn.Module):
         self.block = nn.Sequential(
             nn.ConvTranspose2d(in_channels, out_channels, kernel_size=2, stride=2, bias=False),
             nn.BatchNorm2d(out_channels),
-            nn.ReLU(),
+            nn.ReLU(inplace=True),
         )
 
     def forward(self, x: Tensor) -> Tensor:
