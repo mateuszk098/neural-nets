@@ -17,10 +17,10 @@ class ResUNet(nn.Module):
 class Encoder(nn.Module):
     def __init__(self, in_channels: int, base: int) -> None:
         super().__init__()
-        self.eb1 = InputResidualBlock(in_channels, base, kernel_size=3)
-        self.eb2 = PreActivationResBlok(base, base * 2, kernel_size=3, stride=2)
-        self.eb3 = PreActivationResBlok(base * 2, base * 4, kernel_size=3, stride=2)
-        self.eb4 = PreActivationResBlok(base * 4, base * 8, kernel_size=3, stride=2)
+        self.eb1 = InputBlock(in_channels, base, kernel_size=3)
+        self.eb2 = ResidualBlock(base, base * 2, kernel_size=3, stride=2)
+        self.eb3 = ResidualBlock(base * 2, base * 4, kernel_size=3, stride=2)
+        self.eb4 = ResidualBlock(base * 4, base * 8, kernel_size=3, stride=2)
 
     def forward(self, x: Tensor) -> tuple[Tensor, ...]:
         eb1 = self.eb1(x)
@@ -34,13 +34,13 @@ class Decoder(nn.Module):
     def __init__(self, out_channels: int, base: int) -> None:
         super().__init__()
         self.up1 = UpsamplingBlock(base * 8, base * 4)
-        self.db1 = PreActivationResBlok(base * 8, base * 4, kernel_size=3)
+        self.db1 = ResidualBlock(base * 8, base * 4, kernel_size=3)
 
         self.up2 = UpsamplingBlock(base * 4, base * 2)
-        self.db2 = PreActivationResBlok(base * 4, base * 2, kernel_size=3)
+        self.db2 = ResidualBlock(base * 4, base * 2, kernel_size=3)
 
         self.up3 = UpsamplingBlock(base * 2, base)
-        self.db3 = PreActivationResBlok(base * 2, base, kernel_size=3)
+        self.db3 = ResidualBlock(base * 2, base, kernel_size=3)
 
         self.out = nn.Conv2d(base, out_channels, kernel_size=3, padding=1)
 
@@ -57,7 +57,7 @@ class Decoder(nn.Module):
         return self.out(db3)
 
 
-class InputResidualBlock(nn.Module):
+class InputBlock(nn.Module):
     def __init__(self, in_channels: int, out_channels: int, kernel_size: int, stride: int = 1) -> None:
         super().__init__()
         padding = kernel_size // 2
@@ -75,7 +75,7 @@ class InputResidualBlock(nn.Module):
         return self.residual(x) + self.shortcut(x)
 
 
-class PreActivationResBlok(nn.Module):
+class ResidualBlock(nn.Module):
     def __init__(self, in_channels: int, out_channels: int, kernel_size: int, stride: int = 1) -> None:
         super().__init__()
         padding = kernel_size // 2

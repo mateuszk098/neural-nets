@@ -15,7 +15,7 @@ from torchmetrics.classification import BinaryJaccardIndex
 
 from cvnets.unet.dataset import ISICDataset
 from cvnets.unet.loss import ComboLoss, NamedLoss
-from cvnets.unet.network import UNet
+from cvnets.unet.network import ResUNetPP
 from cvnets.unet.utils import DeNormalizer, EarlyStopping, initialize_seed, load_yaml, worker_init_fn
 
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -127,7 +127,7 @@ def main(*, config_file: str | PathLike) -> None:
         persistent_workers=config.PERSISTENT_WORKERS,
     )
 
-    model = UNet(in_channels=3, out_channels=1, base=config.NET_BASE).to(DEVICE)
+    model = ResUNetPP(in_channels=3, out_channels=1, base=config.NET_BASE).to(DEVICE)
     loss_fn = ComboLoss(
         focal_alpha=config.FOCAL_ALPHA,
         focal_gamma=config.FOCAL_GAMMA,

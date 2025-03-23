@@ -28,7 +28,7 @@ WEIGHT_DECAY: 1.e-2
 DECOUPLED_WEIGHT_DECAY: true
 
 # Miscellaneous
-NET_BASE: 64
+NET_BASE: 16
 VISUALIZE: true
 
 # Evaluation
