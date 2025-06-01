@@ -37,10 +37,10 @@ class GPT2(nn.Module):
         self.out_head = nn.Linear(embedding_dim, vocab_size, bias=False)
 
     def forward(self, x: Tensor) -> Tensor:
-        batch_size, num_tokens, embedding_dim = x.size()
+        batch_size, num_tokens = x.size()
 
         tok_emb = self.tok_emb(x)
-        pos_emb = self.pos_emb(torch.arange(embedding_dim, device=x.device))
+        pos_emb = self.pos_emb(torch.arange(num_tokens, device=x.device))
 
         x = tok_emb + pos_emb
         x = self.dropout(x)

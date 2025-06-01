@@ -4,7 +4,7 @@ from torch import Tensor
 from torch.utils.data import Dataset
 
 
-class GPTDataset(Dataset):
+class GPT2Dataset(Dataset):
     def __init__(self, tokenizer: Encoding, text: str, context_len: int, stride: int = 1) -> None:
         self.inp_ids = []
         self.des_ids = []
