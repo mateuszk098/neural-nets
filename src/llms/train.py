@@ -1,4 +1,5 @@
 import logging
+import math
 from argparse import ArgumentParser
 from os import PathLike
 from pathlib import Path
@@ -10,6 +11,7 @@ import torch.nn.functional as F
 from tiktoken import Encoding
 from torch import Tensor
 from torch.optim import Optimizer
+from torch.optim.lr_scheduler import LRScheduler
 from torch.utils.data import DataLoader
 
 import llms.utils as utils
@@ -64,12 +66,14 @@ def train_model(
     train_loader: DataLoader,
     valid_loader: DataLoader,
     optimizer: Optimizer,
+    scheduler: LRScheduler,
     tokenizer: Encoding,
     num_epochs: int,
+    warmup_steps: int | None = None,
     eval_iter: int | None = None,
     device: torch.device = DEVICE,
 ) -> None:
-    token_seen = 0
+    token_seen, train_step = 0, 0
     train_loss_hist, valid_loss_hist, token_seen_hist = [], [], []
 
     for epoch in range(1, num_epochs + 1):
@@ -80,7 +84,12 @@ def train_model(
             loss = calc_loss_batch(inputs, targets, model)
             loss.backward()
             optimizer.step()
+            scheduler.step()
+            train_step += 1
             token_seen += inputs.numel()
+
+            if warmup_steps is not None and train_step > warmup_steps:
+                torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
 
         model.eval()
         train_loss, valid_loss = evaluate_model(model, train_loader, valid_loader, eval_iter=eval_iter)
@@ -109,7 +118,7 @@ def main(*, config_file: str | PathLike) -> None:
     with open("./the-verdict.txt") as f:
         text = f.read()
 
-    train_ratio = 0.8
+    train_ratio = 0.9
     split_id = int(len(text) * train_ratio)
     train_text = text[:split_id]
     valid_text = text[split_id:]
@@ -148,14 +157,35 @@ def main(*, config_file: str | PathLike) -> None:
     )
     model.to(DEVICE)
 
-    optimizer = torch.optim.AdamW(model.parameters(), lr=config["LR"], weight_decay=config["WEIGHT_DECAY"])
+    optimizer = torch.optim.NAdam(
+        params=model.parameters(),
+        weight_decay=config["WEIGHT_DECAY"],
+        decoupled_weight_decay=config["DECOUPLED_WEIGHT_DECAY"],
+    )
+    scheduler_steps = config["NUM_EPOCHS"] * int(math.ceil(len(train_ds) / config["BATCH_SIZE"]))
+    warmup_steps = int(config["PCT_START"] * scheduler_steps)
+    scheduler = torch.optim.lr_scheduler.OneCycleLR(
+        optimizer=optimizer,
+        max_lr=config["MAX_LR"],
+        div_factor=config["DIV_FACTOR"],
+        final_div_factor=config["FINAL_DIV_FACTOR"],
+        three_phase=config["THREE_PHASE"],
+        total_steps=scheduler_steps,
+        pct_start=config["PCT_START"],
+        anneal_strategy=config["ANNEAL_STRATEGY"],
+        cycle_momentum=config["CYCLE_MOMENTUM"],
+        base_momentum=config["BASE_MOMENTUM"],
+        max_momentum=config["MAX_MOMENTUM"],
+    )
 
     train_model(
         model=model,
         train_loader=train_loader,
         valid_loader=valid_loader,
         optimizer=optimizer,
+        scheduler=scheduler,
         tokenizer=tokenizer,
+        warmup_steps=warmup_steps,
         num_epochs=config["NUM_EPOCHS"],
         eval_iter=config["EVAL_ITER"],
     )

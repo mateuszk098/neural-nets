@@ -69,8 +69,8 @@ class Transformer(nn.Module):
             dropout=dropout,
             qkv_bias=qkv_bias,
         )
-        self.norm1 = LayerNorm(embedding_dim)
-        self.norm2 = LayerNorm(embedding_dim)
+        self.norm1 = nn.LayerNorm(embedding_dim)
+        self.norm2 = nn.LayerNorm(embedding_dim)
         self.ff = FeedForward(embedding_dim)
         self.dropout = nn.Dropout(dropout)
 
