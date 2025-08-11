@@ -6,7 +6,7 @@ import torch
 from torch.types import Tensor
 from torchvision.ops import nms
 
-from cvnets.yolo.utils import create_offsets, xywh2xyxy
+from nns.yolo.utils import create_offsets, xywh2xyxy
 
 Prediction = namedtuple("Prediction", ["xyxys", "confs", "labels"])
 

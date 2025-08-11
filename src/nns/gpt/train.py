@@ -14,9 +14,9 @@ from torch.optim import Optimizer
 from torch.optim.lr_scheduler import LRScheduler
 from torch.utils.data import DataLoader
 
-import llms.utils as utils
-from llms.dataset import GPT2Dataset
-from llms.models import GPT2
+import nns.gpt.utils as utils
+from nns.gpt.dataset import GPT2Dataset
+from nns.gpt.models import GPT2
 
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 FORMAT = "[%(asctime)s - %(module)s/%(levelname)s]: %(message)s"

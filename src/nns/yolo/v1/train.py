@@ -13,10 +13,10 @@ from torch.optim import Optimizer
 from torch.optim.lr_scheduler import LRScheduler
 from torch.utils.data import DataLoader
 
-from cvnets.yolo.utils import dfs_freeze, initialize_seed, load_yaml, worker_init_fn
-from cvnets.yolo.v1.dataset import VOCDataset, collate_fn
-from cvnets.yolo.v1.loss import NamedLoss, YOLOv1Loss
-from cvnets.yolo.v1.net import YOLOv1
+from nns.yolo.utils import dfs_freeze, initialize_seed, load_yaml, worker_init_fn
+from nns.yolo.v1.dataset import VOCDataset, collate_fn
+from nns.yolo.v1.loss import NamedLoss, YOLOv1Loss
+from nns.yolo.v1.net import YOLOv1
 
 SEED = 42
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")

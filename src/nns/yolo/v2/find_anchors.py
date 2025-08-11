@@ -9,7 +9,7 @@ from numpy.typing import NDArray
 from pyclustering.cluster.kmeans import kmeans
 from pyclustering.utils.metric import distance_metric, type_metric
 
-from cvnets.yolo.voc import VOCSplit, load_voc_dataset
+from nns.yolo.voc import VOCSplit, load_voc_dataset
 
 plt.rcParams["text.usetex"] = True
 plt.rcParams["axes.spines.right"] = False

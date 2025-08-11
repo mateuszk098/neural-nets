@@ -12,10 +12,10 @@ from torch.optim import Optimizer
 from torch.optim.lr_scheduler import LRScheduler
 from torch.utils.data import DataLoader
 
-from cvnets.vae.dataset import COCOKeypointsDataset
-from cvnets.vae.loss import VAELoss
-from cvnets.vae.net import VAENet
-from cvnets.vae.utils import initialize_seed, load_yaml, worker_init_fn
+from nns.vae.dataset import COCOKeypointsDataset
+from nns.vae.loss import VAELoss
+from nns.vae.net import VAENet
+from nns.vae.utils import initialize_seed, load_yaml, worker_init_fn
 
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 FORMAT = "[%(asctime)s - %(module)s/%(levelname)s]: %(message)s"

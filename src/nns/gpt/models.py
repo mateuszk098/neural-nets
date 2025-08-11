@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 from torch import Tensor
 
-from llms.layers import LayerNorm, Transformer
+from nns.gpt.layers import LayerNorm, Transformer
 
 
 class GPT2(nn.Module):

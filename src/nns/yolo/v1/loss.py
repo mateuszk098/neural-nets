@@ -4,7 +4,7 @@ import torch
 import torch.nn as nn
 from torch.types import Tensor
 
-from cvnets.yolo.utils import iou
+from nns.yolo.utils import iou
 
 NamedLoss = namedtuple("NamedLoss", ["total", "coord", "itobj", "noobj", "label"])
 

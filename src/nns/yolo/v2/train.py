@@ -13,11 +13,11 @@ from torch.optim import Optimizer
 from torch.optim.lr_scheduler import LRScheduler
 from torch.utils.data import DataLoader
 
-from cvnets.yolo.utils import create_current_run_dir, initialize_seed, load_yaml, worker_init_fn
-from cvnets.yolo.v2.dataset import VOCDataset, collate_fn, sampled_collate_fn
-from cvnets.yolo.v2.loss import NamedLoss, YOLOv2Loss
-from cvnets.yolo.v2.net import YOLOv2
-from cvnets.yolo.v2.utils import load_anchor_bboxes
+from nns.yolo.utils import create_current_run_dir, initialize_seed, load_yaml, worker_init_fn
+from nns.yolo.v2.dataset import VOCDataset, collate_fn, sampled_collate_fn
+from nns.yolo.v2.loss import NamedLoss, YOLOv2Loss
+from nns.yolo.v2.net import YOLOv2
+from nns.yolo.v2.utils import load_anchor_bboxes
 
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 FORMAT = "[%(asctime)s - %(module)s/%(levelname)s]: %(message)s"

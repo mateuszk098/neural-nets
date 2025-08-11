@@ -12,9 +12,9 @@ import torch
 from torch.types import Tensor
 from torch.utils.data import Dataset
 
-from cvnets.yolo.utils import xyxy2xywh
-from cvnets.yolo.v2.utils import anchor_iou
-from cvnets.yolo.voc import VOCSplit, load_voc_dataset
+from nns.yolo.utils import xyxy2xywh
+from nns.yolo.v2.utils import anchor_iou
+from nns.yolo.voc import VOCSplit, load_voc_dataset
 
 YOLOSample = namedtuple("YOLOSample", ("image", "bboxes", "labels", "target"))
 YOLOSampleBatch = namedtuple("YOLOSampleBatch", ("images", "bboxes", "labels", "targets"))

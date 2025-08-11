@@ -7,8 +7,8 @@ from torch.optim import Optimizer
 from torch.utils.data import DataLoader
 from torchmetrics import Metric
 
-from cvnets.resnet.net import ResNet, Structure
-from cvnets.resnet.utils import MyImageFolder
+from nns.resnet.net import ResNet, Structure
+from nns.resnet.utils import MyImageFolder
 
 SEED = 42
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")

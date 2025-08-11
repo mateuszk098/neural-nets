@@ -9,10 +9,10 @@ import torch.nn as nn
 from torch.utils.data import DataLoader
 from torchmetrics.classification import BinaryJaccardIndex
 
-from cvnets.unet.dataset import ISICDataset
-from cvnets.unet.loss import ComboLoss, NamedLoss
-from cvnets.unet.network import UNet
-from cvnets.unet.utils import initialize_seed, load_yaml
+from nns.unet.dataset import ISICDataset
+from nns.unet.loss import ComboLoss, NamedLoss
+from nns.unet.network import UNet
+from nns.unet.utils import initialize_seed, load_yaml
 
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 FORMAT = "[%(asctime)s - %(module)s/%(levelname)s]: %(message)s"

@@ -11,7 +11,7 @@ import torch
 from torch.types import Tensor
 from torch.utils.data import Dataset
 
-from cvnets.yolo.voc import VOCSplit, load_voc_dataset
+from nns.yolo.voc import VOCSplit, load_voc_dataset
 
 YOLOSample = namedtuple("YOLOSample", ("image", "bboxes", "labels", "target"))
 
